@@ -4,11 +4,11 @@
     "keywords": [
         "support",
         "http",
-        "larvacms"
+        "larva"
     ],
     "support": {
-        "issues": "https://github.com/larvacms/support/issues",
-        "source": "https://github.com/larvacms/support"
+        "issues": "https://github.com/larva/support/issues",
+        "source": "https://github.com/larva/support"
     },
     "authors": [
         {
