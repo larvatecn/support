@@ -1,0 +1,35 @@
+{
+    "name": "larva/support",
+    "description": "common components",
+    "keywords": [
+        "support",
+        "http",
+        "larvacms"
+    ],
+    "support": {
+        "issues": "https://github.com/larvacms/support/issues",
+        "source": "https://github.com/larvacms/support"
+    },
+    "authors": [
+        {
+            "name": "Larva Team",
+            "email": "support@larva.com.cn"
+        }
+    ],
+    "require": {
+        "php": "^7.2 || ^8.0",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-intl": "*",
+        "guzzlehttp/guzzle": "^6.5 || ^7.2",
+        "ezyang/htmlpurifier": "^4.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Larva\\Support\\": "src/"
+        }
+    },
+    "license": "MIT"
+}
