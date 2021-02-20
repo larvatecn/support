@@ -15,7 +15,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 use Larva\Support\Exception\ConnectionException;
 use Larva\Support\HttpResponse;
-use Larva\Support\StringHelper;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * Trait HasHttpRequest
@@ -69,7 +69,7 @@ trait HasHttpRequest
      *
      * @var array
      */
-    public $options = [];
+    protected $options = [];
 
     /**
      * The middleware callables added by users that will handle requests.
@@ -157,7 +157,7 @@ trait HasHttpRequest
     }
 
     /**
-     * 设置该请求是一个多部分表单
+     * 设置该请求是一个 Multipart 表单
      *
      * @return $this
      */
@@ -478,6 +478,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array $options
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function send(string $method, string $url, array $options = [])
@@ -492,9 +493,7 @@ trait HasHttpRequest
                 $options[$this->bodyFormat] = $this->pendingBody;
             }
             if (is_array($options[$this->bodyFormat])) {
-                $options[$this->bodyFormat] = array_merge(
-                    $options[$this->bodyFormat], $this->pendingFiles
-                );
+                $options[$this->bodyFormat] = array_merge($options[$this->bodyFormat], $this->pendingFiles);
             }
         }
 
@@ -505,6 +504,7 @@ trait HasHttpRequest
                     $this->transferStats = $transferStats;
                 },
             ], $options)));
+            $response->cookies = $this->cookies;
             $response->transferStats = $this->transferStats;
             return $response;
         } catch (ConnectException $e) {
@@ -520,10 +520,9 @@ trait HasHttpRequest
      */
     protected function parseMultipartBodyFormat(array $data)
     {
-        $data = array_map(function ($value, $key) {
+        return array_map(function ($value, $key) {
             return is_array($value) ? $value : ['name' => $key, 'contents' => $value];
-        }, $data);
-        return array_values($data);
+        }, $data, array_keys($data));
     }
 
     /**
@@ -547,6 +546,12 @@ trait HasHttpRequest
     public function buildHandlerStack(): HandlerStack
     {
         $stack = HandlerStack::create();
+        $stack->push(function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                $this->cookies = $options['cookies'];
+                return $handler($request, $options);
+            };
+        });
         if (method_exists($this, 'buildBeforeSendingHandler')) {
             $stack->push($this->buildBeforeSendingHandler());
         }

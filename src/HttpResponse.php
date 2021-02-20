@@ -9,12 +9,14 @@
 namespace Larva\Support;
 
 use ArrayAccess;
+use Larva\Support\Exception\RequestException;
 use LogicException;
 use Psr\Http\Message\MessageInterface;
 
 /**
  * Class HTTPResponse
- * @property  $transferStats
+ * @property $transferStats
+ * @property $cookies
  * @author Tongle Xu <xutongle@gmail.com>
  */
 class HttpResponse implements ArrayAccess
@@ -195,6 +197,27 @@ class HttpResponse implements ArrayAccess
     public function toPsrResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * Throw an exception if a server or client error occurred.
+     *
+     * @param \Closure|null $callback
+     * @return $this
+     * @throws RequestException
+     */
+    public function throw()
+    {
+        $callback = func_get_args()[0] ?? null;
+
+        if ($this->failed()) {
+            $exception = new RequestException($this);
+            if ($callback && is_callable($callback)) {
+                $callback($this, $exception);
+            }
+            throw $exception;
+        }
+        return $this;
     }
 
     /**
