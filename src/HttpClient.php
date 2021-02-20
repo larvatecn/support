@@ -27,4 +27,12 @@ class HttpClient
             'http_errors' => false,
         ];
     }
+
+    /**
+     * @return $this
+     */
+    public static function make()
+    {
+        return new static();
+    }
 }

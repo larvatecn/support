@@ -482,8 +482,8 @@ trait HasHttpRequest
      */
     public function send(string $method, string $url, array $options = [])
     {
-        if (property_exists($this, 'baseUri') && !is_null($this->baseUri)) {
-            $options['base_uri'] = $this->baseUri;
+        if (property_exists($this, 'baseUrl') && !is_null($this->baseUrl)) {
+            $options['base_uri'] = $this->baseUrl;
         }
         if (isset($options[$this->bodyFormat])) {
             if ($this->bodyFormat === 'multipart') {

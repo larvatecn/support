@@ -7,10 +7,14 @@
  */
 include '../vendor/autoload.php';
 
-$http = new \Larva\Support\HttpClient();
+use Larva\Support\HttpClient;
+
+$http = HttpClient::make();
 
 $http->withOnlyIPv4()->withoutRedirecting()->withoutVerifying()->acceptJson();
-$response = $http->get('https://api.myip.la/en?json');
+$http->baseUrl('https://api.myip.la/');
+$response = $http->post('/en', ['json' => '']);
 
-print_r($response->transferStats);
-print_r($http->options);
+print_r($response->json());
+
+print_r($http);

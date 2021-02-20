@@ -211,7 +211,7 @@ class HttpResponse implements ArrayAccess
     /**
      * Get the value for a given offset.
      *
-     * @param  string  $offset
+     * @param string $offset
      * @return mixed
      */
     public function offsetGet($offset)
@@ -222,8 +222,8 @@ class HttpResponse implements ArrayAccess
     /**
      * Set the value at the given offset.
      *
-     * @param  string  $offset
-     * @param  mixed  $value
+     * @param string $offset
+     * @param mixed $value
      * @return void
      *
      * @throws \LogicException
@@ -236,7 +236,7 @@ class HttpResponse implements ArrayAccess
     /**
      * Unset the value at the given offset.
      *
-     * @param  string  $offset
+     * @param string $offset
      * @return void
      *
      * @throws \LogicException
