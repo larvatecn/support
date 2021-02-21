@@ -26,6 +26,12 @@ class HttpClient
         $this->options = [
             'http_errors' => false,
         ];
+        $this->init();
+    }
+
+    public function init()
+    {
+
     }
 
     /**
