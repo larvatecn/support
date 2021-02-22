@@ -82,7 +82,9 @@ trait HasHttpRequest
      * @var array
      */
     protected static $defaultOptions = [
-
+        'curl' => [
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+        ],
     ];
 
     /**
@@ -485,7 +487,7 @@ trait HasHttpRequest
      * @throws ConnectionException
      * @throws GuzzleException
      */
-    public function postText(string $url, $data)
+    public function postText(string $url, string $data)
     {
         $this->withBody($data, 'text/plain');
         return $this->send('POST', $url);

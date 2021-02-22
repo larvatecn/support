@@ -46,6 +46,7 @@ class HttpClient
      * @param string $url
      * @param array|string|null $query
      * @return array
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function getJSON(string $url, $query = null)
@@ -159,9 +160,9 @@ class HttpClient
      * @param array $headers Headers
      * @param int $timeout 超时时间
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public static function getHeaders(string $url, $headers = [], $timeout = 5)
+    public static function getHeaders(string $url, $headers = [], $timeout = 5): array
     {
         $client = static::make();
         $client->withoutVerifying();
@@ -177,7 +178,7 @@ class HttpClient
      * @param string $origin 来源
      * @param int $timeout 超时时间
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public static function checkCors(string $url, string $origin, $timeout = 5): bool
     {
