@@ -34,7 +34,7 @@ trait HasHttpRequest
      *
      * @var string
      */
-    protected $bodyFormat;
+    protected $bodyFormat = 'body';
 
     /**
      * The raw body for the request.
@@ -77,6 +77,31 @@ trait HasHttpRequest
      * @var array
      */
     protected $middlewares = [];
+
+    /**
+     * @var array
+     */
+    protected static $defaultOptions = [
+
+    ];
+
+    /**
+     * Set guzzle default settings.
+     *
+     * @param array $defaults
+     */
+    public static function setDefaultOptions($defaults = [])
+    {
+        self::$defaultOptions = $defaults;
+    }
+
+    /**
+     * Return current guzzle default settings.
+     */
+    public static function getDefaultOptions(): array
+    {
+        return self::$defaultOptions;
+    }
 
     /**
      * 设置待处理请求的基本URL
@@ -462,7 +487,7 @@ trait HasHttpRequest
      */
     public function postText(string $url, $data)
     {
-        $this->withBody($data,'text/plain');
+        $this->withBody($data, 'text/plain');
         return $this->send('POST', $url);
     }
 
@@ -612,6 +637,6 @@ trait HasHttpRequest
      */
     public function mergeOptions(...$options): array
     {
-        return array_merge_recursive($this->options, ...$options);
+        return array_merge_recursive(self::$defaultOptions, $this->options, ...$options);
     }
 }

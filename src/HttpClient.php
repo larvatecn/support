@@ -25,6 +25,7 @@ class HttpClient
      */
     public function __construct()
     {
+        $this->asForm();
         $this->options = [
             'http_errors' => false,
         ];
