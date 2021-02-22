@@ -169,14 +169,14 @@ class HtmlHelper
 
     /**
      * 获取简介
-     * @param string $content
-     * @param int $len
+     * @param string $content 内容
+     * @param int $len 长度
      * @return string
      */
-    public static function getSummary(string $content, $len = 190): string
+    public static function getSummary(string $content, $len = 80): string
     {
-        $description = str_replace(["\r\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;'], '', strip_tags($content));
-        return mb_substr($description, 0, $len);
+        $description = str_replace(["\r\n", "\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;', ' '], '', strip_tags($content));
+        return StringHelper::limit($description, $len, '');
     }
 
     /**
@@ -213,7 +213,7 @@ class HtmlHelper
      * @param string|array $tags
      * @return string
      */
-    public static function strip_html_tags(string $content, $tags): string
+    public static function stripHtmlTags(string $content, $tags): string
     {
         $patterns = [];
         if (!is_array($tags)) {
@@ -230,9 +230,9 @@ class HtmlHelper
      * @param string $content
      * @return string
      */
-    public static function strip_html_img(string $content): string
+    public static function stripHtmlImg(string $content): string
     {
-        return static::strip_html_tags($content, ['img']);
+        return static::stripHtmlTags($content, ['img']);
     }
 
     /**
