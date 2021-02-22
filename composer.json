@@ -1,35 +1,36 @@
 {
-    "name": "larva/support",
-    "description": "common components",
-    "keywords": [
-        "support",
-        "http",
-        "larva"
-    ],
-    "support": {
-        "issues": "https://github.com/larva/support/issues",
-        "source": "https://github.com/larva/support"
-    },
-    "authors": [
-        {
-            "name": "Larva Team",
-            "email": "support@larva.com.cn"
-        }
-    ],
-    "require": {
-        "php": "^7.2 || ^8.0",
-        "ext-curl": "*",
-        "ext-dom": "*",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "ext-intl": "*",
-        "guzzlehttp/guzzle": "^6.5 || ^7.2",
-        "ezyang/htmlpurifier": "^4.13"
-    },
-    "autoload": {
-        "psr-4": {
-            "Larva\\Support\\": "src"
-        }
-    },
-    "license": "MIT"
+  "name": "larva/support",
+  "description": "common components",
+  "keywords": [
+    "support",
+    "http",
+    "larva"
+  ],
+  "support": {
+    "issues": "https://github.com/larva/support/issues",
+    "source": "https://github.com/larva/support"
+  },
+  "authors": [
+    {
+      "name": "Larva Team",
+      "email": "support@larva.com.cn"
+    }
+  ],
+  "require": {
+    "php": "^7.2 || ^8.0",
+    "ext-curl": "*",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-simplexml": "*",
+    "ext-libxml": "*",
+    "ext-intl": "*",
+    "guzzlehttp/guzzle": "^6.5 || ^7.2",
+    "ezyang/htmlpurifier": "^4.13"
+  },
+  "autoload": {
+    "psr-4": {
+      "Larva\\Support\\": "src"
+    }
+  },
+  "license": "MIT"
 }

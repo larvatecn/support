@@ -76,6 +76,26 @@ class HttpResponse implements ArrayAccess
     }
 
     /**
+     * Get the XML decoded body of the response as an array or scalar value.
+     *
+     * @param string|null $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function xml($key = null, $default = null)
+    {
+        if (!$this->decoded) {
+            $dom = new \DOMDocument('1.0', 'UTF-8');
+            $dom->loadXML($this->body(), LIBXML_NOCDATA);
+            $this->decoded = $this->convertXmlToArray(simplexml_import_dom($dom->documentElement));
+        }
+        if (is_null($key)) {
+            return $this->decoded;
+        }
+        return isset($this->decoded[$key]) ? $this->decoded[$key] : $default;
+    }
+
+    /**
      * Get the JSON decoded body of the response as an object.
      *
      * @return object
@@ -290,5 +310,24 @@ class HttpResponse implements ArrayAccess
     public function __call($method, $parameters)
     {
         return $this->response->{$method}(...$parameters);
+    }
+
+    /**
+     * Converts XML document to array.
+     * @param string|\SimpleXMLElement $xml xml to process.
+     * @return array XML array representation.
+     */
+    protected function convertXmlToArray($xml)
+    {
+        if (is_string($xml)) {
+            $xml = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        }
+        $result = (array)$xml;
+        foreach ($result as $key => $value) {
+            if (!is_scalar($value)) {
+                $result[$key] = $this->convertXmlToArray($value);
+            }
+        }
+        return $result;
     }
 }
