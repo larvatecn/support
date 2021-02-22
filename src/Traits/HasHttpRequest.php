@@ -402,6 +402,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array|string|null $query
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function head(string $url, $query = null)
@@ -417,6 +418,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array $data
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function post(string $url, array $data = [])
@@ -432,6 +434,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array $data
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function patch(string $url, $data = [])
@@ -447,6 +450,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array $data
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function put(string $url, $data = [])
@@ -462,6 +466,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array $data
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function delete(string $url, $data = [])

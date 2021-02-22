@@ -12,6 +12,7 @@ use ArrayAccess;
 use Larva\Support\Exception\RequestException;
 use LogicException;
 use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class HTTPResponse
@@ -24,7 +25,7 @@ class HttpResponse implements ArrayAccess
     /**
      * The underlying PSR response.
      *
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var ResponseInterface
      */
     protected $response;
 
@@ -192,7 +193,7 @@ class HttpResponse implements ArrayAccess
     /**
      * Get the underlying PSR response for the response.
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function toPsrResponse()
     {

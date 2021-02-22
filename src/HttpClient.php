@@ -29,6 +29,9 @@ class HttpClient
         $this->init();
     }
 
+    /**
+     * init
+     */
     public function init()
     {
 
@@ -37,7 +40,7 @@ class HttpClient
     /**
      * @return $this
      */
-    public static function make()
+    public static function make(): HttpClient
     {
         return new static();
     }
