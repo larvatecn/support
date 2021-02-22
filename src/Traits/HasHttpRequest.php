@@ -409,6 +409,7 @@ trait HasHttpRequest
      * @param string $url
      * @param array|string|null $query
      * @return HttpResponse
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public function get(string $url, $query = null)
@@ -448,6 +449,21 @@ trait HasHttpRequest
         return $this->send('POST', $url, [
             $this->bodyFormat => $data,
         ]);
+    }
+
+    /**
+     * Issue a POST request to the given URL.
+     *
+     * @param string $url
+     * @param string $data
+     * @return HttpResponse
+     * @throws ConnectionException
+     * @throws GuzzleException
+     */
+    public function postText(string $url, $data)
+    {
+        $this->withBody($data,'text/plain');
+        return $this->send('POST', $url);
     }
 
     /**
