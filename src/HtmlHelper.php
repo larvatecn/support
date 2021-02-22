@@ -176,7 +176,7 @@ class HtmlHelper
     public static function getSummary(string $content, $len = 200): string
     {
         $description = str_replace(["\r\n", "\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;', ' '], '', strip_tags($content));
-        return StringHelper::limit($description, $len, '');
+        return StringHelper::limit(trim($description), $len, '');
     }
 
     /**
