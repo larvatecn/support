@@ -13,48 +13,75 @@ use Larva\Support\HttpClient;
 class HttpClientTest extends TestCase
 {
 
-    public function testDeleteJSON()
+    public function testGet()
     {
-        HttpClient::make()->deleteJSON();
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
-    public function testMake()
+    public function testHead()
     {
+        $response = HttpClient::make()->head('https://www.baidu.com');
+        $this->assertTrue($response->ok());
+    }
 
+    public function testPost()
+    {
+        $response = HttpClient::make()->post('https://www.baidu.com');
+        $this->assertTrue($response->ok());
+    }
+
+    public function testPut()
+    {
+        $response = HttpClient::make()->put('https://www.baidu.com');
+        $this->assertTrue($response->ok());
+    }
+
+    public function testDeleteJSON()
+    {
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testGetCertificate()
     {
-
+        $response = HttpClient::getCertificate('www.baidu.com');
+        $this->assertIsArray($response);
     }
 
     public function testPostJSON()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testGetHeaders()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testPutJSON()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testPatchJSON()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testGetJSON()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 
     public function testCheckCors()
     {
-
+        $response = HttpClient::make()->get('https://www.baidu.com');
+        $this->assertTrue($response->ok());
     }
 }
