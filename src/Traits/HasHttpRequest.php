@@ -275,6 +275,28 @@ trait HasHttpRequest
     }
 
     /**
+     * 设置 http Referer
+     *
+     * @param string $referer
+     * @return $this
+     */
+    public function withReferer($referer)
+    {
+        return $this->withHeaders(['Referer' => $referer]);
+    }
+
+    /**
+     * 设置 http Origin
+     *
+     * @param string $origin
+     * @return $this
+     */
+    public function withOrigin($origin)
+    {
+        return $this->withHeaders(['Origin' => $origin]);
+    }
+
+    /**
      * 设置请求Cookie
      *
      * @param array $cookies

@@ -21,6 +21,7 @@
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-json": "*",
+    "ext-openssl": "*",
     "ext-simplexml": "*",
     "ext-libxml": "*",
     "ext-intl": "*",
