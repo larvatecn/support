@@ -180,6 +180,19 @@ class HtmlHelper
     }
 
     /**
+     * 抽取 Html 所有的图片
+     * @param string $content HTML 内容
+     * @return false|array
+     */
+    public static function getImages(string $content): array
+    {
+        if (preg_match_all('/<img.*[\s]src=[\"|\'](.*)[\"|\'].*>/iU', $content, $matches)) {
+            return $matches[1];
+        }
+        return false;
+    }
+
+    /**
      * 获取缩略图
      * @param string $content
      * @return null|string
