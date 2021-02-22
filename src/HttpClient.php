@@ -9,6 +9,7 @@
 namespace Larva\Support;
 
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use Larva\Support\Exception\ConnectionException;
 use Larva\Support\Traits\HasHttpRequest;
 
@@ -25,10 +26,6 @@ class HttpClient
      */
     public function __construct()
     {
-        $this->asForm();
-        $this->options = [
-            'http_errors' => false,
-        ];
         $this->init();
     }
 
@@ -130,6 +127,22 @@ class HttpClient
     public static function make(): HttpClient
     {
         return new static();
+    }
+
+    /**
+     * 仅使用IPV4
+     */
+    public static function onlyIPv4()
+    {
+        self::$defaultOptions[RequestOptions::FORCE_IP_RESOLVE] = 'v4';
+    }
+
+    /**
+     * 仅使用IPV6
+     */
+    public static function onlyIPv6()
+    {
+        self::$defaultOptions[RequestOptions::FORCE_IP_RESOLVE] = 'v6';
     }
 
     /**

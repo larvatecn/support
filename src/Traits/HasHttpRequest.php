@@ -82,9 +82,7 @@ trait HasHttpRequest
      * @var array
      */
     protected static $defaultOptions = [
-        'curl' => [
-            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
-        ],
+        'http_errors' => false,
     ];
 
     /**
