@@ -42,7 +42,7 @@ class IDCard
      * @param string $idCard
      * @return array|false
      */
-    public static function getInfo($idCard)
+    public static function getInfo(string $idCard)
     {
         if (static::validateCard($idCard)) {
             return [
@@ -63,7 +63,7 @@ class IDCard
      * @param string $idCard
      * @return bool
      */
-    public static function validateCard($idCard)
+    public static function validateCard(string $idCard): bool
     {
         if (strlen($idCard) == static::CHINA_ID_MAX_LENGTH) {
             // 前17位
@@ -121,9 +121,9 @@ class IDCard
      * 根据身份编号获取生日天
      *
      * @param string $idCard 身份编号
-     * @return NULL string
+     * @return string
      */
-    public static function getBirthdayByIdCard(string $idCard)
+    public static function getBirthdayByIdCard(string $idCard): string
     {
         return substr($idCard, 6, 4) . '-' . substr($idCard, 10, 2) . '-' . substr($idCard, 12, 2);
     }
@@ -150,7 +150,7 @@ class IDCard
      * @param string $idCard
      * @return mixed
      */
-    public static function getProvinceByIdCard(string $idCard)
+    public static function getProvinceByIdCard(string $idCard): string
     {
         $provinceCode = substr($idCard, 0, 2) . '0000';
         return static::$locationCodes [$provinceCode];
@@ -161,18 +161,18 @@ class IDCard
      * @param string $idCard
      * @return mixed
      */
-    public static function getCityByIdCard(string $idCard)
+    public static function getCityByIdCard(string $idCard): string
     {
         $cityCode = substr($idCard, 0, 4) . '00';
         return static::$locationCodes [$cityCode];
     }
 
     /**
-     * 获取身份证所在市
+     * 获取身份证所在县
      * @param string $idCard
      * @return mixed
      */
-    public static function getDistrictByIdCard($idCard)
+    public static function getDistrictByIdCard(string $idCard): string
     {
         $areaCode = substr($idCard, 0, 6);
         return static::$locationCodes [$areaCode];
@@ -184,7 +184,7 @@ class IDCard
      * @param string $idCard 身份编号
      * @return array
      */
-    public static function getLocationByIdCard(string $idCard)
+    public static function getLocationByIdCard(string $idCard): array
     {
         return [
             'province' => static::getProvinceByIdCard($idCard),
@@ -199,7 +199,7 @@ class IDCard
      * @param int $iSum
      * @return string 校验位
      */
-    private static function getCheckCode(int $iSum)
+    private static function getCheckCode(int $iSum): string
     {
         $sCode = "";
         switch ($iSum % 11) {
@@ -276,7 +276,6 @@ class IDCard
             $GenderCodes = [0, 2, 4, 6, 8];
         }
         $code = array_rand($GenderCodes, 1);
-        $genderCode = $GenderCodes[$code];
-        return $genderCode;
+        return $GenderCodes[$code];
     }
 }

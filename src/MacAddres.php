@@ -33,12 +33,12 @@ class MacAddres
     ];
 
     /**
-     * Change the MAC address of the network interface specified
+     * 更改指定的网络接口的MAC地址
      * @param string $interface Name of the interface e.g. eth0
-     * @param string $mac The new MAC address to be set to the interface
+     * @param null $mac The new MAC address to be set to the interface
      * @return bool Returns true on success else returns false
      */
-    public static function setFakeMacAddress($interface, $mac = null): bool
+    public static function setFakeMacAddress(string $interface, $mac = null): bool
     {
         // if a valid mac address was not passed then generate one
         if (!self::validateMacAddress($mac)) {
@@ -66,7 +66,7 @@ class MacAddres
     {
         $vals = self::$macAddressVals;
         if (count($vals) >= 1) {
-            $mac = array("00"); // set first two digits manually
+            $mac = ["00"]; // set first two digits manually
             while (count($mac) < 6) {
                 shuffle($vals);
                 $mac[] = $vals[0] . $vals[1];
@@ -91,7 +91,7 @@ class MacAddres
      * @param string $command
      * @return string Output from command that was ran
      */
-    protected static function runCommand($command)
+    protected static function runCommand(string $command)
     {
         return shell_exec($command);
     }

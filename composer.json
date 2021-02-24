@@ -22,6 +22,7 @@
     "ext-dom": "*",
     "ext-json": "*",
     "ext-openssl": "*",
+    "ext-mbstring": "*",
     "ext-simplexml": "*",
     "ext-libxml": "*",
     "ext-intl": "*",
