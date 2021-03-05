@@ -17,25 +17,9 @@ use Larva\Support\Traits\HasHttpRequest;
  * HTTP 客户端
  * @author Tongle Xu <xutongle@gmail.com>
  */
-class HttpClient
+class HttpClient extends BaseObject
 {
     use HasHttpRequest;
-
-    /**
-     * HttpClient constructor.
-     */
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    /**
-     * init
-     */
-    public function init()
-    {
-
-    }
 
     /**
      * Issue a GET request to the given URL.
