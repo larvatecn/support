@@ -6,7 +6,10 @@
  * @license http://www.larva.com.cn/license/
  */
 
+declare(strict_types = 1);
 namespace Larva\Support;
+
+use NumberFormatter;
 
 /**
  * 数字金额处理
@@ -24,7 +27,7 @@ class Number
     public static function float(float $number, int $limit = null): float
     {
         $limit = $limit ?? 2;
-        return (float) \sprintf("%.{$limit}f", $number);
+        return (float) sprintf("%.{$limit}f", $number);
     }
 
     /**
@@ -58,7 +61,7 @@ class Number
      */
     public static function cny(float $price): string
     {
-        setlocale(LC_MONETARY, 'zh_CN');
-        return money_format('%.2n', $price);
+        $fmt = NumberFormatter::create('zh_CN',NumberFormatter::CURRENCY);
+        return $fmt->format($price);
     }
 }
