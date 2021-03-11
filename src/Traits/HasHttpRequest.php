@@ -34,7 +34,7 @@ trait HasHttpRequest
      *
      * @var string
      */
-    protected $bodyFormat = 'body';
+    protected $bodyFormat = 'form_params';
 
     /**
      * The raw body for the request.
