@@ -152,6 +152,23 @@ class HttpClient extends BaseObject
     }
 
     /**
+     * 模拟浏览器下载远程文件内容
+     * @param string $url
+     * @return false|string
+     * @throws GuzzleException
+     */
+    public static function getRemoteFile(string $url)
+    {
+        try {
+            return static::make()->withHeaders([
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59',
+            ])->get($url)->throw()->body();
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    /**
      * 获取 响应的 Header
      * @param string $url 目标Url
      * @param array $headers Headers
