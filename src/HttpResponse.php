@@ -242,6 +242,17 @@ class HttpResponse implements ArrayAccess
     }
 
     /**
+     * 保存到本地路径
+     * @param string $path
+     * @param false $lock
+     * @return bool|int
+     */
+    public function saveAs($path, $lock = false)
+    {
+        return FileHelper::put($path, $this->body(), $lock);
+    }
+
+    /**
      * Determine if the given offset exists.
      *
      * @param string $offset

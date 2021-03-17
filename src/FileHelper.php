@@ -20,7 +20,7 @@ class FileHelper
      * @param string $path
      * @return string
      */
-    public function basename(string $path): string
+    public static function basename(string $path): string
     {
         return pathinfo($path, PATHINFO_BASENAME);
     }
@@ -31,7 +31,7 @@ class FileHelper
      * @param string $path
      * @return string
      */
-    public function dirname(string $path): string
+    public static function dirname(string $path): string
     {
         return pathinfo($path, PATHINFO_DIRNAME);
     }
@@ -42,7 +42,7 @@ class FileHelper
      * @param string $path
      * @return string
      */
-    public function extension(string $path): string
+    public static function extension(string $path): string
     {
         return pathinfo($path, PATHINFO_EXTENSION);
     }
@@ -53,7 +53,7 @@ class FileHelper
      * @param string $path
      * @return string
      */
-    public function type(string $path): string
+    public static function type(string $path): string
     {
         return filetype($path);
     }
@@ -64,7 +64,7 @@ class FileHelper
      * @param string $path
      * @return string|false
      */
-    public function mimeType(string $path)
+    public static function mimeType(string $path)
     {
         return finfo_file(finfo_open(\FILEINFO_MIME_TYPE), $path);
     }
@@ -75,7 +75,7 @@ class FileHelper
      * @param string $path
      * @return int 返回文件大小的字节数
      */
-    public function size(string $path): int
+    public static function size(string $path): int
     {
         return filesize($path);
     }
@@ -85,7 +85,7 @@ class FileHelper
      * @param string $path
      * @return string
      */
-    public function sizeFormat(string $path): string
+    public static function sizeFormat(string $path): string
     {
         $size = static::size($path);
         $sizes = [" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB"];
@@ -102,8 +102,21 @@ class FileHelper
      * @param string $path
      * @return int
      */
-    public function lastModified(string $path): int
+    public static function lastModified(string $path): int
     {
         return filemtime($path);
+    }
+
+    /**
+     * 写入内容到文件
+     *
+     * @param string $path
+     * @param string $contents
+     * @param bool $lock
+     * @return int|bool
+     */
+    public static function put($path, $contents, $lock = false)
+    {
+        return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
     }
 }

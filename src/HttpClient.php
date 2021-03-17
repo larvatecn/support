@@ -152,7 +152,7 @@ class HttpClient extends BaseObject
     }
 
     /**
-     * 模拟浏览器下载远程文件内容
+     * 模拟浏览器下载远程文件内容(不保存)
      * @param string $url
      * @return false|string
      * @throws GuzzleException
@@ -160,9 +160,9 @@ class HttpClient extends BaseObject
     public static function getRemoteFile(string $url)
     {
         try {
-            return static::make()->withHeaders([
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59',
-            ])->get($url)->throw()->body();
+            return static::make()
+                ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59')
+                ->get($url)->throw()->body();
         } catch (\Exception $exception) {
             return false;
         }
