@@ -121,7 +121,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return int
      */
-    public function statusCode()
+    public function statusCode(): int
     {
         return (int)$this->response->getStatusCode();
     }
@@ -141,7 +141,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function successful()
+    public function successful(): bool
     {
         return $this->statusCode() >= 200 && $this->statusCode() < 300;
     }
@@ -151,7 +151,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function ok()
+    public function ok(): bool
     {
         return $this->statusCode() === 200;
     }
@@ -161,7 +161,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function redirect()
+    public function redirect(): bool
     {
         return $this->statusCode() >= 300 && $this->statusCode() < 400;
     }
@@ -171,7 +171,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function failed()
+    public function failed(): bool
     {
         return $this->serverError() || $this->clientError();
     }
@@ -181,7 +181,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function clientError()
+    public function clientError(): bool
     {
         return $this->statusCode() >= 400 && $this->statusCode() < 500;
     }
@@ -191,7 +191,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return bool
      */
-    public function serverError()
+    public function serverError(): bool
     {
         return $this->statusCode() >= 500;
     }
