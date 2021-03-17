@@ -258,6 +258,19 @@ class HttpResponse implements ArrayAccess
     }
 
     /**
+     * 保存远程文件到本地临时目录
+     * @param string $tmpPath
+     * @return bool|int
+     * @throws \Exception
+     */
+    public function saveAsTemp($tmpPath = '/tmp')
+    {
+        $path = $tmpPath . StringHelper::random(40);
+        $this->saveAs($path);
+        return $path;
+    }
+
+    /**
      * Determine if the given offset exists.
      *
      * @param string $offset

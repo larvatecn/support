@@ -157,7 +157,7 @@ class HttpClient extends BaseObject
      * @return false|string
      * @throws GuzzleException
      */
-    public static function getRemoteFile(string $url)
+    public static function getRemoteFileContent(string $url)
     {
         try {
             return static::make()
@@ -166,6 +166,40 @@ class HttpClient extends BaseObject
         } catch (\Exception $exception) {
             return false;
         }
+    }
+
+    /**
+     * 保存远程文件到本地目录
+     * @param string $url 远程Url
+     * @param string $path 保存路径
+     * @param int $mode
+     * @param false $lock
+     * @return bool|int
+     * @throws GuzzleException
+     */
+    public static function saveRemoteFileAs(string $url, string $path, $mode = 0755, $lock = false)
+    {
+        try {
+            return static::make()
+                ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59')
+                ->get($url)->throw()->saveAs($path, $mode, $lock);
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    /**
+     * 保存远程文件到临时目录
+     * @param string $url
+     * @param string $tmpPath
+     * @return string
+     * @throws GuzzleException
+     */
+    public static function saveRemoteFileAsTemp(string $url, $tmpPath = '/tmp'): string
+    {
+        $path = $tmpPath . DIRECTORY_SEPARATOR . StringHelper::random(40) . '.' . FileHelper::extension($url);
+        static::saveRemoteFileAs($url, $path);
+        return $path;
     }
 
     /**
