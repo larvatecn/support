@@ -244,11 +244,16 @@ class HttpResponse implements ArrayAccess
     /**
      * 保存到本地路径
      * @param string $path
+     * @param int $mode 权限
      * @param false $lock
      * @return bool|int
      */
-    public function saveAs($path, $lock = false)
+    public function saveAs($path, $mode = 0755, $lock = false)
     {
+        $dirname = FileHelper::dirname($path);
+        if (!FileHelper::isDirectory($dirname)) {
+            FileHelper::makeDirectory($dirname, $mode, true);
+        }
         return FileHelper::put($path, $this->body(), $lock);
     }
 

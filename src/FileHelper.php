@@ -15,6 +15,28 @@ namespace Larva\Support;
 class FileHelper
 {
     /**
+     * 判断文件或目录是否存在
+     *
+     * @param string $path
+     * @return bool
+     */
+    public static function exists(string $path): bool
+    {
+        return file_exists($path);
+    }
+
+    /**
+     * 判断文件或目录是否不存在
+     *
+     * @param string $path
+     * @return bool
+     */
+    public static function missing(string $path): bool
+    {
+        return !static::exists($path);
+    }
+
+    /**
      * 获取文件名
      *
      * @param string $path
@@ -108,6 +130,104 @@ class FileHelper
     }
 
     /**
+     * Determine if the given path is a directory.
+     *
+     * @param string $directory
+     * @return bool
+     */
+    public static function isDirectory(string $directory): bool
+    {
+        return is_dir($directory);
+    }
+
+    /**
+     * Determine if the given path is readable.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public static function isReadable(string $path): bool
+    {
+        return is_readable($path);
+    }
+
+    /**
+     * Determine if the given path is writable.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public static function isWritable(string $path): bool
+    {
+        return is_writable($path);
+    }
+
+    /**
+     * Determine if the given path is a file.
+     *
+     * @param string $file
+     * @return bool
+     */
+    public static function isFile(string $file): bool
+    {
+        return is_file($file);
+    }
+
+    /**
+     * Get the MD5 hash of the file at the given path.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function md5(string $path): string
+    {
+        return md5_file($path);
+    }
+
+    /**
+     * Get the sha1 hash of the file at the given path.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function sha1(string $path): string
+    {
+        return sha1_file($path);
+    }
+
+    /**
+     * Get or set UNIX mode of a file or directory.
+     *
+     * @param string $path
+     * @param int|null $mode
+     * @return mixed
+     */
+    public static function chmod(string $path, $mode = null)
+    {
+        if ($mode) {
+            return chmod($path, $mode);
+        }
+        return substr(sprintf('%o', fileperms($path)), -4);
+    }
+
+    /**
+     * Create a directory.
+     *
+     * @param string $path
+     * @param int $mode
+     * @param bool $recursive
+     * @param bool $force
+     * @return bool
+     */
+    public static function makeDirectory(string $path, $mode = 0755, $recursive = false, $force = false): bool
+    {
+        if ($force) {
+            return @mkdir($path, $mode, $recursive);
+        }
+        return mkdir($path, $mode, $recursive);
+    }
+
+    /**
      * 写入内容到文件
      *
      * @param string $path
@@ -118,5 +238,17 @@ class FileHelper
     public static function put($path, $contents, $lock = false)
     {
         return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
+    }
+
+    /**
+     * Append to a file.
+     *
+     * @param string $path
+     * @param string $data
+     * @return int
+     */
+    public static function append($path, $data)
+    {
+        return file_put_contents($path, $data, FILE_APPEND);
     }
 }
