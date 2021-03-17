@@ -15,129 +15,95 @@ namespace Larva\Support;
 class FileHelper
 {
     /**
-     * MIME mapping.
+     * 获取文件名
      *
-     * @var array
+     * @param string $path
+     * @return string
      */
-    protected static $extensionMap = [
-        'audio/wav' => '.wav',
-        'audio/x-ms-wma' => '.wma',
-        'video/x-ms-wmv' => '.wmv',
-        'video/mp4' => '.mp4',
-        'audio/mpeg' => '.mp3',
-        'audio/amr' => '.amr',
-        'application/vnd.rn-realmedia' => '.rm',
-        'audio/mid' => '.mid',
-        'image/bmp' => '.bmp',
-        'image/gif' => '.gif',
-        'image/png' => '.png',
-        'image/tiff' => '.tiff',
-        'image/jpeg' => '.jpg',
-        'application/pdf' => '.pdf',
-
-        // 列举更多的文件 mime, 企业号是支持的,公众平台这边之后万一也更新了呢
-        'application/msword' => '.doc',
-
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => '.docx',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => '.dotx',
-        'application/vnd.ms-word.document.macroEnabled.12' => '.docm',
-        'application/vnd.ms-word.template.macroEnabled.12' => '.dotm',
-
-        'application/vnd.ms-excel' => '.xls',
-
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => '.xlsx',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.template' => '.xltx',
-        'application/vnd.ms-excel.sheet.macroEnabled.12' => '.xlsm',
-        'application/vnd.ms-excel.template.macroEnabled.12' => '.xltm',
-        'application/vnd.ms-excel.addin.macroEnabled.12' => '.xlam',
-        'application/vnd.ms-excel.sheet.binary.macroEnabled.12' => '.xlsb',
-
-        'application/vnd.ms-powerpoint' => '.ppt',
-
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => '.pptx',
-        'application/vnd.openxmlformats-officedocument.presentationml.template' => '.potx',
-        'application/vnd.openxmlformats-officedocument.presentationml.slideshow' => '.ppsx',
-        'application/vnd.ms-powerpoint.addin.macroEnabled.12' => '.ppam',
-    ];
+    public function basename(string $path): string
+    {
+        return pathinfo($path, PATHINFO_BASENAME);
+    }
 
     /**
-     * File header signatures.
+     * 获取父目录
      *
-     * @var array
+     * @param string $path
+     * @return string
      */
-    protected static $signatures = [
-        'ffd8ff' => '.jpg',
-        '424d' => '.bmp',
-        '47494638' => '.gif',
-        '2f55736572732f6f7665' => '.png',
-        '89504e47' => '.png',
-        '494433' => '.mp3',
-        'fffb' => '.mp3',
-        'fff3' => '.mp3',
-        '3026b2758e66cf11' => '.wma',
-        '52494646' => '.wav',
-        '57415645' => '.wav',
-        '41564920' => '.avi',
-        '000001ba' => '.mpg',
-        '000001b3' => '.mpg',
-        '2321414d52' => '.amr',
-        '25504446' => '.pdf',
-    ];
+    public function dirname(string $path): string
+    {
+        return pathinfo($path, PATHINFO_DIRNAME);
+    }
 
     /**
-     * Return steam extension.
+     * 获取文件后缀
      *
-     * @param string $stream
+     * @param string $path
+     * @return string
+     */
+    public function extension(string $path): string
+    {
+        return pathinfo($path, PATHINFO_EXTENSION);
+    }
+
+    /**
+     * Get the file type of a given file.
      *
+     * @param string $path
+     * @return string
+     */
+    public function type(string $path): string
+    {
+        return filetype($path);
+    }
+
+    /**
+     * Get the mime-type of a given file.
+     *
+     * @param string $path
      * @return string|false
      */
-    public static function getStreamExt($stream)
+    public function mimeType(string $path)
     {
-        $ext = self::getExtBySignature($stream);
-
-        try {
-            if (empty($ext) && is_readable($stream)) {
-                $stream = file_get_contents($stream);
-            }
-        } catch (\Exception $e) {
-        }
-
-        $fileInfo = new finfo(FILEINFO_MIME);
-
-        $mime = strstr($fileInfo->buffer($stream), ';', true);
-
-        return isset(self::$extensionMap[$mime]) ? self::$extensionMap[$mime] : $ext;
+        return finfo_file(finfo_open(\FILEINFO_MIME_TYPE), $path);
     }
 
     /**
-     * Get file extension by file header signature.
+     * 返回指定文件的大小
      *
-     * @param string $stream
-     *
-     * @return string
+     * @param string $path
+     * @return int 返回文件大小的字节数
      */
-    public static function getExtBySignature($stream): string
+    public function size(string $path): int
     {
-        $prefix = strval(bin2hex(mb_strcut($stream, 0, 10)));
-
-        foreach (self::$signatures as $signature => $extension) {
-            if (0 === strpos($prefix, strval($signature))) {
-                return $extension;
-            }
-        }
-
-        return '';
+        return filesize($path);
     }
 
     /**
-     * 取得文件后缀
-     *
-     * @param string $fileName 文件名称
+     * 获取格式化后的文件大小
+     * @param string $path
      * @return string
      */
-    public static function getExtByFilename(string $fileName): string
+    public function sizeFormat(string $path): string
     {
-        if (false === ($pos = strrpos($fileName, '.'))) return '';
-        return substr($fileName, $pos + 1);
+        $size = static::size($path);
+        $sizes = [" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB"];
+        if ($size == 0) {
+            return 'N/A';
+        } else {
+            return round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizes[$i];
+        }
+    }
+
+    /**
+     * 获取文件最后修改的时间戳
+     *
+     * @param string $path
+     * @return int
+     */
+    public function lastModified(string $path): int
+    {
+        return filemtime($path);
     }
 }

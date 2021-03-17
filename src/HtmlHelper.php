@@ -193,16 +193,15 @@ class HtmlHelper
     }
 
     /**
-     * 获取缩略图
+     * 获取第一张图片作为缩略图
      * @param string $content
      * @return null|string
      */
     public static function getThumb(string $content): ?string
     {
-        //自动提取缩略图
-        $matches = [];
-        if (preg_match_all("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png))\\2/i", $content, $matches)) {
-            return $matches[3][0];
+        $images = static::getImages($content);
+        if ($images) {
+            return array_shift($images);
         }
         return null;
     }
@@ -242,8 +241,7 @@ class HtmlHelper
      */
     public static function convertToMIP(string $content): string
     {
-        $content = preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<mip-img data-carousel=\"carousel\"  class=\"mip-element mip-img\"  src=\"$1\"></mip-img>", $content);
-        return $content;
+        return preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<mip-img class=\"mip-element mip-img\"  src=\"$1\"></mip-img>", $content);
     }
 
     /**
@@ -253,7 +251,6 @@ class HtmlHelper
      */
     public static function convertToAMP(string $content): string
     {
-        $content = preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<amp-img data-carousel=\"carousel\"  class=\"amp-element amp-img\"  src=\"$1\"></amp-img>", $content);
-        return $content;
+        return preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<amp-img class=\"amp-element amp-img\"  src=\"$1\"></amp-img>", $content);
     }
 }

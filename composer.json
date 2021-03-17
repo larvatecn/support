@@ -26,6 +26,7 @@
     "ext-simplexml": "*",
     "ext-libxml": "*",
     "ext-intl": "*",
+    "ext-fileinfo": "*",
     "guzzlehttp/guzzle": "^6.5 || ^7.2",
     "ezyang/htmlpurifier": "^4.13"
   },
