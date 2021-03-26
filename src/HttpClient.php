@@ -208,6 +208,7 @@ class HttpClient extends BaseObject
      * @param array $headers Headers
      * @param int $timeout 超时时间
      * @return array
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public static function getHeaders(string $url, $headers = [], $timeout = 5): array
@@ -226,6 +227,7 @@ class HttpClient extends BaseObject
      * @param string $origin 来源
      * @param int $timeout 超时时间
      * @return bool
+     * @throws ConnectionException
      * @throws GuzzleException
      */
     public static function checkCors(string $url, string $origin, $timeout = 5): bool

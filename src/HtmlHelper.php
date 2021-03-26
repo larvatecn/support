@@ -184,7 +184,7 @@ class HtmlHelper
      * @param string $content HTML 内容
      * @return false|array
      */
-    public static function getImages(string $content): array
+    public static function getImages(string $content)
     {
         if (preg_match_all('/<img.*[\s]src=[\"|\'](.*)[\"|\'].*>/iU', $content, $matches)) {
             return $matches[1];
