@@ -277,7 +277,7 @@ class FileHelper
      * @param string $stream
      * @return string|false
      */
-    public static function getStreamExt($stream)
+    public static function getStreamExtension($stream)
     {
         if (! class_exists(MimeTypes::class)) {
             throw new RuntimeException(
