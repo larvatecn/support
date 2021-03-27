@@ -8,6 +8,9 @@
 
 namespace Larva\Support;
 
+use RuntimeException;
+use Symfony\Component\Mime\MimeTypes;
+
 /**
  * 文件助手
  * @author Tongle Xu <xutongle@gmail.com>
@@ -250,5 +253,39 @@ class FileHelper
     public static function append($path, $data)
     {
         return file_put_contents($path, $data, FILE_APPEND);
+    }
+
+    /**
+     * Guess the file extension from the mime-type of a given file.
+     *
+     * @param string $path
+     * @return string|null
+     */
+    public static function guessExtension(string $path)
+    {
+        if (! class_exists(MimeTypes::class)) {
+            throw new RuntimeException(
+                'To enable support for guessing extensions, please install the symfony/mime package.'
+            );
+        }
+        return (new MimeTypes)->getExtensions(static::mimeType($path))[0] ?? null;
+    }
+
+    /**
+     * Return steam extension.
+     *
+     * @param string $stream
+     * @return string|false
+     */
+    public static function getStreamExt($stream)
+    {
+        if (! class_exists(MimeTypes::class)) {
+            throw new RuntimeException(
+                'To enable support for guessing extensions, please install the symfony/mime package.'
+            );
+        }
+        $fileInfo = new finfo(FILEINFO_MIME);
+        $mime = strstr($fileInfo->buffer($stream), ';', true);
+        return (new MimeTypes)->getExtensions($mime)[0] ?? null;
     }
 }
