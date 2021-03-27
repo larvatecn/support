@@ -231,6 +231,18 @@ class FileHelper
     }
 
     /**
+     * 准备目录
+     * @param string $path
+     * @param int $mode
+     */
+    public static function readyDirectory(string $path, $mode = 0755)
+    {
+        if (!static::isDirectory($path)) {
+            static::makeDirectory($path, $mode, true);
+        }
+    }
+
+    /**
      * 写入内容到文件
      *
      * @param string $path
@@ -263,7 +275,7 @@ class FileHelper
      */
     public static function guessExtension(string $path)
     {
-        if (! class_exists(MimeTypes::class)) {
+        if (!class_exists(MimeTypes::class)) {
             throw new RuntimeException(
                 'To enable support for guessing extensions, please install the symfony/mime package.'
             );
@@ -279,7 +291,7 @@ class FileHelper
      */
     public static function getStreamExtension($stream)
     {
-        if (! class_exists(MimeTypes::class)) {
+        if (!class_exists(MimeTypes::class)) {
             throw new RuntimeException(
                 'To enable support for guessing extensions, please install the symfony/mime package.'
             );

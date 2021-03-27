@@ -189,20 +189,6 @@ class HttpClient extends BaseObject
     }
 
     /**
-     * 保存远程文件到临时目录
-     * @param string $url
-     * @param string $tmpPath
-     * @return string
-     * @throws GuzzleException
-     */
-    public static function saveRemoteFileAsTemp(string $url, $tmpPath = '/tmp'): string
-    {
-        $path = $tmpPath . DIRECTORY_SEPARATOR . StringHelper::random(40) . '.' . FileHelper::extension($url);
-        static::saveRemoteFileAs($url, $path);
-        return $path;
-    }
-
-    /**
      * 获取 响应的 Header
      * @param string $url 目标Url
      * @param array $headers Headers

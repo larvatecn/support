@@ -247,27 +247,17 @@ class HttpResponse implements ArrayAccess
      * @param int $mode 权限
      * @param false $lock
      * @return bool|int
-     */
-    public function saveAs($path, $mode = 0755, $lock = false)
-    {
-        $dirname = FileHelper::dirname($path);
-        if (!FileHelper::isDirectory($dirname)) {
-            FileHelper::makeDirectory($dirname, $mode, true);
-        }
-        return FileHelper::put($path, $this->body(), $lock);
-    }
-
-    /**
-     * 保存远程文件到本地临时目录
-     * @param string $tmpPath
-     * @return bool|int
      * @throws \Exception
      */
-    public function saveAsTemp($tmpPath = '/tmp')
+    public function saveAs(string $path, $mode = 0755, $lock = false)
     {
-        $path = $tmpPath . StringHelper::random(40);
-        $this->saveAs($path);
-        return $path;
+        FileHelper::readyDirectory($path, $mode);
+        $name = StringHelper::random(40) . '.' . FileHelper::getStreamExtension($this->body());
+        $path = trim($path . '/' . $name, '/');
+        if (FileHelper::put($path, $this->body(), $lock)) {
+            return $path;
+        }
+        return false;
     }
 
     /**
