@@ -146,7 +146,11 @@ class HttpClient extends BaseObject
             $stream = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
             $params = stream_context_get_params($stream);
             stream_socket_shutdown($stream, STREAM_SHUT_WR);
-            return $params['options']['ssl']['peer_certificate_chain'] ?? false;
+            $certChain = [];
+            foreach ($params['options']['ssl']['peer_certificate_chain'] as $cert) {
+                $certChain[] = openssl_x509_parse($cert);
+            }
+            return $certChain;
         } catch (\Exception $exception) {
             return false;
         }
