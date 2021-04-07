@@ -130,13 +130,13 @@ class HttpClient extends BaseObject
     }
 
     /**
-     * 获取服务器证书
+     * 获取服务器 SSL 证书
      * @param string $host
      * @param int $port
      * @param int $timeout
      * @return array|false
      */
-    public static function getCertificate(string $host, $port = 443, $timeout = 60)
+    public static function getSSLCertificate(string $host, $port = 443, $timeout = 60)
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
@@ -144,8 +144,8 @@ class HttpClient extends BaseObject
         stream_context_set_option($context, 'ssl', 'capture_peer_cert', true);//获取证书详情
         try {
             $resource = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
-            $cert = stream_context_get_params($resource);
-            return openssl_x509_parse($cert['options']['ssl']['peer_certificate']);
+            $parameters = stream_context_get_params($resource);
+            return openssl_x509_parse($parameters['options']['ssl']['peer_certificate']);
         } catch (\Exception $exception) {
             return false;
         }
