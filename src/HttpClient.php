@@ -130,22 +130,46 @@ class HttpClient extends BaseObject
     }
 
     /**
+     * 获取 SSL 证书链
+     * @param string $host
+     * @param int $port
+     * @param int $timeout
+     * @return array|false
+     */
+    public static function getSSLCertChain(string $host, $port = 443, $timeout = 60)
+    {
+        $context = stream_context_create();
+        stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
+        stream_context_set_option($context, 'ssl', 'verify_peer_name', false);//不验证主机名是否对应
+        stream_context_set_option($context, 'ssl', 'capture_peer_cert_chain', true);//获取证书链
+        try {
+            $stream = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
+            $params = stream_context_get_params($stream);
+            stream_socket_shutdown($stream, STREAM_SHUT_WR);
+            return $params['options']['ssl']['peer_certificate_chain'] ?? false;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
+
+    /**
      * 获取服务器 SSL 证书
      * @param string $host
      * @param int $port
      * @param int $timeout
      * @return array|false
      */
-    public static function getSSLCertificate(string $host, $port = 443, $timeout = 60)
+    public static function getSSLCert(string $host, $port = 443, $timeout = 60)
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
         stream_context_set_option($context, 'ssl', 'verify_peer_name', false);//不验证主机名是否对应
         stream_context_set_option($context, 'ssl', 'capture_peer_cert', true);//获取证书详情
         try {
-            $resource = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
-            $parameters = stream_context_get_params($resource);
-            return openssl_x509_parse($parameters['options']['ssl']['peer_certificate']);
+            $stream = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
+            $params = stream_context_get_params($stream);
+            stream_socket_shutdown($stream, STREAM_SHUT_WR);
+            return openssl_x509_parse($params['options']['ssl']['peer_certificate']);
         } catch (\Exception $exception) {
             return false;
         }
