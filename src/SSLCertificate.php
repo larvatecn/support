@@ -204,7 +204,7 @@ class SSLCertificate
     }
 
     /**
-     * 剩余有效期
+     * 已经签发的天数
      * @return int
      */
     public function lifespanInDays(): int
@@ -255,28 +255,6 @@ class SSLCertificate
         $endDate = $this->expirationDate();
         $interval = Carbon::now()->diff($endDate);
         return (int)$interval->format('%r%a');
-    }
-
-    /**
-     * 是否匹配通配符主机
-     * @param string $wildcardHost
-     * @param string $host
-     * @return bool
-     */
-    protected function wildcardHostCoversHost(string $wildcardHost, string $host): bool
-    {
-        if ($host === $wildcardHost) {
-            return true;
-        }
-        if (! StringHelper::startsWith($wildcardHost, '*')) {
-            return false;
-        }
-        if (substr_count($wildcardHost, '.') < substr_count($host, '.')) {
-            return false;
-        }
-        $wildcardHostWithoutWildcard = substr($wildcardHost, 1);
-        $hostWithDottedPrefix = ".{$host}";
-        return StringHelper::endsWith($hostWithDottedPrefix, $wildcardHostWithoutWildcard);
     }
 
     /**
@@ -369,5 +347,27 @@ class SSLCertificate
             return false;
         }
         return true;
+    }
+
+    /**
+     * 是否匹配通配符主机
+     * @param string $wildcardHost
+     * @param string $host
+     * @return bool
+     */
+    protected function wildcardHostCoversHost(string $wildcardHost, string $host): bool
+    {
+        if ($host === $wildcardHost) {
+            return true;
+        }
+        if (! StringHelper::startsWith($wildcardHost, '*')) {
+            return false;
+        }
+        if (substr_count($wildcardHost, '.') < substr_count($host, '.')) {
+            return false;
+        }
+        $wildcardHostWithoutWildcard = substr($wildcardHost, 1);
+        $hostWithDottedPrefix = ".{$host}";
+        return StringHelper::endsWith($hostWithDottedPrefix, $wildcardHostWithoutWildcard);
     }
 }

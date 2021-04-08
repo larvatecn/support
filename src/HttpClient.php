@@ -244,7 +244,7 @@ class HttpClient extends BaseObject
      * @throws ConnectionException
      * @throws GuzzleException
      */
-    public static function checkCors(string $url, string $origin, $timeout = 5): bool
+    public static function checkCORS(string $url, string $origin, $timeout = 5): bool
     {
         $headers = static::getHeaders($url, ['Referer' => $origin, 'Origin' => $origin], $timeout);
         if (isset($headers['Access-Control-Allow-Origin']) && in_array($headers['Access-Control-Allow-Origin'][0], [$origin, '*'])) {
@@ -257,12 +257,10 @@ class HttpClient extends BaseObject
      * 从 Url 中抽取 主机名
      * @param string $url
      * @return false|string
+     * @throws Exception\InvalidUrlException
      */
     public static function getUrlHostname(string $url)
     {
-        if (strpos($url, "://") == false) {
-            $url = "http://" . $url;
-        }
-        return parse_url($url, PHP_URL_HOST);
+        return (new Url($url))->getHostName();
     }
 }
