@@ -22,6 +22,6 @@ class SSLCertificateTest extends TestCase
         $this->assertEquals('www.larva.com.cn', $cert->getDomain());
         $this->assertTrue($cert->isValid('www.larva.com.cn'));
         $this->assertTrue($cert->isValid('larva.com.cn'));
-        
+
     }
 }
