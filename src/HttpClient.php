@@ -146,11 +146,11 @@ class HttpClient extends BaseObject
             $stream = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
             $params = stream_context_get_params($stream);
             stream_socket_shutdown($stream, STREAM_SHUT_WR);
-            $certChain = [];
+            $certificateChain = [];
             foreach ($params['options']['ssl']['peer_certificate_chain'] as $cert) {
-                $certChain[] = openssl_x509_parse($cert);
+                $certificateChain[] =  SSLCertificate::make($cert);
             }
-            return $certChain;
+            return $certificateChain;
         } catch (\Exception $exception) {
             return false;
         }
@@ -161,7 +161,7 @@ class HttpClient extends BaseObject
      * @param string $host
      * @param int $port
      * @param int $timeout
-     * @return array|false
+     * @return SSLCertificate|false
      */
     public static function getSSLCert(string $host, $port = 443, $timeout = 60)
     {
@@ -173,7 +173,7 @@ class HttpClient extends BaseObject
             $stream = stream_socket_client('ssl://' . $host . ':' . $port, $errno, $errStr, $timeout, STREAM_CLIENT_CONNECT, $context);
             $params = stream_context_get_params($stream);
             stream_socket_shutdown($stream, STREAM_SHUT_WR);
-            return openssl_x509_parse($params['options']['ssl']['peer_certificate']);
+            return SSLCertificate::make($params['options']['ssl']['peer_certificate']);
         } catch (\Exception $exception) {
             return false;
         }

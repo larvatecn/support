@@ -27,6 +27,7 @@
     "ext-libxml": "*",
     "ext-intl": "*",
     "ext-fileinfo": "*",
+    "nesbot/carbon": "^2.31",
     "guzzlehttp/guzzle": "^6.5 || ^7.2",
     "ezyang/htmlpurifier": "^4.13"
   },
