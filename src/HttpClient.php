@@ -222,8 +222,6 @@ class HttpClient extends BaseObject
      * @param array $headers Headers
      * @param int $timeout 超时时间
      * @return array
-     * @throws ConnectionException
-     * @throws GuzzleException
      */
     public static function getHeaders(string $url, $headers = [], $timeout = 5): array
     {
@@ -231,8 +229,12 @@ class HttpClient extends BaseObject
         $client->withoutVerifying();
         $client->withHeaders($headers);
         $client->timeout($timeout);
-        $response = $client->get($url);
-        return $response->toPsrResponse()->getHeaders();
+        try {
+            $response = $client->get($url);
+            return $response->toPsrResponse()->getHeaders();
+        } catch (GuzzleException | ConnectionException $e) {
+            return [];
+        }
     }
 
     /**
@@ -241,8 +243,6 @@ class HttpClient extends BaseObject
      * @param string $origin 来源
      * @param int $timeout 超时时间
      * @return bool
-     * @throws ConnectionException
-     * @throws GuzzleException
      */
     public static function checkCORS(string $url, string $origin, $timeout = 5): bool
     {
@@ -257,10 +257,13 @@ class HttpClient extends BaseObject
      * 从 Url 中抽取 主机名
      * @param string $url
      * @return false|string
-     * @throws Exception\InvalidUrlException
      */
     public static function getUrlHostname(string $url)
     {
-        return (new Url($url))->getHostName();
+        try {
+            return (new Url($url))->getHostName();
+        } catch (Exception\InvalidUrlException $e) {
+            return '';
+        }
     }
 }
