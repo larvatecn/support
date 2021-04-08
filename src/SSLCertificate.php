@@ -24,12 +24,12 @@ class SSLCertificate
     /**
      * @var string 证书指纹
      */
-    protected $fingerprint = '';
+    protected $fingerprint;
 
     /**
      * @var string SHA256指纹
      */
-    private $fingerprintSha256 = '';
+    private $fingerprintSha256;
 
     /**
      * SSLCertificate constructor.
@@ -67,6 +67,10 @@ class SSLCertificate
         return self::make(file_get_contents($pathToCertificate));
     }
 
+    /**
+     * 获取证书原始字段
+     * @return array
+     */
     public function getRawCertificateFields(): array
     {
         return $this->rawCertificateFields;
@@ -261,14 +265,17 @@ class SSLCertificate
      * 是否适用于指定的 URL
      * @param string $url
      * @return bool
-     * @throws Exception\InvalidUrlException
      */
     public function appliesToUrl(string $url): bool
     {
         if (filter_var($url, FILTER_VALIDATE_IP)) {
             $host = $url;
         } else {
-            $host = (new Url($url))->getHostName();
+            try {
+                $host = (new Url($url))->getHostName();
+            } catch (Exception\InvalidUrlException $e) {
+                return false;
+            }
         }
         $certificateHosts = $this->getDomains();
         foreach ($certificateHosts as $certificateHost) {
@@ -287,7 +294,6 @@ class SSLCertificate
      * URL 或者证书是否有效
      * @param string|null $url
      * @return bool
-     * @throws Exception\InvalidUrlException
      */
     public function isValid(string $url = null): bool
     {
@@ -305,7 +311,6 @@ class SSLCertificate
      * @param Carbon $carbon
      * @param string|null $url
      * @return bool
-     * @throws Exception\InvalidUrlException
      */
     public function isValidUntil(Carbon $carbon, string $url = null): bool
     {
