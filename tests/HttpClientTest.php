@@ -45,8 +45,8 @@ class HttpClientTest extends TestCase
 
     public function testGetCertificate()
     {
-        $response = HttpClient::getCertificate('www.baidu.com');
-        $this->assertIsArray($response);
+        $response = HttpClient::getSSLCert('www.baidu.com');
+        $this->assertIsObject($response);
     }
 
     public function testPostJSON()

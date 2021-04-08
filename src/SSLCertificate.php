@@ -46,10 +46,10 @@ class SSLCertificate
 
     /**
      * 创建证书实例
-     * @param string $certificatePem
+     * @param mixed $certificatePem
      * @return SSLCertificate
      */
-    public static function make(string $certificatePem): self
+    public static function make($certificatePem): self
     {
         $certificateFields = openssl_x509_parse($certificatePem);
         $fingerprint = openssl_x509_fingerprint($certificatePem);
