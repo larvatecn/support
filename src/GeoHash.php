@@ -29,14 +29,14 @@ class GeoHash
      * @param float $prec 精确度
      * @return string
      */
-    public static function encode($longitude, $latitude, $prec = 0.00001)
+    public static function encode($longitude, $latitude, $prec = 0.00001): string
     {
         $minLongitude = -180;
         $maxLongitude = 180;
         $minLatitude = -90;
         $maxLatitude = 90;
 
-        $hash = array();
+        $hash = [];
         $error = 180;
         $isEven = true;
         $chr = 0b00000;
@@ -80,7 +80,7 @@ class GeoHash
      * @param string $hash geo hash
      * @return array array($minLongitude, $maxLongitude, $minLatitude, $maxLatitude);
      */
-    public static function decode(string $hash)
+    public static function decode(string $hash): array
     {
         $minLongitude = -180;
         $maxLongitude = 180;
