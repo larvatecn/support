@@ -148,7 +148,7 @@ class HttpClient extends BaseObject
             stream_socket_shutdown($stream, STREAM_SHUT_WR);
             $certificateChain = [];
             foreach ($params['options']['ssl']['peer_certificate_chain'] as $cert) {
-                $certificateChain[] =  SSLCertificate::make($cert);
+                $certificateChain[] = SSLCertificate::make($cert);
             }
             return $certificateChain;
         } catch (\Exception $exception) {
@@ -222,19 +222,17 @@ class HttpClient extends BaseObject
      * @param array $headers Headers
      * @param int $timeout 超时时间
      * @return array
+     * @throws ConnectionException
+     * @throws GuzzleException
      */
     public static function getHeaders(string $url, $headers = [], $timeout = 5): array
     {
-        $client = static::make();
-        $client->withoutVerifying();
-        $client->withHeaders($headers);
-        $client->timeout($timeout);
-        try {
-            $response = $client->get($url);
-            return $response->toPsrResponse()->getHeaders();
-        } catch (GuzzleException | ConnectionException $e) {
-            return [];
-        }
+        return static::make()
+            ->withoutVerifying()
+            ->withHeaders($headers)
+            ->timeout($timeout)
+            ->get($url)
+            ->getHeaders();
     }
 
     /**
@@ -243,6 +241,8 @@ class HttpClient extends BaseObject
      * @param string $origin 来源
      * @param int $timeout 超时时间
      * @return bool
+     * @throws ConnectionException
+     * @throws GuzzleException
      */
     public static function checkCORS(string $url, string $origin, $timeout = 5): bool
     {
@@ -256,7 +256,7 @@ class HttpClient extends BaseObject
     /**
      * 从 Url 中抽取 主机名
      * @param string $url
-     * @return false|string
+     * @return string
      */
     public static function getUrlHostname(string $url)
     {

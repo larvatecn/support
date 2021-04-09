@@ -117,6 +117,15 @@ class HttpResponse implements ArrayAccess
     }
 
     /**
+     * Retrieves all message header values.
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->response->getHeaders();
+    }
+
+    /**
      * Get the status code of the response.
      *
      * @return int
