@@ -340,7 +340,7 @@ class SSLCertificate
     }
 
     /**
-     * 是否是与认证
+     * CT Precertificate Poison.
      * @return bool
      */
     public function isPreCertificate(): bool
