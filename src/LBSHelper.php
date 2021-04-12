@@ -34,7 +34,7 @@ class LBSHelper
      * @param string $rectangle 116.0119343,39.66127144;116.7829835,40.2164962  所在城市范围的左下右上对标对
      * @return array [[lon,lat],[lon,lat]]
      */
-    public static function getAMAPRectangle($rectangle)
+    public static function getAMAPRectangle(string $rectangle): array
     {
         list($bottomLeft, $topRight) = explode(';', $rectangle);
         $bottomLeft = explode(',', $bottomLeft);
@@ -89,12 +89,12 @@ class LBSHelper
 
     /**
      * 计算两个经纬度之间的距离
-     * @param float $longitude1
-     * @param float $latitude1
-     * @param float $longitude2
-     * @param float $latitude2
-     * @param float $radius 星球半径 KM
-     * @return float
+     * @param double $longitude1
+     * @param double $latitude1
+     * @param double $longitude2
+     * @param double $latitude2
+     * @param double $radius 星球半径 KM
+     * @return double
      */
     public static function distance($longitude1, $latitude1, $longitude2, $latitude2, $radius = 6378.137)
     {
@@ -114,12 +114,12 @@ class LBSHelper
     /**
      * 附近范围
      * //(`latitude` >= minLat) AND (`latitude` <=maxLat) AND (`longitude` >= minLng) AND (`longitude` <= maxLng)
-     * @param  float $latitude 纬度
-     * @param  float $longitude 经度
-     * @param  float $radius 半径范围(单位：米)
+     * @param  double $latitude 纬度
+     * @param  double $longitude 经度
+     * @param  double $radius 半径范围(单位：米)
      * @return array
      */
-    public static function getAround($longitude, $latitude, $radius)
+    public static function getAround($longitude, $latitude, $radius): array
     {
         $degree = (24901 * 1609) / 360.0;
         $dpmLat = 1 / $degree;
@@ -135,12 +135,12 @@ class LBSHelper
     }
 
     /**
-     * WGS84转GCJ02(北斗转高德)
-     * @param float $longitude
-     * @param float $latitude
+     * WGS84转GCJ02(GPS转火星)
+     * @param double $longitude
+     * @param double $latitude
      * @return array
      */
-    public static function WGS84ToGCJ02($longitude, $latitude)
+    public static function WGS84ToGCJ02($longitude, $latitude): array
     {
         if (self::isChina($longitude, $latitude)) {
             return [$longitude, $latitude];
@@ -160,12 +160,12 @@ class LBSHelper
     }
 
     /**
-     * GCJ02 转换为 WGS84 (高德转北斗)
-     * @param float $longitude
-     * @param float $latitude
+     * GCJ02 转换为 WGS84 (GPS转火星)
+     * @param double $longitude
+     * @param double $latitude
      * @return array(lng, lat);
      */
-    public static function GCJ02ToWGS84($longitude, $latitude)
+    public static function GCJ02ToWGS84($longitude, $latitude): array
     {
         if (static::isChina($longitude, $latitude)) {
             return [$longitude, $latitude];
@@ -187,11 +187,11 @@ class LBSHelper
     /**
      * 百度坐标系 (BD-09) 与 火星坐标系 (GCJ-02)的转换
      * 即 百度 转 谷歌、高德
-     * @param float $longitude
-     * @param float $latitude
+     * @param double $longitude
+     * @param double $latitude
      * @return array
      */
-    public static function BD09ToGCJ02($longitude, $latitude)
+    public static function BD09ToGCJ02($longitude, $latitude): array
     {
         $x = $longitude - 0.0065;
         $y = $latitude - 0.006;
@@ -204,8 +204,8 @@ class LBSHelper
 
     /**
      * 获取 MongoDB 位置格式
-     * @param float $longitude
-     * @param float $latitude
+     * @param double $longitude
+     * @param double $latitude
      * @return array
      */
     public static function getMongoGeometry($longitude, $latitude): array
@@ -218,8 +218,8 @@ class LBSHelper
 
     /**
      * 获取 MongoDB 位置格式
-     * @param float $longitude
-     * @param float $latitude
+     * @param double $longitude
+     * @param double $latitude
      * @return array
      */
     public static function getMongo2d($longitude, $latitude): array
@@ -229,8 +229,8 @@ class LBSHelper
 
     /**
      * GCJ-02 转换为 BD-09  （火星坐标系 转百度即谷歌、高德 转 百度）
-     * @param float $longitude
-     * @param float $latitude
+     * @param double $longitude
+     * @param double $latitude
      * @return array (lon,lat);
      */
     public static function GCJ02ToBD09($longitude, $latitude): array
@@ -244,8 +244,8 @@ class LBSHelper
 
     /**
      * 判断是否在国内，不在国内则不做偏移
-     * @param float $longitude
-     * @param float $latitude
+     * @param double $longitude
+     * @param double $latitude
      * @return bool
      */
     private static function isChina($longitude, $latitude): bool
