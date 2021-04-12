@@ -15,17 +15,17 @@ namespace Larva\Support;
 class LBSHelper
 {
     /**
-     * @var float 地球半径
+     * @var double 地球半径
      */
     public static $radius = 6378245.0;
 
     /**
-     * @var float 卫星椭球坐标投影到平面地图坐标系的投影因子。
+     * @var double 卫星椭球坐标投影到平面地图坐标系的投影因子。
      */
     public static $X_PI = 52.35987755982988;
 
     /**
-     * @var float 偏心率
+     * @var double 偏心率
      */
     public static $EE = 0.00669342162296594323;
 
