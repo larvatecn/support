@@ -108,7 +108,7 @@ class LBSHelper
         if ($dist < 0) {
             $dist += M_PI;
         }
-        return $dist = $dist * $radius;
+        return $dist * $radius;
     }
 
     /**

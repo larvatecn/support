@@ -183,9 +183,8 @@ class HttpClient extends BaseObject
      * 模拟浏览器下载远程文件内容(不保存)
      * @param string $url
      * @return false|string
-     * @throws GuzzleException
      */
-    public static function getRemoteFileContent(string $url)
+    public static function getRemoteContent(string $url)
     {
         try {
             return static::make()
@@ -263,7 +262,50 @@ class HttpClient extends BaseObject
         try {
             return (new Url($url))->getHostName();
         } catch (Exception\InvalidUrlException $e) {
-            return '';
+            return false;
+        }
+    }
+
+    /**
+     * 获取网页TDK
+     * @param string $url
+     * @return array|false
+     */
+    public static function getTDK(string $url)
+    {
+        $info = [];
+        //解析IP
+        $info['hostname'] = static::getUrlHostname($url);
+        if (!$info['hostname']) {
+            return false;
+        }
+        $info['ip'] = IPHelper::getHostIpV4($info['hostname']);
+        if (!$info['ip']) {
+            return false;
+        }
+        try {
+            $body = static::getRemoteContent("https://" . $info['hostname']);
+            if ($body) {
+                $info['https'] = true;
+            } else {
+                $body = static::getRemoteContent("http://" . $info['hostname']);
+                if ($body) {
+                    $info['https'] = false;
+                }
+            }
+            $heads = HtmlHelper::getHeadTags($body);
+            if (isset($heads['title'])) {
+                $info['title'] = $heads['title'];
+            }
+            if (isset($heads['metaTags']['description'])) {
+                $info['description'] = $heads['metaTags']['description'];
+            }
+            if (isset($heads['metaTags']['keywords'])) {
+                $info['keyword'] = $heads['metaTags']['keywords'];
+            }
+            return $info;
+        } catch (\Exception $exception) {
+            return false;
         }
     }
 }
