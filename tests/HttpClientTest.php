@@ -84,4 +84,11 @@ class HttpClientTest extends TestCase
         $response = HttpClient::make()->get('https://www.baidu.com');
         $this->assertTrue($response->ok());
     }
+
+    public function testGetTDK()
+    {
+        $response = HttpClient::getTDK('https://www.larvacent.com');
+        print_r($response);
+        $this->assertIsArray($response);
+    }
 }

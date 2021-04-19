@@ -182,15 +182,18 @@ class HttpClient extends BaseObject
     /**
      * 模拟浏览器下载远程文件内容(不保存)
      * @param string $url
+     * @param int $timeout
      * @return false|string
      */
-    public static function getRemoteContent(string $url)
+    public static function getRemoteContent(string $url, $timeout = 5)
     {
         try {
             return static::make()
+                ->withoutVerifying()
+                ->timeout($timeout)
                 ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59')
-                ->get($url)->throw()->body();
-        } catch (\Exception $exception) {
+                ->get($url)->body();
+        } catch (\Exception | \Throwable $e) {
             return false;
         }
     }
@@ -271,41 +274,35 @@ class HttpClient extends BaseObject
      * @param string $url
      * @return array|false
      */
-    public static function getTDK(string $url)
+    public static function getTDK(string $url, $timeout = 5)
     {
-        $info = [];
+        $info = [
+            'hostname' => '',
+            'ip' => '',
+            'https' => false,
+            'title' => '',
+            'keywords' => '',
+            'description' => ''
+        ];
         //解析IP
-        $info['hostname'] = static::getUrlHostname($url);
-        if (!$info['hostname']) {
+        if (($info['hostname'] = static::getUrlHostname($url)) == false) {
             return false;
         }
-        $info['ip'] = IPHelper::getHostIpV4($info['hostname']);
-        if (!$info['ip']) {
+        if (($info['ip'] = IPHelper::getHostIpV4($info['hostname'])) == false) {
             return false;
         }
-        try {
-            $body = static::getRemoteContent("https://" . $info['hostname']);
-            if ($body) {
-                $info['https'] = true;
-            } else {
-                $body = static::getRemoteContent("http://" . $info['hostname']);
-                if ($body) {
-                    $info['https'] = false;
-                }
-            }
+        if (($body = static::getRemoteContent("https://" . $info['hostname'])) != false) {
+            $info['https'] = true;
             $heads = HtmlHelper::getHeadTags($body);
-            if (isset($heads['title'])) {
-                $info['title'] = $heads['title'];
-            }
-            if (isset($heads['metaTags']['description'])) {
-                $info['description'] = $heads['metaTags']['description'];
-            }
-            if (isset($heads['metaTags']['keywords'])) {
-                $info['keyword'] = $heads['metaTags']['keywords'];
-            }
-            return $info;
-        } catch (\Exception $exception) {
+            $info = array_merge($info, $heads);
+        } else if (($body = static::getRemoteContent("http://" . $info['hostname'])) != false) {
+            $info['https'] = false;
+            $heads = HtmlHelper::getHeadTags($body);
+            $info = array_merge($info, $heads);
+        } else {
             return false;
         }
+
+        return $info;
     }
 }

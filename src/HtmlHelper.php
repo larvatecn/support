@@ -109,7 +109,7 @@ class HtmlHelper
      */
     public static function getHeadTags(string $content): array
     {
-        $result = [];
+        $result = ['title' => '', 'keywords' => '', 'description' => '', 'metaTags' => []];
         if (is_string($content) && !empty ($content)) {
             if (($chatSet = static::getCharSet($content)) != 'UTF-8') { // 转码
                 $content = mb_convert_encoding($content, 'UTF-8', $chatSet);
@@ -129,9 +129,14 @@ class HtmlHelper
                     $result ['metaTags'] [$names [$i]] = $values [$i];
                 }
             }
+
             if (isset ($result ['metaTags'] ['keywords'])) {//将关键词切成数组
-                $keywords = str_replace(['，', '|', '、', ' '], ',', $result ['metaTags'] ['keywords']);
-                $result ['keywords'] = explode(',', $keywords);
+                $result ['keywords'] = $result ['metaTags'] ['keywords'];
+                unset($result ['metaTags'] ['keywords']);
+            }
+            if (isset ($result ['metaTags'] ['description'])) {
+                $result ['description'] = $result ['metaTags'] ['description'];
+                unset($result ['metaTags'] ['description']);
             }
         }
         return $result;
