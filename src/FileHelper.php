@@ -203,9 +203,9 @@ class FileHelper
      *
      * @param string $path
      * @param int|null $mode
-     * @return mixed
+     * @return bool|string
      */
-    public static function chmod(string $path, $mode = null)
+    public static function chmod(string $path, int $mode = null)
     {
         if ($mode) {
             return chmod($path, $mode);
@@ -222,7 +222,7 @@ class FileHelper
      * @param bool $force
      * @return bool
      */
-    public static function makeDirectory(string $path, $mode = 0755, $recursive = false, $force = false): bool
+    public static function makeDirectory(string $path, int $mode = 0755, bool $recursive = false, bool $force = false): bool
     {
         if ($force) {
             return @mkdir($path, $mode, $recursive);
@@ -235,7 +235,7 @@ class FileHelper
      * @param string $path
      * @param int $mode
      */
-    public static function readyDirectory(string $path, $mode = 0755)
+    public static function readyDirectory(string $path, int $mode = 0755)
     {
         if (!static::isDirectory($path)) {
             static::makeDirectory($path, $mode, true);
@@ -246,11 +246,11 @@ class FileHelper
      * 写入内容到文件
      *
      * @param string $path
-     * @param string $contents
+     * @param resource $contents
      * @param bool $lock
      * @return int|bool
      */
-    public static function put($path, $contents, $lock = false)
+    public static function put(string $path, $contents, bool $lock = false)
     {
         return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
     }
@@ -259,10 +259,10 @@ class FileHelper
      * Append to a file.
      *
      * @param string $path
-     * @param string $data
+     * @param resource $data
      * @return int
      */
-    public static function append($path, $data)
+    public static function append(string $path, $data)
     {
         return file_put_contents($path, $data, FILE_APPEND);
     }
