@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Larva Information Technology Co., Ltd.
- * @link http://www.larvacent.com/
- * @license http://www.larvacent.com/license/
+ * This is NOT a freeware, use is subject to license terms
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
+
+declare (strict_types=1);
 
 namespace Larva\Support;
 
@@ -230,12 +232,12 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     /**
      * Retrieve item from Collection.
      *
-     * @param string $key
+     * @param string|null $key
      * @param mixed $default
      *
      * @return mixed
      */
-    public function get($key = null, $default = null)
+    public function get(string $key = null, $default = null)
     {
         return ArrayHelper::get($this->items, $key, $default);
     }
@@ -267,7 +269,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      *
      * @return string
      */
-    public function toJson($option = JSON_UNESCAPED_UNICODE): string
+    public function toJson(int $option = JSON_UNESCAPED_UNICODE): string
     {
         return json_encode($this->all(), $option);
     }

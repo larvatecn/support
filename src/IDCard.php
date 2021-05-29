@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Larva Information Technology Co., Ltd.
- * @link http://www.larvacent.com/
- * @license http://www.larvacent.com/license/
+ * This is NOT a freeware, use is subject to license terms
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
+
+declare (strict_types = 1);
 
 namespace Larva\Support;
 
@@ -107,14 +109,12 @@ class IDCard
      * 根据身份编号获取年龄
      *
      * @param string idCard 身份编号
-     * @return int
      */
-    public static function getAgeByIdCard($idCard): int
+    public static function getAgeByIdCard($idCard)
     {
         $year = substr($idCard, 6, 4);
         $iCurrYear = date('Y', time());
-        $iAge = $iCurrYear - $year;
-        return $iAge;
+        return $iCurrYear - $year;
     }
 
     /**

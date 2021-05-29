@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Larva Information Technology Co., Ltd.
- * @link http://www.larvacent.com/
- * @license http://www.larvacent.com/license/
+ * This is NOT a freeware, use is subject to license terms
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
+
+declare (strict_types=1);
 
 namespace Larva\Support;
 
@@ -34,7 +36,7 @@ class BaseObject
      *
      * @param array $config name-value pairs that will be used to initialize the object properties
      */
-    public function __construct($config = [])
+    public function __construct(array $config = [])
     {
         if (!empty($config)) {
             $this->map($config);
@@ -55,7 +57,7 @@ class BaseObject
      * Map the raw array to this instance.
      * @param array $config
      */
-    public function map($config = [])
+    public function map(array $config = [])
     {
         foreach ($config as $name => $value) {
             $this->$name = $value;
@@ -181,7 +183,7 @@ class BaseObject
      * @see canGetProperty()
      * @see canSetProperty()
      */
-    public function hasProperty(string $name, $checkVars = true): bool
+    public function hasProperty(string $name, bool $checkVars = true): bool
     {
         return $this->canGetProperty($name, $checkVars) || $this->canSetProperty($name, false);
     }
@@ -200,7 +202,7 @@ class BaseObject
      * @return bool whether the property can be read
      * @see canSetProperty()
      */
-    public function canGetProperty(string $name, $checkVars = true): bool
+    public function canGetProperty(string $name, bool $checkVars = true): bool
     {
         return method_exists($this, 'get' . $name) || $checkVars && property_exists($this, $name);
     }
@@ -219,7 +221,7 @@ class BaseObject
      * @return bool whether the property can be written
      * @see canGetProperty()
      */
-    public function canSetProperty(string $name, $checkVars = true): bool
+    public function canSetProperty(string $name, bool $checkVars = true): bool
     {
         return method_exists($this, 'set' . $name) || $checkVars && property_exists($this, $name);
     }

@@ -1,11 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Jinan Larva Information Technology Co., Ltd.
- * @link http://www.larvacent.com/
- * @license http://www.larvacent.com/license/
+ * This is NOT a freeware, use is subject to license terms
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
 
+declare (strict_types=1);
+
 namespace Larva\Support;
+
+use Larva\Support\Exception\Exception;
 
 /**
  * crontab格式解析工具类
@@ -28,10 +32,11 @@ class CronParseHelper
 
     /**
      * 检查crontab格式是否支持
-     * @param  string $cronstr
+     * @param string $cronstr
+     * @param bool $checkCount
      * @return boolean true|false
      */
-    public static function check($cronstr, $checkCount = true)
+    public static function check(string $cronstr, bool $checkCount = true): bool
     {
         $cronstr = trim($cronstr);
 
@@ -53,15 +58,15 @@ class CronParseHelper
 
     /**
      * 格式化crontab格式字符串
-     * @param  string $cronstr
+     * @param string $cronStr
      * @param int $maxSize 设置返回符合条件的时间数量, 默认为1
      * @return array 返回符合格式的时间
-     * @throws \Exception
+     * @throws Exception
      */
-    public static function formatToDate($cronStr, $maxSize = 1)
+    public static function formatToDate(string $cronStr, int $maxSize = 1)
     {
         if (!static::check($cronStr)) {
-            throw new \Exception("wrong format: $cronStr", 1);
+            throw new Exception("wrong format: $cronStr", 1);
         }
         self::$tags = preg_split('#\s+#', $cronStr);
         $crons = [
@@ -80,17 +85,17 @@ class CronParseHelper
     /**
      * 递归获取符合格式的日期,直到取到满足$maxSize的数为止
      * @param  array $crons 解析crontab字符串后的数组
-     * @param  int $maxSize 最多返回多少数据的时间
-     * @param  int $year 指定年
+     * @param int $maxSize 最多返回多少数据的时间
+     * @param int|null $year 指定年
      * @return array|null 符合条件的日期
      */
-    private static function getDateList(array $crons, $maxSize, $year = null)
+    private static function getDateList(array $crons, int $maxSize, int $year = null)
     {
 
         $dates = [];
 
         // 年份基点
-        $nowyear = ($year) ? $year : date('Y');
+        $nowyear = ($year) ?: date('Y');
 
         // 时间基点已当前为准,用于过滤小于当前时间的日期
         $nowtime = strtotime(date("Y-m-d H:i"));
@@ -148,13 +153,13 @@ class CronParseHelper
 
     /**
      * 解析元素
-     * @param  string $tag 元素标签
-     * @param  integer $tmin 最小值
-     * @param  integer $tmax 最大值
+     * @param string $tag 元素标签
+     * @param integer $tmin 最小值
+     * @param integer $tmax 最大值
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
-    private static function parseTag($tag, $tmin, $tmax)
+    private static function parseTag(string $tag, int $tmin, int $tmax): array
     {
         if ($tag == '*') {
             return range($tmin, $tmax);
@@ -178,7 +183,7 @@ class CronParseHelper
             list($number, $mod) = explode('/', $tag);
             list($left, $right) = explode('-', $number);
             if ($left > $right) {
-                throw new \Exception("$tag not support.");
+                throw new Exception("$tag not support.");
             }
             foreach (range($left, $right) as $n) {
                 if ($n % $mod === 0) {
@@ -187,12 +192,12 @@ class CronParseHelper
             }
         } else if (false !== strpos($tag, '/')) {
             $tmp = explode('/', $tag);
-            $step = isset($tmp[1]) ? $tmp[1] : 1;
+            $step = $tmp[1] ?? 1;
             $dateList = range($tmin, $tmax, $step);
         } else if (false !== strpos($tag, '-')) {
             list($left, $right) = explode('-', $tag);
             if ($left > $right) {
-                throw new \Exception("$tag not support.");
+                throw new Exception("$tag not support.");
             }
             $dateList = range($left, $right, $step);
         } else {
@@ -202,7 +207,7 @@ class CronParseHelper
         // 越界判断
         foreach ($dateList as $num) {
             if ($num < $tmin || $num > $tmax) {
-                throw new \Exception('Out of bounds.');
+                throw new Exception('Out of bounds.');
             }
         }
 
@@ -214,9 +219,9 @@ class CronParseHelper
 
     /**
      * 判断tag是否可再次切割
-     * @return string 需要切割的标识符|null
+     * @return bool 需要切割的标识符|null
      */
-    private static function checkExp($tag)
+    private static function checkExp($tag): bool
     {
         return (false !== strpos($tag, ',')) || (false !== strpos($tag, '-')) || (false !== strpos($tag, '/'));
     }

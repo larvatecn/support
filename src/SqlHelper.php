@@ -1,8 +1,8 @@
 <?php
 /**
  * This is NOT a freeware, use is subject to license terms
- * @copyright Copyright (c) 2010-2099 Jinan JiYuan Information Technology Co., Ltd.
- * @link https://www.yaoqiyuan.com/
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
 
 namespace Larva\Support;
@@ -15,7 +15,7 @@ class SqlHelper
      * @param bool $string 如果为真，则只返回一条sql语句，默认以数组形式返回
      * @param array $replace 替换前缀，如：['my_' => 'me_']，表示将表前缀"my_"替换成"me_"
      *         这种前缀替换方法不一定准确，比如正常内容内有跟前缀相同的字符，也会被替换
-     * @return mixed
+     * @return array|false|string
      */
     public static function getSqlFromFile(string $sqlFile = '', bool $string = false, array $replace = [])
     {
@@ -111,7 +111,6 @@ class SqlHelper
 
         // 以数组形式返回sql语句
         $pure_sql = implode("\n", $pure_sql);
-        $pure_sql = explode(";\n", $pure_sql);
-        return $pure_sql;
+        return explode(";\n", $pure_sql);
     }
 }

@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2018 Jinan Larva Information Technology Co., Ltd.
- * @link http://www.larvacent.com/
- * @license http://www.larvacent.com/license/
+ * This is NOT a freeware, use is subject to license terms
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
+
+declare (strict_types = 1);
 
 namespace Larva\Support;
 
@@ -48,7 +50,7 @@ class HtmlHelper
      * @see decode()
      * @see http://www.php.net/manual/en/function.htmlspecialchars.php
      */
-    public static function encode(string $content, $doubleEncode = true): string
+    public static function encode(string $content, bool $doubleEncode = true): string
     {
         return htmlspecialchars($content, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', $doubleEncode);
     }
@@ -178,7 +180,7 @@ class HtmlHelper
      * @param int $len 长度
      * @return string
      */
-    public static function getSummary(string $content, $len = 200): string
+    public static function getSummary(string $content, int $len = 200): string
     {
         $description = str_replace(["\r\n", "\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;', ' '], '', strip_tags($content));
         return StringHelper::limit(trim($description), $len, '');

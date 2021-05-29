@@ -1,8 +1,8 @@
 <?php
 /**
  * This is NOT a freeware, use is subject to license terms
- * @copyright Copyright (c) 2010-2099 Jinan JiYuan Information Technology Co., Ltd.
- * @link https://www.yaoqiyuan.com/
+ * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
+ * @link http://www.larva.com.cn/
  */
 
 namespace Larva\Support\Traits;
@@ -62,7 +62,7 @@ trait Macroable
      * @param string $name
      * @return bool
      */
-    public static function hasMacro($name)
+    public static function hasMacro(string $name): bool
     {
         return isset(static::$macros[$name]);
     }
@@ -76,7 +76,7 @@ trait Macroable
      *
      * @throws BadMethodCallException
      */
-    public static function __callStatic($method, $parameters)
+    public static function __callStatic(string $method, $parameters)
     {
         if (!static::hasMacro($method)) {
             throw new BadMethodCallException(sprintf(
@@ -102,7 +102,7 @@ trait Macroable
      *
      * @throws BadMethodCallException
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, $parameters)
     {
         if (!static::hasMacro($method)) {
             throw new BadMethodCallException(sprintf(

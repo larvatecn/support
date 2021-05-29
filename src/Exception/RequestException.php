@@ -3,11 +3,11 @@
  * This is NOT a freeware, use is subject to license terms
  * @copyright Copyright (c) 2010-2099 Jinan Larva Information Technology Co., Ltd.
  * @link http://www.larva.com.cn/
- * @license http://www.larva.com.cn/license/
  */
 
-namespace Larva\Support\Exception;
+declare (strict_types=1);
 
+namespace Larva\Support\Exception;
 
 use GuzzleHttp\Psr7\Message;
 use Larva\Support\HttpResponse;
@@ -43,7 +43,7 @@ class RequestException extends HttpClientException
      * @param HttpResponse $response
      * @return string
      */
-    protected function prepareMessage(HttpResponse $response)
+    protected function prepareMessage(HttpResponse $response): string
     {
         $message = "HTTP request returned status code {$response->statusCode()}";
         $summary = Message::bodySummary($response->toPsrResponse());
