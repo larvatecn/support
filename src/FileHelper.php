@@ -245,7 +245,7 @@ class FileHelper
      * 写入内容到文件
      *
      * @param string $path
-     * @param resource $contents
+     * @param mixed $contents
      * @param bool $lock
      * @return int|bool
      */
@@ -258,7 +258,7 @@ class FileHelper
      * Append to a file.
      *
      * @param string $path
-     * @param resource $data
+     * @param mixed $data
      * @return int
      */
     public static function append(string $path, $data)
