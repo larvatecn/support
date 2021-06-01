@@ -273,7 +273,7 @@ class FileHelper
      * @param string|array $paths
      * @return bool
      */
-    public function delete($paths): bool
+    public static function delete($paths): bool
     {
         $paths = is_array($paths) ? $paths : func_get_args();
 
