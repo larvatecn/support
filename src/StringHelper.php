@@ -309,19 +309,6 @@ class StringHelper
     }
 
     /**
-     * 生成一个可以用于客户端验证的哈希。
-     * @param string $code 验证码
-     * @return int 用户客户端验证的哈希码
-     */
-    public function integerValidationHash(string $code): int
-    {
-        for ($h = 0, $i = strlen($code) - 1; $i >= 0; --$i) {
-            $h += intval($code[$i]);
-        }
-        return $h;
-    }
-
-    /**
      * 返回由起始和长度参数指定的字符串部分
      *
      * @param string $string
