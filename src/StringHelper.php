@@ -277,7 +277,7 @@ class StringHelper
      * @return string
      * @throws \Exception
      */
-    public static function random($length = 16): string
+    public static function random(int $length = 16): string
     {
         $string = '';
         while (($len = strlen($string)) < $length) {
@@ -286,6 +286,26 @@ class StringHelper
             $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
         }
         return $string;
+    }
+
+    /**
+     * 生成一个随机的数字字符串
+     * @param int $length
+     * @return string
+     */
+    public static function generateVerifyCode(int $length = 6): string
+    {
+        $letters = '678906789067890678906';
+        $vowels = '12345';
+        $code = '';
+        for ($i = 0; $i < $length; ++$i) {
+            if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
+                $code .= $vowels[mt_rand(0, 4)];
+            } else {
+                $code .= $letters[mt_rand(0, 20)];
+            }
+        }
+        return $code;
     }
 
     /**
