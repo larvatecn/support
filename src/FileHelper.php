@@ -7,6 +7,7 @@
 
 namespace Larva\Support;
 
+use ErrorException;
 use RuntimeException;
 use Symfony\Component\Mime\MimeTypes;
 
@@ -264,6 +265,31 @@ class FileHelper
     public static function append(string $path, $data)
     {
         return file_put_contents($path, $data, FILE_APPEND);
+    }
+
+    /**
+     * Delete the file at a given path.
+     *
+     * @param string|array $paths
+     * @return bool
+     */
+    public function delete($paths): bool
+    {
+        $paths = is_array($paths) ? $paths : func_get_args();
+
+        $success = true;
+
+        foreach ($paths as $path) {
+            try {
+                if (!@unlink($path)) {
+                    $success = false;
+                }
+            } catch (ErrorException $e) {
+                $success = false;
+            }
+        }
+
+        return $success;
     }
 
     /**
