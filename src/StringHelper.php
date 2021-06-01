@@ -293,7 +293,7 @@ class StringHelper
      * @param int $length
      * @return string
      */
-    public static function generateVerifyCode(int $length = 6): string
+    public static function randomInteger(int $length = 6): string
     {
         $letters = '678906789067890678906';
         $vowels = '12345';
@@ -309,6 +309,19 @@ class StringHelper
     }
 
     /**
+     * 生成一个可以用于客户端验证的哈希。
+     * @param string $code 验证码
+     * @return int 用户客户端验证的哈希码
+     */
+    public function integerValidationHash(string $code): int
+    {
+        for ($h = 0, $i = strlen($code) - 1; $i >= 0; --$i) {
+            $h += intval($code[$i]);
+        }
+        return $h;
+    }
+
+    /**
      * 返回由起始和长度参数指定的字符串部分
      *
      * @param string $string
@@ -316,7 +329,7 @@ class StringHelper
      * @param int|null $length
      * @return string
      */
-    public static function substr(string $string, int $start, $length = null): string
+    public static function substr(string $string, int $start, int $length = null): string
     {
         return mb_substr($string, $start, $length, 'UTF-8');
     }
