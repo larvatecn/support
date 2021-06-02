@@ -246,7 +246,7 @@ class IDCard
      * @param array $iArr
      * @return int 身份证编码。
      */
-    private static function getPowerSum($iArr)
+    private static function getPowerSum(array $iArr)
     {
         $iSum = 0;
         $powerLen = count(static::$power);
@@ -268,7 +268,7 @@ class IDCard
      * @param string $gender
      * @return mixed
      */
-    private static function getGenderCode($gender)
+    private static function getGenderCode(string $gender)
     {
         if ($gender == 'M') {
             $GenderCodes = [1, 3, 5, 7, 9];

@@ -135,7 +135,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return array|false
      */
-    public static function getSSLCertChain(string $host, $port = 443, $timeout = 60)
+    public static function getSSLCertChain(string $host, int $port = 443, int $timeout = 60)
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
@@ -162,7 +162,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return SSLCertificate|false
      */
-    public static function getSSLCert(string $host, $port = 443, $timeout = 60)
+    public static function getSSLCert(string $host, int $port = 443, int $timeout = 60)
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
@@ -184,7 +184,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return false|string
      */
-    public static function getRemoteContent(string $url, $timeout = 5)
+    public static function getRemoteContent(string $url, int $timeout = 5)
     {
         try {
             return static::make()
@@ -206,7 +206,7 @@ class HttpClient extends BaseObject
      * @return bool|int
      * @throws GuzzleException
      */
-    public static function saveRemoteFileAs(string $url, string $path, $mode = 0755, $lock = false)
+    public static function saveRemoteFileAs(string $url, string $path, int $mode = 0755, bool $lock = false)
     {
         try {
             return static::make()
@@ -226,7 +226,7 @@ class HttpClient extends BaseObject
      * @throws ConnectionException
      * @throws GuzzleException
      */
-    public static function getHeaders(string $url, $headers = [], $timeout = 5): array
+    public static function getHeaders(string $url, array $headers = [], int $timeout = 5): array
     {
         return static::make()
             ->withoutVerifying()
@@ -245,7 +245,7 @@ class HttpClient extends BaseObject
      * @throws ConnectionException
      * @throws GuzzleException
      */
-    public static function checkCORS(string $url, string $origin, $timeout = 5): bool
+    public static function checkCORS(string $url, string $origin, int $timeout = 5): bool
     {
         $headers = static::getHeaders($url, ['Referer' => $origin, 'Origin' => $origin], $timeout);
         if (isset($headers['Access-Control-Allow-Origin']) && in_array($headers['Access-Control-Allow-Origin'][0], [$origin, '*'])) {
@@ -271,6 +271,7 @@ class HttpClient extends BaseObject
     /**
      * 获取网页TDK
      * @param string $url
+     * @param int $timeout
      * @return array|false
      */
     public static function getTDK(string $url, $timeout = 5)
