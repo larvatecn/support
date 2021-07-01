@@ -289,6 +289,18 @@ trait HasHttpRequest
     }
 
     /**
+     * 设置请求的授权。
+     *
+     * @param string $token
+     * @return $this
+     */
+    public function withAuthorization(string $token)
+    {
+        $this->options[RequestOptions::HEADERS]['Authorization'] = trim($token);
+        return $this;
+    }
+
+    /**
      * 设置请求UA
      *
      * @param string $userAgent
@@ -586,7 +598,7 @@ trait HasHttpRequest
      * @param array $data
      * @return array|array[]
      */
-    protected function parseMultipartBodyFormat(array $data)
+    protected function parseMultipartBodyFormat(array $data): array
     {
         return array_map(function ($value, $key) {
             return is_array($value) ? $value : ['name' => $key, 'contents' => $value];
