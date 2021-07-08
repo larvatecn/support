@@ -159,7 +159,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      */
     public function set($key, $value)
     {
-        $key =  (string)$key;
+        $key = (string)$key;
         ArrayHelper::set($this->items, $key, $value);
     }
 

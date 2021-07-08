@@ -1,9 +1,9 @@
 <?php
+
 namespace Tests;
 
 use Larva\Support\ArrayAccessible;
 use Larva\Support\Contracts\Arrayable;
-
 
 class ArrayAccessibleTest extends TestCase
 {

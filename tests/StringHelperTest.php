@@ -1,6 +1,6 @@
 <?php
-namespace Tests;
 
+namespace Tests;
 
 use Larva\Support\StringHelper;
 
