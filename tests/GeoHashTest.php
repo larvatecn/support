@@ -15,7 +15,6 @@ class GeoHashTest extends TestCase
     {
         $hash = GeoHash::encode(114.5149, 38.0428, 0.001);
         $this->assertIsString($hash);
-        echo $hash;
     }
 
     public function testDecode()
