@@ -5,7 +5,7 @@
  * @link http://www.larva.com.cn/
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Larva\Support;
 
@@ -112,7 +112,7 @@ class HtmlHelper
     public static function getHeadTags(string $content): array
     {
         $result = ['title' => '', 'keywords' => '', 'description' => '', 'metaTags' => []];
-        if (is_string($content) && !empty ($content)) {
+        if (is_string($content) && !empty($content)) {
             if (($chatSet = static::getCharSet($content)) != 'UTF-8') { // 转码
                 $content = mb_convert_encoding($content, 'UTF-8', $chatSet);
             }
@@ -132,11 +132,11 @@ class HtmlHelper
                 }
             }
 
-            if (isset ($result ['metaTags'] ['keywords'])) {//将关键词切成数组
+            if (isset($result ['metaTags'] ['keywords'])) {//将关键词切成数组
                 $result ['keywords'] = $result ['metaTags'] ['keywords'];
                 unset($result ['metaTags'] ['keywords']);
             }
-            if (isset ($result ['metaTags'] ['description'])) {
+            if (isset($result ['metaTags'] ['description'])) {
                 $result ['description'] = $result ['metaTags'] ['description'];
                 unset($result ['metaTags'] ['description']);
             }
@@ -158,7 +158,7 @@ class HtmlHelper
             $inLink = 0;
             foreach ($document [2] as $key => $link) {
                 $matches = parse_url($link);
-                if (!isset ($matches ['host']) || $matches ['host'] == $hostname) { // 内联
+                if (!isset($matches ['host']) || $matches ['host'] == $hostname) { // 内联
                     $inLink++;
                     continue;
                 }

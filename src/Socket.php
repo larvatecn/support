@@ -61,7 +61,7 @@ class Socket extends BaseObject
             $this->connection = fsockopen($this->host, $this->port, $errNum, $errStr, $this->timeout);
         }
 
-        if (!empty ($errNum) || !empty ($errStr)) {
+        if (!empty($errNum) || !empty($errStr)) {
             $this->error($errStr, $errNum);
         }
         $this->connected = is_resource($this->connection);
@@ -75,7 +75,6 @@ class Socket extends BaseObject
      */
     public function error(string $errStr, int $errNum)
     {
-
     }
 
     /**

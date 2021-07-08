@@ -295,7 +295,7 @@ class HttpClient extends BaseObject
             $info['https'] = true;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);
-        } else if (($body = static::getRemoteContent("http://" . $info['hostname'])) != false) {
+        } elseif (($body = static::getRemoteContent("http://" . $info['hostname'])) != false) {
             $info['https'] = false;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);

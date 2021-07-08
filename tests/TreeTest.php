@@ -22,7 +22,7 @@ class TreeTest extends TestCase
             6 => array('id' => '6', 'parent_id' => 3, 'title' => '三级栏目一'),
             7 => array('id' => '7', 'parent_id' => 3, 'title' => '三级栏目二')
         );
-       $tree =  Tree::create()->withData($data)->buildArray(0);
-       $this->assertIsArray($tree);
+        $tree = Tree::create()->withData($data)->buildArray(0);
+        $this->assertIsArray($tree);
     }
 }

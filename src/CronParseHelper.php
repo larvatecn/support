@@ -5,7 +5,7 @@
  * @link http://www.larva.com.cn/
  */
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace Larva\Support;
 
@@ -91,7 +91,6 @@ class CronParseHelper
      */
     private static function getDateList(array $crons, int $maxSize, int $year = null)
     {
-
         $dates = [];
 
         // 年份基点
@@ -179,7 +178,7 @@ class CronParseHelper
                     $dateList[] = $t;
                 }
             }
-        } else if (false !== strpos($tag, '/') && false !== strpos($tag, '-')) {
+        } elseif (false !== strpos($tag, '/') && false !== strpos($tag, '-')) {
             list($number, $mod) = explode('/', $tag);
             list($left, $right) = explode('-', $number);
             if ($left > $right) {
@@ -190,11 +189,11 @@ class CronParseHelper
                     $dateList[] = $n;
                 }
             }
-        } else if (false !== strpos($tag, '/')) {
+        } elseif (false !== strpos($tag, '/')) {
             $tmp = explode('/', $tag);
             $step = $tmp[1] ?? 1;
             $dateList = range($tmin, $tmax, $step);
-        } else if (false !== strpos($tag, '-')) {
+        } elseif (false !== strpos($tag, '-')) {
             list($left, $right) = explode('-', $tag);
             if ($left > $right) {
                 throw new Exception("$tag not support.");
@@ -214,7 +213,6 @@ class CronParseHelper
         sort($dateList);
 
         return array_unique($dateList);
-
     }
 
     /**

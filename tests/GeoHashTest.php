@@ -13,7 +13,7 @@ class GeoHashTest extends TestCase
 {
     public function testEncode()
     {
-        $hash = GeoHash::encode(114.5149,38.0428,0.001);
+        $hash = GeoHash::encode(114.5149, 38.0428, 0.001);
         $this->assertIsString($hash);
         echo $hash;
     }

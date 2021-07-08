@@ -305,7 +305,7 @@ class FileHelper
                 'To enable support for guessing extensions, please install the symfony/mime package.'
             );
         }
-        return (new MimeTypes)->getExtensions(static::mimeType($path))[0] ?? null;
+        return (new MimeTypes())->getExtensions(static::mimeType($path))[0] ?? null;
     }
 
     /**
@@ -323,6 +323,6 @@ class FileHelper
         }
         $fileInfo = new \finfo(FILEINFO_MIME);
         $mime = strstr($fileInfo->buffer($stream), ';', true);
-        return (new MimeTypes)->getExtensions($mime)[0] ?? null;
+        return (new MimeTypes())->getExtensions($mime)[0] ?? null;
     }
 }

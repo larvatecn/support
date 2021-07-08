@@ -14,18 +14,18 @@ namespace Larva\Support;
  */
 class IPHelper
 {
-    const IPV4 = 4;
-    const IPV6 = 6;
+    public const IPV4 = 4;
+    public const IPV6 = 6;
 
     /**
      * The length of IPv6 address in bits
      */
-    const IPV6_ADDRESS_LENGTH = 128;
+    public const IPV6_ADDRESS_LENGTH = 128;
 
     /**
      * The length of IPv4 address in bits
      */
-    const IPV4_ADDRESS_LENGTH = 32;
+    public const IPV4_ADDRESS_LENGTH = 32;
 
     /**
      * 模糊掉IP后两段

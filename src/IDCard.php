@@ -5,7 +5,7 @@
  * @link http://www.larva.com.cn/
  */
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Larva\Support;
 
@@ -19,12 +19,12 @@ class IDCard
     /**
      * 中国公民身份证号码最大长度。
      */
-    const CHINA_ID_MAX_LENGTH = 18;
+    public const CHINA_ID_MAX_LENGTH = 18;
 
     /**
      * 最低年限
      */
-    const MIN = 1930;
+    public const MIN = 1930;
 
     /**
      * 每位加权因子
@@ -203,37 +203,37 @@ class IDCard
     {
         $sCode = "";
         switch ($iSum % 11) {
-            case 10 :
+            case 10:
                 $sCode = "2";
                 break;
-            case 9 :
+            case 9:
                 $sCode = "3";
                 break;
-            case 8 :
+            case 8:
                 $sCode = "4";
                 break;
-            case 7 :
+            case 7:
                 $sCode = "5";
                 break;
-            case 6 :
+            case 6:
                 $sCode = "6";
                 break;
-            case 5 :
+            case 5:
                 $sCode = "7";
                 break;
-            case 4 :
+            case 4:
                 $sCode = "8";
                 break;
-            case 3 :
+            case 3:
                 $sCode = "9";
                 break;
-            case 2 :
+            case 2:
                 $sCode = "x";
                 break;
-            case 1 :
+            case 1:
                 $sCode = "0";
                 break;
-            case 0 :
+            case 0:
                 $sCode = "1";
                 break;
         }

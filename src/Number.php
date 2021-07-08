@@ -5,7 +5,7 @@
  * @link http://www.larva.com.cn/
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Larva\Support;
 
@@ -61,7 +61,7 @@ class Number
      */
     public static function cny(float $price): string
     {
-        $fmt = NumberFormatter::create('zh_CN',NumberFormatter::CURRENCY);
+        $fmt = NumberFormatter::create('zh_CN', NumberFormatter::CURRENCY);
         return $fmt->format($price);
     }
 }

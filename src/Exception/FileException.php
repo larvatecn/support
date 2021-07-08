@@ -5,11 +5,10 @@
  * @link http://www.larva.com.cn/
  */
 
-declare (strict_types=1);
+declare(strict_types=1);
 
 namespace Larva\Support\Exception;
 
 class FileException extends \RuntimeException
 {
-
 }

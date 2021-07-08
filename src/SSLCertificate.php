@@ -344,10 +344,10 @@ class SSLCertificate
      */
     public function isPreCertificate(): bool
     {
-        if (! array_key_exists('extensions', $this->rawCertificateFields)) {
+        if (!array_key_exists('extensions', $this->rawCertificateFields)) {
             return false;
         }
-        if (! array_key_exists('ct_precert_poison', $this->rawCertificateFields['extensions'])) {
+        if (!array_key_exists('ct_precert_poison', $this->rawCertificateFields['extensions'])) {
             return false;
         }
         return true;
@@ -364,7 +364,7 @@ class SSLCertificate
         if ($host === $wildcardHost) {
             return true;
         }
-        if (! StringHelper::startsWith($wildcardHost, '*')) {
+        if (!StringHelper::startsWith($wildcardHost, '*')) {
             return false;
         }
         if (substr_count($wildcardHost, '.') < substr_count($host, '.')) {

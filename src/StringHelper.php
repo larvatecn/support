@@ -13,7 +13,7 @@ namespace Larva\Support;
  */
 class StringHelper
 {
-    const BASE_62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public const BASE_62 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
      * The cache of snake-cased words.
@@ -497,7 +497,6 @@ class StringHelper
      */
     public static function base62Encode(string $data): string
     {
-
         $data = strval($data);
         $base62 = str_split(static::BASE_62);
         $len = strlen($data);

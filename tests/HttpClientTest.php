@@ -11,7 +11,6 @@ use Larva\Support\HttpClient;
 
 class HttpClientTest extends TestCase
 {
-
     public function testGet()
     {
         $response = HttpClient::make()->get('https://www.baidu.com');

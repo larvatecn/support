@@ -75,7 +75,7 @@ class Url
     {
         if (isset($this->parsedUrl['port'])) {
             return $this->parsedUrl['port'];
-        } else if ($this->parsedUrl['scheme'] == 'http') {
+        } elseif ($this->parsedUrl['scheme'] == 'http') {
             return 80;
         } else {
             return 443;
