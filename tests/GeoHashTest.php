@@ -21,8 +21,6 @@ class GeoHashTest extends TestCase
     public function testDecode()
     {
         $loc = GeoHash::decode('wwc2m');
-        print_r($loc);
-
         $this->assertIsArray($loc);
     }
 }

@@ -86,7 +86,6 @@ class HttpClientTest extends TestCase
     public function testGetTDK()
     {
         $response = HttpClient::getTDK('https://www.larvacent.com');
-        print_r($response);
         $this->assertIsArray($response);
     }
 }
