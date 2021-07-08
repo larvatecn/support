@@ -43,73 +43,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
-     * To string.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->toJson();
-    }
-
-    /**
-     * Get a data by key.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function __get(string $key)
-    {
-        return $this->get($key);
-    }
-
-    /**
-     * Assigns a value to the specified data.
-     *
-     * @param string $key
-     * @param mixed $value
-     */
-    public function __set(string $key, $value)
-    {
-        $this->set($key, $value);
-    }
-
-    /**
-     * Whether or not an data exists by key.
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    public function __isset(string $key): bool
-    {
-        return $this->has($key);
-    }
-
-    /**
-     * Unsets an data by key.
-     *
-     * @param string $key
-     */
-    public function __unset(string $key)
-    {
-        $this->forget($key);
-    }
-
-    /**
-     * var_export.
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    public static function __set_state(array $array = []): array
-    {
-        return (new static())->all();
-    }
-
-    /**
      * Return all items.
      *
      * @return array
@@ -123,10 +56,9 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * Return specific items.
      *
      * @param array $keys
-     *
-     * @return array
+     * @return Collection
      */
-    public function only(array $keys): array
+    public function only(array $keys): Collection
     {
         $return = [];
 
@@ -138,7 +70,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
             }
         }
 
-        return $return;
+        return new static($return);
     }
 
     /**
@@ -146,7 +78,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      *
      * @param mixed $keys
      *
-     * @return static
+     * @return Collection
      */
     public function except($keys): Collection
     {
@@ -160,15 +92,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      *
      * @param Collection|array $items
      *
-     * @return array
+     * @return Collection
      */
-    public function merge($items): array
+    public function merge($items): Collection
     {
+        $clone = new static($this->all());
+
         foreach ($items as $key => $value) {
-            $this->set($key, $value);
+            $clone->set($key, $value);
         }
 
-        return $this->all();
+        return $clone;
     }
 
     /**
@@ -275,6 +209,16 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * To string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->toJson();
+    }
+
+    /**
      * (PHP 5 &gt;= 5.4.0)<br/>
      * Specify data which should be serialized to JSON.
      *
@@ -349,6 +293,63 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
     }
 
     /**
+     * Get a data by key.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Assigns a value to the specified data.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function __set($key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Whether or not an data exists by key.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Unset an data by key.
+     *
+     * @param string $key
+     */
+    public function __unset($key)
+    {
+        $this->forget($key);
+    }
+
+    /**
+     * var_export.
+     *
+     * @param array $properties
+     *
+     * @return array
+     */
+    public static function __set_state(array $properties)
+    {
+        return (new static($properties))->all();
+    }
+
+    /**
      * (PHP 5 &gt;= 5.0.0)<br/>
      * Whether a offset exists.
      *
@@ -361,7 +362,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @return bool true on success or false on failure.
      *              The return value will be casted to boolean if non-boolean was returned
      */
-    public function offsetExists($offset): bool
+    public function offsetExists($offset)
     {
         return $this->has($offset);
     }
@@ -409,7 +410,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * @param mixed $offset <p>
      *                      The offset to assign the value to.
      *                      </p>
-     * @param mixed $value <p>
+     * @param mixed $value  <p>
      *                      The value to set.
      *                      </p>
      */
