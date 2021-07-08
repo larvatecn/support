@@ -36,3 +36,5 @@ package-lock.json
 bower_components
 /package-lock.json
 /.phpunit.result.cache
+cghooks.lock
+

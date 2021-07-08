@@ -6,9 +6,10 @@
     "http",
     "larva"
   ],
+  "license": "MIT",
   "support": {
-    "issues": "https://github.com/larva/support/issues",
-    "source": "https://github.com/larva/support"
+    "issues": "https://github.com/larvatech/support/issues",
+    "source": "https://github.com/larvatech/support"
   },
   "authors": [
     {
@@ -32,7 +33,10 @@
     "ezyang/htmlpurifier": "^4.13"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5.2"
+    "mockery/mockery": "^1.2",
+    "phpunit/phpunit": "^9.5",
+    "brainmaestro/composer-git-hooks": "^2.8",
+    "friendsofphp/php-cs-fixer": "^3.0"
   },
   "autoload": {
     "psr-4": {
@@ -41,8 +45,40 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Larva\\Support\\Tests\\": "tests"
+      "Tests\\": "tests"
     }
   },
-  "license": "MIT"
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        "composer check-style",
+        "composer test"
+      ],
+      "pre-push": [
+        "composer test"
+      ]
+    }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "cghooks remove",
+      "cghooks add --ignore-lock",
+      "cghooks update"
+    ],
+    "post-merge": "composer install",
+    "post-install-cmd": [
+      "cghooks remove",
+      "cghooks add --ignore-lock",
+      "cghooks update"
+    ],
+    "cghooks": "./vendor/bin/cghooks",
+    "check-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --diff --dry-run --ansi",
+    "fix-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --ansi",
+    "test": "./vendor/bin/phpunit --colors"
+  },
+  "scripts-descriptions": {
+    "test": "Run all tests.",
+    "check-style": "Run style checks (only dry run - no fixing!).",
+    "fix-style": "Run style checks and fix violations."
+  }
 }

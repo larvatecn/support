@@ -5,7 +5,7 @@
  * @link http://www.larva.com.cn/
  */
 
-namespace Larva\Support\Tests;
+namespace Tests;
 
 use Larva\Support\Tree;
 
