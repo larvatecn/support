@@ -7,6 +7,8 @@
 
 namespace Larva\Support;
 
+use Larva\Support\Exception\RuntimeException;
+
 /**
  * Class StringHelper
  * @author Tongle Xu <xutongle@gmail.com>
@@ -37,6 +39,150 @@ class StringHelper
     protected static $studlyCache = [];
 
     /**
+     * 将值转换为驼峰
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public static function camel($value)
+    {
+        if (isset(static::$camelCache[$value])) {
+            return static::$camelCache[$value];
+        }
+        return static::$camelCache[$value] = lcfirst(static::studly($value));
+    }
+
+    /**
+     * 生成一个更真实的“随机”字符串
+     *
+     * @param int $length
+     * @return string
+     * @throws \Exception
+     */
+    public static function random($length = 16)
+    {
+        $string = '';
+        while (($len = strlen($string)) < $length) {
+            $size = $length - $len;
+            $bytes = static::randomBytes($size);
+            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
+        }
+        return $string;
+    }
+
+    /**
+     * Generate a more truly "random" bytes.
+     *
+     * @param int $length
+     *
+     * @return string
+     *
+     * @throws RuntimeException
+     *
+     * @codeCoverageIgnore
+     *
+     * @throws \Exception
+     */
+    public static function randomBytes($length = 16)
+    {
+        if (function_exists('random_bytes')) {
+            $bytes = random_bytes($length);
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
+            $bytes = openssl_random_pseudo_bytes($length, $strong);
+            if (false === $bytes || false === $strong) {
+                throw new RuntimeException('Unable to generate random string.');
+            }
+        } else {
+            throw new RuntimeException('OpenSSL extension is required for PHP 5 users.');
+        }
+
+        return $bytes;
+    }
+
+    /**
+     * Generate a "random" alpha-numeric string.
+     *
+     * Should not be considered sufficient for cryptography, etc.
+     *
+     * @param int $length
+     *
+     * @return string
+     */
+    public static function quickRandom($length = 16)
+    {
+        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
+    }
+
+    /**
+     * 生成一个随机的数字字符串
+     * @param int $length
+     * @return string
+     */
+    public static function randomInteger(int $length = 6): string
+    {
+        $letters = '678906789067890678906';
+        $vowels = '12345';
+        $code = '';
+        for ($i = 0; $i < $length; ++$i) {
+            if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
+                $code .= $vowels[mt_rand(0, 4)];
+            } else {
+                $code .= $letters[mt_rand(0, 20)];
+            }
+        }
+        return $code;
+    }
+
+    /**
+     * 将字符串转换为大写
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function upper(string $value): string
+    {
+        return mb_strtoupper($value, 'UTF-8');
+    }
+
+    /**
+     * 将字符串转换为标题
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function title(string $value): string
+    {
+        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
+    }
+
+    /**
+     * 将字符串转换为snake格式
+     *
+     * @param string $value
+     * @param string $delimiter
+     * @return string
+     */
+    public static function snake(string $value, $delimiter = '_'): string
+    {
+        $key = $value;
+
+        if (isset(static::$snakeCache[$key][$delimiter])) {
+            return static::$snakeCache[$key][$delimiter];
+        }
+
+        if (!ctype_lower($value)) {
+            $value = preg_replace('/\s+/u', '', ucwords($value));
+
+            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
+        }
+
+        return static::$snakeCache[$key][$delimiter] = $value;
+    }
+
+    /**
      * 返回字符串中给定某个值之后的所有内容
      *
      * @param string $subject
@@ -59,20 +205,6 @@ class StringHelper
     public static function before(string $subject, string $search): string
     {
         return $search === '' ? $subject : explode($search, $subject)[0];
-    }
-
-    /**
-     * 将值转换为驼峰
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function camel(string $value): string
-    {
-        if (isset(static::$camelCache[$value])) {
-            return static::$camelCache[$value];
-        }
-        return static::$camelCache[$value] = lcfirst(static::studly($value));
     }
 
     /**
@@ -220,17 +352,6 @@ class StringHelper
     }
 
     /**
-     * 将字符串转换为大写
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function upper(string $value): string
-    {
-        return mb_strtoupper($value, 'UTF-8');
-    }
-
-    /**
      * 将字符串转换为小写
      *
      * @param string $value
@@ -271,44 +392,6 @@ class StringHelper
     }
 
     /**
-     * 生成一个更真实的“随机”字符串
-     *
-     * @param int $length
-     * @return string
-     * @throws \Exception
-     */
-    public static function random(int $length = 16): string
-    {
-        $string = '';
-        while (($len = strlen($string)) < $length) {
-            $size = $length - $len;
-            $bytes = function_exists('random_bytes') ? random_bytes($size) : mt_rand();
-            $string .= substr(str_replace(['/', '+', '='], '', base64_encode($bytes)), 0, $size);
-        }
-        return $string;
-    }
-
-    /**
-     * 生成一个随机的数字字符串
-     * @param int $length
-     * @return string
-     */
-    public static function randomInteger(int $length = 6): string
-    {
-        $letters = '678906789067890678906';
-        $vowels = '12345';
-        $code = '';
-        for ($i = 0; $i < $length; ++$i) {
-            if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
-                $code .= $vowels[mt_rand(0, 4)];
-            } else {
-                $code .= $letters[mt_rand(0, 20)];
-            }
-        }
-        return $code;
-    }
-
-    /**
      * 返回由起始和长度参数指定的字符串部分
      *
      * @param string $string
@@ -334,40 +417,6 @@ class StringHelper
         return $prefix . preg_replace('/^(?:' . $quoted . ')+/u', '', $value);
     }
 
-    /**
-     * 将字符串转换为标题
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function title(string $value): string
-    {
-        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
-    }
-
-    /**
-     * 将字符串转换为snake格式
-     *
-     * @param string $value
-     * @param string $delimiter
-     * @return string
-     */
-    public static function snake(string $value, $delimiter = '_'): string
-    {
-        $key = $value;
-
-        if (isset(static::$snakeCache[$key][$delimiter])) {
-            return static::$snakeCache[$key][$delimiter];
-        }
-
-        if (!ctype_lower($value)) {
-            $value = preg_replace('/\s+/u', '', ucwords($value));
-
-            $value = static::lower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
-        }
-
-        return static::$snakeCache[$key][$delimiter] = $value;
-    }
 
     /**
      * 字符串第一个字符大写
