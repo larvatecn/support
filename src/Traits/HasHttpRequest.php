@@ -8,11 +8,13 @@
 namespace Larva\Support\Traits;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Utils;
 use Larva\Support\Exception\ConnectionException;
 use Larva\Support\HttpResponse;
 use Psr\Http\Message\RequestInterface;
@@ -22,6 +24,11 @@ use Psr\Http\Message\RequestInterface;
  */
 trait HasHttpRequest
 {
+    /**
+     * @var \GuzzleHttp\ClientInterface
+     */
+    protected $httpClient;
+    
     /**
      * The base URL for the request.
      *
@@ -79,6 +86,11 @@ trait HasHttpRequest
     protected $middlewares = [];
 
     /**
+     * @var \GuzzleHttp\HandlerStack
+     */
+    protected $handlerStack;
+
+    /**
      * @var array
      */
     protected static $defaultOptions = [
@@ -90,7 +102,7 @@ trait HasHttpRequest
      *
      * @param array $defaults
      */
-    public static function setDefaultOptions($defaults = [])
+    public static function setDefaultOptions(array $defaults = [])
     {
         self::$defaultOptions = $defaults;
     }
@@ -579,11 +591,11 @@ trait HasHttpRequest
 
         [$this->pendingBody, $this->pendingFiles] = [null, []];
         try {
-            $response = new HttpResponse($this->buildClient()->request(strtoupper($method), $url, $this->mergeOptions([
+            $response = new HttpResponse($this->getHttpClient()->request(strtoupper($method), $url, $this->mergeOptions([
                 'on_stats' => function ($transferStats) {
                     $this->transferStats = $transferStats;
                 },
-            ], $options)));
+            ], $options, ['handler' => $this->getHandlerStack()])));
             $response->cookies = $this->cookies;
             $response->transferStats = $this->transferStats;
             return $response;
@@ -606,42 +618,6 @@ trait HasHttpRequest
     }
 
     /**
-     * Build the Guzzle client.
-     *
-     * @return Client
-     */
-    public function buildClient(): Client
-    {
-        return new Client([
-            'handler' => $this->buildHandlerStack(),
-            'cookies' => true,
-        ]);
-    }
-
-    /**
-     * Build the before sending handler stack.
-     *
-     * @return HandlerStack
-     */
-    public function buildHandlerStack(): HandlerStack
-    {
-        $stack = HandlerStack::create();
-        $stack->push(function (callable $handler) {
-            return function (RequestInterface $request, array $options) use ($handler) {
-                $this->cookies = $options['cookies'];
-                return $handler($request, $options);
-            };
-        });
-        if (method_exists($this, 'buildBeforeSendingHandler')) {
-            $stack->push($this->buildBeforeSendingHandler());
-        }
-        foreach ($this->middlewares as $middleware) {
-            $stack->push($middleware);
-        }
-        return $stack;
-    }
-
-    /**
      * Merge the given options with the current request options.
      *
      * @param array $options
@@ -650,5 +626,90 @@ trait HasHttpRequest
     public function mergeOptions(...$options): array
     {
         return array_merge_recursive(self::$defaultOptions, $this->options, ...$options);
+    }
+
+    /**
+     * Set GuzzleHttp\Client.
+     *
+     * @param \GuzzleHttp\ClientInterface $httpClient
+     *
+     * @return $this
+     */
+    public function setHttpClient(ClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+
+        return $this;
+    }
+
+    /**
+     * Build the Guzzle client.
+     *
+     * @return Client
+     */
+    public function getHttpClient(): Client
+    {
+        if (!($this->httpClient instanceof ClientInterface)) {
+            $this->httpClient = new Client([
+                'handler' => HandlerStack::create($this->getGuzzleHandler()),
+                'cookies' => true,
+            ]);
+        }
+        return $this->httpClient;
+    }
+
+    /**
+     * @param \GuzzleHttp\HandlerStack $handlerStack
+     *
+     * @return $this
+     */
+    public function setHandlerStack(HandlerStack $handlerStack)
+    {
+        $this->handlerStack = $handlerStack;
+        return $this;
+    }
+
+    /**
+     * Build a handler stack.
+     *
+     * @return \GuzzleHttp\HandlerStack
+     */
+    public function getHandlerStack(): HandlerStack
+    {
+        if ($this->handlerStack) {
+            return $this->handlerStack;
+        }
+
+        $this->handlerStack = HandlerStack::create($this->getGuzzleHandler());
+
+        $this->handlerStack->push(function (callable $handler) {
+            return function (RequestInterface $request, array $options) use ($handler) {
+                $this->cookies = $options['cookies'];
+                return $handler($request, $options);
+            };
+        });
+        if (method_exists($this, 'buildBeforeSendingHandler')) {
+            $this->handlerStack->push($this->buildBeforeSendingHandler());
+        }
+
+        foreach ($this->middlewares as $name => $middleware) {
+            $this->handlerStack->push($middleware, $name);
+        }
+
+        return $this->handlerStack;
+    }
+
+    /**
+     * Get guzzle handler.
+     *
+     * @return callable
+     */
+    protected function getGuzzleHandler()
+    {
+        if (property_exists($this, 'guzzle_handler')) {
+            return is_string($handler = $this->guzzle_handler) ? new $handler() : $handler;
+        }
+
+        return Utils::chooseHandler();
     }
 }
