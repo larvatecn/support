@@ -28,7 +28,7 @@ trait HasHttpRequest
      * @var \GuzzleHttp\ClientInterface
      */
     protected $httpClient;
-    
+
     /**
      * The base URL for the request.
      *
@@ -706,7 +706,7 @@ trait HasHttpRequest
      */
     protected function getGuzzleHandler()
     {
-        if (property_exists($this, 'guzzle_handler')) {
+        if (property_exists($this, 'guzzle_handler') && $this->guzzle_handler) {
             return is_string($handler = $this->guzzle_handler) ? new $handler() : $handler;
         }
 

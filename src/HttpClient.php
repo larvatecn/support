@@ -21,6 +21,22 @@ class HttpClient extends BaseObject
     use HasHttpRequest;
 
     /**
+     * @var mixed
+     */
+    protected $guzzle_handler;
+
+    /**
+     * 设置 guzzle handler
+     * @param mixed $handler
+     * @return $this
+     */
+    public function setGuzzleHandler($handler): HttpClient
+    {
+        $this->guzzle_handler = $handler;
+        return $this;
+    }
+
+    /**
      * Issue a GET request to the given URL.
      *
      * @param string $url
