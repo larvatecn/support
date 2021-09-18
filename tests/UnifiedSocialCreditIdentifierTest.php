@@ -49,5 +49,4 @@ class UnifiedSocialCreditIdentifierTest extends TestCase
         $this->assertSame('410105', UnifiedSocialCreditIdentifier::getDistrictCodeByCreditCode('91410105MA9G98K57A'));
         $this->assertSame('金水区', UnifiedSocialCreditIdentifier::getDistrictByCreditCode('91410105MA9G98K57A'));
     }
-
 }
