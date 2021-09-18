@@ -39,6 +39,7 @@ class UnifiedSocialCreditIdentifier
     {
         if (static::validateCard($creditCode)) {
             $info = [
+                'manage' => substr($creditCode, 0, 1),
                 'type' => substr($creditCode, 1, 1),
                 'province_code' => static::getProvinceCodeByCreditCode($creditCode),
                 'city_code' => static::getCityCodeByCreditCode($creditCode),
