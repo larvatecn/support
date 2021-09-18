@@ -37,13 +37,13 @@ class UnifiedSocialCreditIdentifier
      */
     public static function getInfo(string $creditCode)
     {
-        if (static::validateCard($creditCode)) {
+        if (static::validate($creditCode)) {
             $info = [
                 'manage' => substr($creditCode, 0, 1),
                 'type' => substr($creditCode, 1, 1),
-                'province_code' => static::getProvinceCodeByCreditCode($creditCode),
-                'city_code' => static::getCityCodeByCreditCode($creditCode),
-                'district_code' => static::getDistrictCodeByCreditCode($creditCode),
+                'province_code' => static::getProvinceCodeByCreditIdentifier($creditCode),
+                'city_code' => static::getCityCodeByCreditIdentifier($creditCode),
+                'district_code' => static::getDistrictCodeByCreditIdentifier($creditCode),
             ];
             $info['province'] = IDCard::$locationCodes [$info['province_code']];
             $info['city'] = IDCard::$locationCodes [$info['city_code']];
@@ -59,7 +59,7 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return string
      */
-    public static function getProvinceCodeByCreditCode(string $creditCode): string
+    public static function getProvinceCodeByCreditIdentifier(string $creditCode): string
     {
         return substr($creditCode, 2, 2) . '0000';
     }
@@ -69,9 +69,9 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return mixed
      */
-    public static function getProvinceByCreditCode(string $creditCode): string
+    public static function getProvinceByCreditIdentifier(string $creditCode): string
     {
-        $provinceCode = static::getProvinceCodeByCreditCode($creditCode);
+        $provinceCode = static::getProvinceCodeByCreditIdentifier($creditCode);
         return IDCard::$locationCodes [$provinceCode];
     }
 
@@ -80,7 +80,7 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return mixed
      */
-    public static function getCityCodeByCreditCode(string $creditCode): string
+    public static function getCityCodeByCreditIdentifier(string $creditCode): string
     {
         return substr($creditCode, 2, 4) . '00';
     }
@@ -90,9 +90,9 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return mixed
      */
-    public static function getCityByCreditCode(string $creditCode): string
+    public static function getCityByCreditIdentifier(string $creditCode): string
     {
-        $cityCode = static::getCityCodeByCreditCode($creditCode);
+        $cityCode = static::getCityCodeByCreditIdentifier($creditCode);
         return IDCard::$locationCodes [$cityCode];
     }
 
@@ -101,7 +101,7 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return mixed
      */
-    public static function getDistrictCodeByCreditCode(string $creditCode): string
+    public static function getDistrictCodeByCreditIdentifier(string $creditCode): string
     {
         return substr($creditCode, 2, 6);
     }
@@ -111,9 +111,9 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return mixed
      */
-    public static function getDistrictByCreditCode(string $creditCode): string
+    public static function getDistrictByCreditIdentifier(string $creditCode): string
     {
-        $areaCode = static::getDistrictCodeByCreditCode($creditCode);
+        $areaCode = static::getDistrictCodeByCreditIdentifier($creditCode);
         return IDCard::$locationCodes [$areaCode];
     }
 
@@ -122,7 +122,7 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return bool
      */
-    public static function validateCard(string $creditCode): bool
+    public static function validate(string $creditCode): bool
     {
         if (strlen($creditCode) == static::CHINA_CREDIT_CODE_MAX_LENGTH) {
             // 前17位

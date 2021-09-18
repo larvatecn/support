@@ -93,12 +93,12 @@ class IDCard
 
     /**
      * 生成随机身份证号码
-     * @param int $area
+     * @param int|string $area
      * @param string $gender M 男 F 女
      * @param string $birthday 生日
      * @return string
      */
-    public static function generateCard(int $area, string $gender, string $birthday): string
+    public static function generateCard($area, string $gender, string $birthday): string
     {
         $birthday = str_replace('-', '', $birthday);
         $code17 = $area . $birthday . sprintf("%02d", rand(1, 99));
@@ -154,9 +154,9 @@ class IDCard
      * @param string $creditCode
      * @return string
      */
-    public static function getProvinceCodeByCreditCode(string $creditCode): string
+    public static function getProvinceCodeByIdCard(string $creditCode): string
     {
-        return substr($creditCode, 2, 2) . '0000';
+        return substr($creditCode, 0, 2) . '0000';
     }
 
     /**
@@ -166,7 +166,7 @@ class IDCard
      */
     public static function getProvinceByIdCard(string $idCard): string
     {
-        $provinceCode = static::getProvinceCodeByCreditCode($idCard);
+        $provinceCode = static::getProvinceCodeByIdCard($idCard);
         return static::$locationCodes [$provinceCode];
     }
 
