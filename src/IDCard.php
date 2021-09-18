@@ -52,8 +52,11 @@ class IDCard
                 'birthday' => static::getBirthdayByIdCard($idCard),
                 'gender' => static::getGenderByIdCard($idCard),
                 'province' => static::getProvinceByIdCard($idCard),
+                'province_code' => substr($idCard, 0, 2) . '0000',
                 'city' => static::getCityByIdCard($idCard),
-                'district' => static::getDistrictByIdCard($idCard)
+                'city_code' => substr($idCard, 0, 4) . '00',
+                'district' => static::getDistrictByIdCard($idCard),
+                'district_code' => substr($idCard, 0, 6)
             ];
         } else {
             return false;
