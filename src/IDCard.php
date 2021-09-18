@@ -69,7 +69,7 @@ class IDCard
      * @param string $idCard
      * @return bool
      */
-    public static function validateCard(string $idCard): bool
+    public static function validate(string $idCard): bool
     {
         if (strlen($idCard) == static::CHINA_ID_MAX_LENGTH) {
             // 前17位
@@ -89,6 +89,17 @@ class IDCard
             }
         }
         return false;
+    }
+
+    /**
+     * 验证身份证是否合法
+     * @param string $idCard
+     * @deprecated 1.3删除
+     * @return bool
+     */
+    public static function validateCard(string $idCard): bool
+    {
+        return static::validate($idCard);
     }
 
     /**

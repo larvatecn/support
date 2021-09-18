@@ -14,14 +14,14 @@ class IDCardTest extends TestCase
 {
     public function testValidateCard()
     {
-        $this->assertTrue(IDCard::validateCard('370481199502010714'));
-        $this->assertFalse(IDCard::validateCard('370481199502010712'));
+        $this->assertTrue(IDCard::validate('370481199502010714'));
+        $this->assertFalse(IDCard::validate('370481199502010712'));
     }
 
     public function testGenerateCard()
     {
         $idCard = IDCard::generateCard('370481', 'M', (int)date('Ymd', time()));
-        $this->assertTrue(IDCard::validateCard($idCard));
+        $this->assertTrue(IDCard::validate($idCard));
     }
 
     public function testGetAgeByIdCard()
