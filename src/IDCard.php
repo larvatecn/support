@@ -51,7 +51,7 @@ class IDCard
                 'age' => static::getAgeByIdCard($idCard),
                 'birthday' => static::getBirthdayByIdCard($idCard),
                 'gender' => static::getGenderByIdCard($idCard),
-                'province_code' => static::getProvinceCodeByCreditCode($idCard),
+                'province_code' => static::getProvinceCodeByIdCard($idCard),
                 'city_code' => static::getCityCodeByIdCard($idCard),
                 'district_code' => static::getDistrictCodeByIdCard($idCard),
             ];
@@ -114,10 +114,10 @@ class IDCard
      *
      * @param string idCard 身份编号
      */
-    public static function getAgeByIdCard($idCard)
+    public static function getAgeByIdCard($idCard): int
     {
-        $year = substr($idCard, 6, 4);
-        $iCurrYear = date('Y', time());
+        $year = (int)substr($idCard, 6, 4);
+        $iCurrYear = (int)date('Y', time());
         return $iCurrYear - $year;
     }
 
