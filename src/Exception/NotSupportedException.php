@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class NotSupportedException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class NotSupportedException extends Exception
 {

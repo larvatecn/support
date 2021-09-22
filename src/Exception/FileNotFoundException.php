@@ -9,6 +9,11 @@ declare(strict_types=1);
 
 namespace Larva\Support\Exception;
 
+/**
+ * Class FileNotFoundException
+ * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
+ */
 class FileNotFoundException extends FileException
 {
     public function __construct(string $path)

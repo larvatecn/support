@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class InvalidCallException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class InvalidCallException extends \BadMethodCallException
 {

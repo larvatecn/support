@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class Exception
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class Exception extends \Exception
 {

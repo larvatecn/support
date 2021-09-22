@@ -15,6 +15,7 @@ use Larva\Support\HttpResponse;
 /**
  * Class RequestException
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class RequestException extends HttpClientException
 {
@@ -23,7 +24,7 @@ class RequestException extends HttpClientException
      *
      * @var HttpResponse
      */
-    public $response;
+    public HttpResponse $response;
 
     /**
      * Create a new exception instance.

@@ -12,6 +12,7 @@ namespace Larva\Support\Exception;
 /**
  * Class InvalidUrlException
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class InvalidUrlException extends Exception
 {

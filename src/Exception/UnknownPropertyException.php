@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class UnknownPropertyException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class UnknownPropertyException extends Exception
 {

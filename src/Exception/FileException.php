@@ -9,6 +9,11 @@ declare(strict_types=1);
 
 namespace Larva\Support\Exception;
 
+/**
+ * Class FileException
+ * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
+ */
 class FileException extends \RuntimeException
 {
 }

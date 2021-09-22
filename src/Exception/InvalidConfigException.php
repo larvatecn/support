@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class InvalidConfigException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class InvalidConfigException extends Exception
 {

@@ -12,6 +12,7 @@ namespace Larva\Support\Exception;
 /**
  * Class HttpClientException
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class HttpClientException extends Exception
 {

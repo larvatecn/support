@@ -146,6 +146,7 @@ class UnifiedSocialCreditIdentifier
      *
      * @param int $iSum
      * @return string 校验位
+     * @codeCoverageIgnore
      */
     private static function getCheckCode(int $iSum): string
     {
@@ -165,6 +166,7 @@ class UnifiedSocialCreditIdentifier
      *
      * @param array $iArr
      * @return int 编码。
+     * @codeCoverageIgnore
      */
     private static function getPowerSum(array $iArr)
     {

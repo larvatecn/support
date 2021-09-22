@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class UnknownMethodException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class UnknownMethodException extends Exception
 {

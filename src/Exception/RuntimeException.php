@@ -13,6 +13,7 @@ namespace Larva\Support\Exception;
  * Class RuntimeException
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class RuntimeException extends \RuntimeException
 {
