@@ -290,7 +290,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return array|false
      */
-    public static function getTDK(string $url, $timeout = 5)
+    public static function getTDK(string $url, int $timeout = 5)
     {
         $info = [
             'hostname' => '',
@@ -307,11 +307,11 @@ class HttpClient extends BaseObject
         if (($info['ip'] = IPHelper::getHostIpV4($info['hostname'])) == false) {
             return false;
         }
-        if (($body = static::getRemoteContent("https://" . $info['hostname'])) != false) {
+        if (($body = static::getRemoteContent("https://" . $info['hostname'], $timeout)) != false) {
             $info['https'] = true;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);
-        } elseif (($body = static::getRemoteContent("http://" . $info['hostname'])) != false) {
+        } elseif (($body = static::getRemoteContent("http://" . $info['hostname'], $timeout)) != false) {
             $info['https'] = false;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);
