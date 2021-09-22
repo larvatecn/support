@@ -13,6 +13,7 @@ namespace Larva\Support;
  * Class Config
  *
  * @author Tongle Xu <xutongle@gmail.com>
+ * @codeCoverageIgnore
  */
 class Config extends Collection
 {

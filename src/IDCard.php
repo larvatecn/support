@@ -243,6 +243,7 @@ class IDCard
      *
      * @param int $iSum
      * @return string 校验位
+     * @codeCoverageIgnore
      */
     private static function getCheckCode(int $iSum): string
     {
@@ -290,6 +291,7 @@ class IDCard
      *
      * @param array $iArr
      * @return int 身份证编码。
+     * @codeCoverageIgnore
      */
     private static function getPowerSum(array $iArr)
     {
@@ -311,7 +313,8 @@ class IDCard
     /**
      * 获取一个随机的性别代码
      * @param string $gender
-     * @return mixed
+     * @return int
+     * @codeCoverageIgnore
      */
     private static function getGenderCode(string $gender)
     {
