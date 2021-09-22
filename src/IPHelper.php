@@ -237,9 +237,9 @@ class IPHelper
      * @param string $host
      * @param int $type 解析类型
      * @param boolean $onlyIp 仅获取IP
-     * @return array|string
+     * @return array|bool
      */
-    public static function dnsRecord(string $host, $type = DNS_A, $onlyIp = false)
+    public static function dnsRecord(string $host, int $type = DNS_A, bool $onlyIp = false)
     {
         if (filter_var($host, FILTER_VALIDATE_IP)) {
             return [$host];

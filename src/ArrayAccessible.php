@@ -14,7 +14,7 @@ use IteratorAggregate;
 
 class ArrayAccessible implements ArrayAccess, IteratorAggregate, Arrayable
 {
-    private $array;
+    private array $array;
 
     public function __construct(array $array = [])
     {

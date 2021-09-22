@@ -16,19 +16,19 @@ class GeoHash
     /**
      * @var string Base32表
      */
-    private static $table = "0123456789bcdefghjkmnpqrstuvwxyz";
-    private static $bits = [
+    private static string $table = "0123456789bcdefghjkmnpqrstuvwxyz";
+    private static array $bits = [
         0b10000, 0b01000, 0b00100, 0b00010, 0b00001
     ];
 
     /**
      * 编码
-     * @param double $longitude 经度
-     * @param double $latitude 维度
+     * @param float $longitude 经度
+     * @param float $latitude 维度
      * @param float $prec 精确度
      * @return string
      */
-    public static function encode($longitude, $latitude, $prec = 0.00001): string
+    public static function encode(float $longitude, float $latitude, float $prec = 0.00001): string
     {
         $minLongitude = -180;
         $maxLongitude = 180;
@@ -151,7 +151,7 @@ class GeoHash
      * @param float $prec
      * @return string[]
      */
-    public static function expand(string $hash, $prec = 0.00001)
+    public static function expand(string $hash, float $prec = 0.00001): array
     {
         list($minLongitude, $maxLongitude, $minLatitude, $maxLatitude) = self::decode($hash);
         $dlng = ($maxLongitude - $minLongitude) / 2;
@@ -169,7 +169,7 @@ class GeoHash
         ];
     }
 
-    public static function getRect($hash)
+    public static function getRect($hash): array
     {
         list($minLongitude, $maxLongitude, $minLatitude, $maxLatitude) = self::decode($hash);
 

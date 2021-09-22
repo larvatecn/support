@@ -21,13 +21,13 @@ class MacAddres
      * Regular expression for matching and validating a MAC address
      * @var string
      */
-    private static $validMac = "([0-9A-F]{2}[:-]){5}([0-9A-F]{2})";
+    private static string $validMac = "([0-9A-F]{2}[:-]){5}([0-9A-F]{2})";
 
     /**
      * An array of valid MAC address characters
      * @var array
      */
-    private static $macAddressVals = [
+    private static array $macAddressVals = [
         "0", "1", "2", "3", "4", "5", "6", "7",
         "8", "9", "A", "B", "C", "D", "E", "F"
     ];
@@ -81,7 +81,7 @@ class MacAddres
      * @param string $mac
      * @return bool true if valid; otherwise false
      */
-    public static function validateMacAddress($mac): bool
+    public static function validateMacAddress(string $mac): bool
     {
         return (bool)preg_match("/^" . self::$validMac . "$/i", $mac);
     }
@@ -91,7 +91,7 @@ class MacAddres
      * @param string $command
      * @return string Output from command that was ran
      */
-    protected static function runCommand(string $command)
+    protected static function runCommand(string $command): string
     {
         return shell_exec($command);
     }

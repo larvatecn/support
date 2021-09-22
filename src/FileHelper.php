@@ -260,7 +260,7 @@ class FileHelper
      *
      * @param string $path
      * @param mixed $data
-     * @return int
+     * @return int|false
      */
     public static function append(string $path, $data)
     {

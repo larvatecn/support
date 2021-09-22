@@ -112,7 +112,7 @@ class HtmlHelper
     public static function getHeadTags(string $content): array
     {
         $result = ['title' => '', 'keywords' => '', 'description' => '', 'metaTags' => []];
-        if (is_string($content) && !empty($content)) {
+        if (!empty($content)) {
             if (($chatSet = static::getCharSet($content)) != 'UTF-8') { // 转码
                 $content = mb_convert_encoding($content, 'UTF-8', $chatSet);
             }

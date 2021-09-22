@@ -17,32 +17,32 @@ class Socket extends BaseObject
     /**
      * @var bool 是否是持久连接
      */
-    public $persistent = false;
+    public bool $persistent = false;
 
     /**
      * @var string IP
      */
-    public $host;
+    public string $host;
 
     /**
      * @var int 端口
      */
-    public $port;
+    public int $port;
 
     /**
      * @var int 超时时间
      */
-    public $timeout;
+    public int $timeout;
 
     /**
-     * @var null Socket 连接句柄
+     * @var resource|false Socket 连接句柄
      */
     private $connection = null;
 
     /**
      * @var bool Socket 连接状态
      */
-    private $connected = false;
+    private bool $connected = false;
 
     /**
      * 连接Socket
@@ -55,7 +55,6 @@ class Socket extends BaseObject
         }
 
         if ($this->persistent == true) {
-            $tmp = null;
             $this->connection = @pfsockopen($this->host, $this->port, $errNum, $errStr, $this->timeout);
         } else {
             $this->connection = fsockopen($this->host, $this->port, $errNum, $errStr, $this->timeout);
@@ -97,7 +96,7 @@ class Socket extends BaseObject
      * @param int $length
      * @return bool|string
      */
-    public function read($length = 1024)
+    public function read(int $length = 1024)
     {
         if (!$this->connected) {
             if (!$this->connect()) {

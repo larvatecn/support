@@ -22,21 +22,21 @@ class StringHelper
      *
      * @var array
      */
-    protected static $snakeCache = [];
+    protected static array $snakeCache = [];
 
     /**
      * The cache of camel-cased words.
      *
      * @var array
      */
-    protected static $camelCache = [];
+    protected static array $camelCache = [];
 
     /**
      * The cache of studly-cased words.
      *
      * @var array
      */
-    protected static $studlyCache = [];
+    protected static array $studlyCache = [];
 
     /**
      * 将值转换为驼峰
@@ -45,7 +45,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function camel($value)
+    public static function camel(string $value): string
     {
         if (isset(static::$camelCache[$value])) {
             return static::$camelCache[$value];
@@ -60,7 +60,7 @@ class StringHelper
      * @return string
      * @throws \Exception
      */
-    public static function random($length = 16)
+    public static function random(int $length = 16): string
     {
         $string = '';
         while (($len = strlen($string)) < $length) {
@@ -84,7 +84,7 @@ class StringHelper
      *
      * @throws \Exception
      */
-    public static function randomBytes($length = 16)
+    public static function randomBytes(int $length = 16): string
     {
         if (function_exists('random_bytes')) {
             $bytes = random_bytes($length);
@@ -109,7 +109,7 @@ class StringHelper
      *
      * @return string
      */
-    public static function quickRandom($length = 16)
+    public static function quickRandom(int $length = 16): string
     {
         $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -165,7 +165,7 @@ class StringHelper
      * @param string $delimiter
      * @return string
      */
-    public static function snake(string $value, $delimiter = '_'): string
+    public static function snake(string $value, string $delimiter = '_'): string
     {
         $key = $value;
 
@@ -210,8 +210,8 @@ class StringHelper
     /**
      * 判断字符串是否包含指定的子字符串
      *
-     * @param string $haystack
-     * @param string|array $needles
+     * @param string $haystack 要被检查的字符串
+     * @param string|array $needles 要搜索的字符串
      * @return bool
      */
     public static function contains(string $haystack, $needles): bool
@@ -227,8 +227,8 @@ class StringHelper
     /**
      * 判断字符串是否以给定的子字符串开头
      *
-     * @param string $haystack
-     * @param string|array $needles
+     * @param string $haystack 要被检查的字符串
+     * @param string|array $needles 要搜索的字符串
      *
      * @return bool
      */
@@ -245,8 +245,8 @@ class StringHelper
     /**
      * 判断字符串是否以给定的子字符串结束
      *
-     * @param string $haystack
-     * @param string|array $needles
+     * @param string $haystack 要被检查的字符串
+     * @param string|array $needles 要搜索的字符串
      * @return bool
      */
     public static function endsWith(string $haystack, $needles): bool
@@ -342,7 +342,7 @@ class StringHelper
      * @param string $end
      * @return string
      */
-    public static function limit(string $value, $limit = 100, $end = '...'): string
+    public static function limit(string $value, int $limit = 100, string $end = '...'): string
     {
         if (mb_strwidth($value, 'UTF-8') <= $limit) {
             return $value;
@@ -370,7 +370,7 @@ class StringHelper
      * @param string $end
      * @return string
      */
-    public static function words(string $value, $words = 100, $end = '...'): string
+    public static function words(string $value, int $words = 100, string $end = '...'): string
     {
         preg_match('/^\s*+(?:\S++\s*+){1,' . $words . '}/u', $value, $matches);
         if (!isset($matches[0]) || static::length($value) === static::length($matches[0])) {
@@ -386,7 +386,7 @@ class StringHelper
      * @param string|null $default
      * @return array
      */
-    public static function parseCallback(string $callback, $default = null): array
+    public static function parseCallback(string $callback, string $default = null): array
     {
         return static::contains($callback, '@') ? explode('@', $callback, 2) : [$callback, $default];
     }

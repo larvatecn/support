@@ -18,23 +18,23 @@ class Tree
      * 生成树型结构所需要的2维数组
      * @var array
      */
-    public $data = [];
+    public array $data = [];
 
     /**
      * 生成树型结构所需修饰符号，可以换成图片
      * @var array
      */
-    public $icon = ['│', '├', '└'];
-    public $blankSpace = "&nbsp;";
+    public array $icon = ['│', '├', '└'];
+    public string $blankSpace = "&nbsp;";
 
     // 查询
-    public $idKey = "id";
-    public $parentIdKey = "parent_id";
-    public $spacerKey = "spacer";
-    public $hasChildKey = "has_child";
+    public string $idKey = "id";
+    public string $parentIdKey = "parent_id";
+    public string $spacerKey = "spacer";
+    public string $hasChildKey = "has_child";
 
     // 返回子级key
-    public $buildChildKey = "child";
+    public string $buildChildKey = "child";
 
     /**
      * 创建

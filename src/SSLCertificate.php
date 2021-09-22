@@ -18,17 +18,17 @@ class SSLCertificate
     /**
      * @var array 原始证书字段
      */
-    protected $rawCertificateFields;
+    protected array $rawCertificateFields;
 
     /**
      * @var string 证书指纹
      */
-    protected $fingerprint;
+    protected string $fingerprint;
 
     /**
      * @var string SHA256指纹
      */
-    private $fingerprintSha256;
+    private string $fingerprintSha256;
 
     /**
      * SSLCertificate constructor.

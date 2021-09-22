@@ -12,6 +12,7 @@ use Larva\Support\Exception\RequestException;
 use LogicException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Class HTTPResponse
@@ -33,7 +34,7 @@ class HttpResponse implements ArrayAccess
      *
      * @var array
      */
-    protected $decoded;
+    protected array $decoded;
 
     /**
      * Create a new response instance.
@@ -41,7 +42,7 @@ class HttpResponse implements ArrayAccess
      * @param MessageInterface $response
      * @return void
      */
-    public function __construct($response)
+    public function __construct(MessageInterface $response)
     {
         $this->response = $response;
     }
@@ -51,7 +52,7 @@ class HttpResponse implements ArrayAccess
      *
      * @return string
      */
-    public function body()
+    public function body(): string
     {
         return (string)$this->response->getBody();
     }
@@ -63,7 +64,7 @@ class HttpResponse implements ArrayAccess
      * @param mixed $default
      * @return mixed
      */
-    public function json($key = null, $default = null)
+    public function json(string $key = null, $default = null)
     {
         if (!$this->decoded) {
             $this->decoded = Json::decode($this->body(), true);
@@ -71,7 +72,7 @@ class HttpResponse implements ArrayAccess
         if (is_null($key)) {
             return $this->decoded;
         }
-        return isset($this->decoded[$key]) ? $this->decoded[$key] : $default;
+        return $this->decoded[$key] ?? $default;
     }
 
     /**
@@ -81,7 +82,7 @@ class HttpResponse implements ArrayAccess
      * @param mixed $default
      * @return mixed
      */
-    public function xml($key = null, $default = null)
+    public function xml(string $key = null, $default = null)
     {
         if (!$this->decoded) {
             $dom = new \DOMDocument('1.0', 'UTF-8');
@@ -91,7 +92,7 @@ class HttpResponse implements ArrayAccess
         if (is_null($key)) {
             return $this->decoded;
         }
-        return isset($this->decoded[$key]) ? $this->decoded[$key] : $default;
+        return $this->decoded[$key] ?? $default;
     }
 
     /**
@@ -110,7 +111,7 @@ class HttpResponse implements ArrayAccess
      * @param string $header
      * @return string
      */
-    public function header(string $header)
+    public function header(string $header): string
     {
         return $this->response->getHeaderLine($header);
     }
@@ -137,9 +138,9 @@ class HttpResponse implements ArrayAccess
     /**
      * Get the effective URI of the response.
      *
-     * @return \Psr\Http\Message\UriInterface
+     * @return UriInterface
      */
-    public function effectiveUri()
+    public function effectiveUri(): UriInterface
     {
         return $this->transferStats->getEffectiveUri();
     }
@@ -257,7 +258,7 @@ class HttpResponse implements ArrayAccess
      * @return bool|int
      * @throws \Exception
      */
-    public function saveAs(string $path, $mode = 0755, $lock = false)
+    public function saveAs(string $path, int $mode = 0755, bool $lock = false)
     {
         FileHelper::readyDirectory($path, $mode);
         $name = StringHelper::random(40) . '.' . FileHelper::getStreamExtension($this->body());
@@ -344,7 +345,7 @@ class HttpResponse implements ArrayAccess
      * @param string|\SimpleXMLElement $xml xml to process.
      * @return array XML array representation.
      */
-    protected function convertXmlToArray($xml)
+    protected function convertXmlToArray($xml): array
     {
         if (is_string($xml)) {
             $xml = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);

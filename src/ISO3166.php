@@ -20,7 +20,7 @@ class ISO3166
      * 国家简码
      * @var array
      */
-    public static $countries = [
+    public static array $countries = [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',
@@ -280,7 +280,7 @@ class ISO3166
      * 国家首都经纬度
      * @var array
      */
-    public static $positions = [
+    public static array $positions = [
         // lat / lon
         'AF' => [69.11, 34.28],
         'AX' => [60.17, 19.91],
@@ -541,7 +541,7 @@ class ISO3166
      * 国际区号
      * @var array
      */
-    public static $phoneCodes = [
+    public static array $phoneCodes = [
         "AF" => "93",
         "AX" => "358",
         "AL" => "355",
@@ -794,7 +794,7 @@ class ISO3166
      * 国家名称中英文对照表
      * @var array
      */
-    public static $countryCodes = [
+    public static array $countryCodes = [
         '阿富汗' => 'AF',
         '奥兰群岛' => 'AX',
         '阿尔巴尼亚' => 'AL',
@@ -1054,22 +1054,22 @@ class ISO3166
      * @param string $locale
      * @return string
      */
-    public static function country(string $code, $locale = 'en'): string
+    public static function country(string $code, string $locale = 'en'): string
     {
         return Locale::getDisplayRegion("_$code", $locale);
     }
 
     /**
      * 获取 Country Code 通过中文的国家名称
-     * @param $country
+     * @param string|null $country
      * @return string|null
      */
-    public static function countryCode($country): ?string
+    public static function countryCode(string $country = null): ?string
     {
-        if (is_null($country) || empty($country)) {
+        if (empty($country)) {
             return null;
         }
-        return isset(static::$countryCodes[$country]) ? static::$countryCodes[$country] : null;
+        return static::$countryCodes[$country] ?? null;
     }
 
     /**
@@ -1079,7 +1079,7 @@ class ISO3166
      */
     public static function position(string $code): array
     {
-        return isset(static::$positions[strtoupper($code)]) ? static::$positions[strtoupper($code)] : [39.904, 116.408];
+        return static::$positions[strtoupper($code)] ?? [39.904, 116.408];
     }
 
     /**
@@ -1089,7 +1089,7 @@ class ISO3166
      */
     public static function phoneCode(string $code): string
     {
-        return isset(static::$phoneCodes[strtoupper($code)]) ? static::$phoneCodes[strtoupper($code)] : 'N/A';
+        return static::$phoneCodes[strtoupper($code)] ?? 'N/A';
     }
 
     /**
