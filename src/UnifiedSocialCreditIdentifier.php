@@ -45,9 +45,9 @@ class UnifiedSocialCreditIdentifier
                 'city_code' => static::getCityCodeByCreditIdentifier($creditCode),
                 'district_code' => static::getDistrictCodeByCreditIdentifier($creditCode),
             ];
-            $info['province'] = IDCard::$locationCodes [$info['province_code']];
-            $info['city'] = IDCard::$locationCodes [$info['city_code']];
-            $info['district'] = IDCard::$locationCodes [$info['district_code']];
+            $info['province'] = IDCard::$locationCodes [$info['province_code']] ?? '';
+            $info['city'] = IDCard::$locationCodes [$info['city_code']] ?? '';
+            $info['district'] = IDCard::$locationCodes [$info['district_code']] ?? '';
             return $info;
         } else {
             return false;
@@ -72,7 +72,7 @@ class UnifiedSocialCreditIdentifier
     public static function getProvinceByCreditIdentifier(string $creditCode): string
     {
         $provinceCode = static::getProvinceCodeByCreditIdentifier($creditCode);
-        return IDCard::$locationCodes [$provinceCode];
+        return IDCard::$locationCodes [$provinceCode] ?? '';
     }
 
     /**
@@ -93,7 +93,7 @@ class UnifiedSocialCreditIdentifier
     public static function getCityByCreditIdentifier(string $creditCode): string
     {
         $cityCode = static::getCityCodeByCreditIdentifier($creditCode);
-        return IDCard::$locationCodes [$cityCode];
+        return IDCard::$locationCodes [$cityCode] ?? '';
     }
 
     /**
@@ -114,7 +114,7 @@ class UnifiedSocialCreditIdentifier
     public static function getDistrictByCreditIdentifier(string $creditCode): string
     {
         $areaCode = static::getDistrictCodeByCreditIdentifier($creditCode);
-        return IDCard::$locationCodes [$areaCode];
+        return IDCard::$locationCodes [$areaCode] ?? '';
     }
 
     /**
