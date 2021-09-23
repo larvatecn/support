@@ -55,6 +55,20 @@ class UnifiedSocialCreditIdentifier
     }
 
     /**
+     * 生成随机的企业信用代码
+     * @param string $area
+     * @return string
+     */
+    public static function generate(string $area): string
+    {
+        $code17 = '91' . $area . date('Ymd') . sprintf("%02d", rand(1, 99));
+        $iArr = str_split($code17);
+        $iSum17 = static::getPowerSum($iArr);
+        $val = static::getCheckCode($iSum17);
+        return $code17 . $val;
+    }
+
+    /**
      * 获取省代码
      * @param string $creditCode
      * @return string

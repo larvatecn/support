@@ -46,7 +46,7 @@ class IDCard
      */
     public static function getInfo(string $idCard)
     {
-        if (static::validateCard($idCard)) {
+        if (static::validate($idCard)) {
             $info = [
                 'age' => static::getAgeByIdCard($idCard),
                 'birthday' => static::getBirthdayByIdCard($idCard),
@@ -94,8 +94,8 @@ class IDCard
     /**
      * 验证身份证是否合法
      * @param string $idCard
-     * @deprecated 1.3删除
      * @return bool
+     * @deprecated 1.3删除
      */
     public static function validateCard(string $idCard): bool
     {
@@ -109,7 +109,7 @@ class IDCard
      * @param string $birthday 生日
      * @return string
      */
-    public static function generateCard($area, string $gender, string $birthday): string
+    public static function generate($area, string $gender, string $birthday): string
     {
         $birthday = str_replace('-', '', $birthday);
         $code17 = $area . $birthday . sprintf("%02d", rand(1, 99));
@@ -118,6 +118,19 @@ class IDCard
         $iSum17 = static::getPowerSum($iArr);
         $val = static::getCheckCode($iSum17);
         return $code17 . $val;
+    }
+
+    /**
+     * 生成随机身份证号码
+     * @param int|string $area
+     * @param string $gender M 男 F 女
+     * @param string $birthday 生日
+     * @return string
+     * @deprecated 1.3删除
+     */
+    public static function generateCard($area, string $gender, string $birthday): string
+    {
+        return static::generate($area, $gender, $birthday);
     }
 
     /**
