@@ -32,9 +32,9 @@ class HttpResponse implements ArrayAccess
     /**
      * The decoded JSON response.
      *
-     * @var array
+     * @var array|null
      */
-    protected array $decoded;
+    protected ?array $decoded = null;
 
     /**
      * Create a new response instance.
