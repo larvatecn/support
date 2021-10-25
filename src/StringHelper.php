@@ -39,6 +39,22 @@ class StringHelper
     protected static array $studlyCache = [];
 
     /**
+     * 创建 UUID
+     * @param string $prefix
+     * @return string
+     */
+    public static function createUuid(string $prefix = ""): string
+    {
+        $chars = md5(uniqid((string)mt_rand(), true));
+        $uuid = substr($chars, 0, 8) . '-'
+            . substr($chars, 8, 4) . '-'
+            . substr($chars, 12, 4) . '-'
+            . substr($chars, 16, 4) . '-'
+            . substr($chars, 20, 12);
+        return $prefix . $uuid;
+    }
+
+    /**
      * 将值转换为驼峰
      *
      * @param string $value
