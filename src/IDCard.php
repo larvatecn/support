@@ -55,9 +55,9 @@ class IDCard
                 'city_code' => static::getCityCodeByIdCard($idCard),
                 'district_code' => static::getDistrictCodeByIdCard($idCard),
             ];
-            $info['province'] = IDCard::$locationCodes [$info['province_code']];
-            $info['city'] = IDCard::$locationCodes [$info['city_code']];
-            $info['district'] = IDCard::$locationCodes [$info['district_code']];
+            $info['province'] = IDCard::$locationCodes [$info['province_code']] ?? null;
+            $info['city'] = IDCard::$locationCodes [$info['city_code']] ?? null;
+            $info['district'] = IDCard::$locationCodes [$info['district_code']] ?? null;
             return $info;
         } else {
             return false;
