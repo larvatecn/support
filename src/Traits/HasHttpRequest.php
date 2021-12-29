@@ -34,7 +34,7 @@ trait HasHttpRequest
      *
      * @var string
      */
-    protected $baseUrl = '';
+    protected $baseUri;
 
     /**
      * The request body format.
@@ -86,7 +86,7 @@ trait HasHttpRequest
     protected $middlewares = [];
 
     /**
-     * @var \GuzzleHttp\HandlerStack
+     * @var HandlerStack
      */
     protected $handlerStack;
 
@@ -121,9 +121,9 @@ trait HasHttpRequest
      * @param string $url
      * @return $this
      */
-    public function baseUrl(string $url)
+    public function baseUri(string $url)
     {
-        $this->baseUrl = $url;
+        $this->baseUri = $url;
         return $this;
     }
 
@@ -134,7 +134,7 @@ trait HasHttpRequest
      * @param string $contentType
      * @return $this
      */
-    public function withBody($content, $contentType)
+    public function withBody($content, string $contentType)
     {
         $this->bodyFormat('body');
         $this->pendingBody = $content;
@@ -294,7 +294,7 @@ trait HasHttpRequest
      * @param string $type
      * @return $this
      */
-    public function withToken(string $token, $type = 'Bearer')
+    public function withToken(string $token, string $type = 'Bearer')
     {
         $this->options[RequestOptions::HEADERS]['Authorization'] = trim($type . ' ' . $token);
         return $this;
@@ -318,7 +318,7 @@ trait HasHttpRequest
      * @param string $userAgent
      * @return $this
      */
-    public function withUserAgent($userAgent)
+    public function withUserAgent(string $userAgent)
     {
         return $this->withHeaders(['User-Agent' => $userAgent]);
     }
@@ -329,7 +329,7 @@ trait HasHttpRequest
      * @param string $referer
      * @return $this
      */
-    public function withReferer($referer)
+    public function withReferer(string $referer)
     {
         return $this->withHeaders(['Referer' => $referer]);
     }
@@ -340,7 +340,7 @@ trait HasHttpRequest
      * @param string $origin
      * @return $this
      */
-    public function withOrigin($origin)
+    public function withOrigin(string $origin)
     {
         return $this->withHeaders(['Origin' => $origin]);
     }
@@ -448,7 +448,7 @@ trait HasHttpRequest
      */
     public function withMiddleware(callable $middleware)
     {
-        array_push($this->middlewares, $middleware);
+        $this->middlewares[] = $middleware;
         return $this;
     }
 
@@ -575,8 +575,8 @@ trait HasHttpRequest
      */
     public function send(string $method, string $url, array $options = [])
     {
-        if (property_exists($this, 'baseUrl') && !is_null($this->baseUrl)) {
-            $options['base_uri'] = $this->baseUrl;
+        if (property_exists($this, 'baseUri') && !is_null($this->baseUri)) {
+            $options['base_uri'] = $this->baseUri;
         }
         if (isset($options[$this->bodyFormat])) {
             if ($this->bodyFormat === 'multipart') {
@@ -659,7 +659,7 @@ trait HasHttpRequest
     }
 
     /**
-     * @param \GuzzleHttp\HandlerStack $handlerStack
+     * @param HandlerStack $handlerStack
      *
      * @return $this
      */
@@ -672,7 +672,7 @@ trait HasHttpRequest
     /**
      * Build a handler stack.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @return HandlerStack
      */
     public function getHandlerStack(): HandlerStack
     {
@@ -688,10 +688,6 @@ trait HasHttpRequest
                 return $handler($request, $options);
             };
         });
-        if (method_exists($this, 'buildBeforeSendingHandler')) {
-            $this->handlerStack->push($this->buildBeforeSendingHandler());
-        }
-
         foreach ($this->middlewares as $name => $middleware) {
             $this->handlerStack->push($middleware, $name);
         }
@@ -709,7 +705,6 @@ trait HasHttpRequest
         if (property_exists($this, 'guzzle_handler') && $this->guzzle_handler) {
             return is_string($handler = $this->guzzle_handler) ? new $handler() : $handler;
         }
-
         return Utils::chooseHandler();
     }
 }
