@@ -47,8 +47,7 @@ class HttpClient extends BaseObject
      */
     public function getJSON(string $url, $query = null)
     {
-        $this->acceptJson();
-        $response = $this->get($url, $query);
+        $response = $this->acceptJson()->get($url, $query);
         return $response->json();
     }
 
@@ -63,9 +62,7 @@ class HttpClient extends BaseObject
      */
     public function postJSON(string $url, array $data = [])
     {
-        $this->acceptJson();
-        $this->asJson();
-        $response = $this->post($url, $data);
+        $response = $this->asJson()->acceptJson()->post($url, $data);
         return $response->json();
     }
 
@@ -80,9 +77,7 @@ class HttpClient extends BaseObject
      */
     public function patchJSON(string $url, $data = [])
     {
-        $this->acceptJson();
-        $this->asJson();
-        $response = $this->patch($url, $data);
+        $response = $this->asJson()->acceptJson()->patch($url, $data);
         return $response->json();
     }
 
@@ -97,9 +92,7 @@ class HttpClient extends BaseObject
      */
     public function putJSON(string $url, $data = [])
     {
-        $this->acceptJson();
-        $this->asJson();
-        $response = $this->put($url, $data);
+        $response = $this->asJson()->acceptJson()->put($url, $data);
         return $response->json();
     }
 
@@ -114,9 +107,7 @@ class HttpClient extends BaseObject
      */
     public function deleteJSON(string $url, $data = [])
     {
-        $this->acceptJson();
-        $this->asJson();
-        $response = $this->delete($url, $data);
+        $response = $this->asJson()->acceptJson()->delete($url, $data);
         return $response->json();
     }
 
