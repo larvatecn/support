@@ -39,7 +39,7 @@ class ArrayHelper
      *
      * @return array
      */
-    public static function crossJoin(...$arrays)
+    public static function crossJoin(...$arrays): array
     {
         $results = [[]];
 
@@ -67,7 +67,7 @@ class ArrayHelper
      *
      * @return array
      */
-    public static function divide(array $array)
+    public static function divide(array $array): array
     {
         return [array_keys($array), array_values($array)];
     }
@@ -80,7 +80,7 @@ class ArrayHelper
      *
      * @return array
      */
-    public static function dot(array $array, $prepend = '')
+    public static function dot(array $array, string $prepend = ''): array
     {
         $results = [];
 
@@ -103,7 +103,7 @@ class ArrayHelper
      *
      * @return array
      */
-    public static function except(array $array, $keys)
+    public static function except(array $array, $keys): array
     {
         static::forget($array, $keys);
 
@@ -118,7 +118,7 @@ class ArrayHelper
      *
      * @return bool
      */
-    public static function exists(array $array, $key)
+    public static function exists(array $array, $key): bool
     {
         return array_key_exists($key, $array);
     }

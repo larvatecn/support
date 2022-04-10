@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.4|^8.0",
+    "php": "^8.0.2",
     "ext-curl": "*",
     "ext-dom": "*",
     "ext-json": "*",
@@ -28,15 +28,15 @@
     "ext-libxml": "*",
     "ext-intl": "*",
     "ext-fileinfo": "*",
-    "nesbot/carbon": "^2.52",
+    "nesbot/carbon": "^2.55",
     "guzzlehttp/guzzle": "^6.5 || ^7.2",
-    "ezyang/htmlpurifier": "^4.13"
+    "ezyang/htmlpurifier": "^4.14"
   },
   "require-dev": {
-    "mockery/mockery": "^1.2",
+    "mockery/mockery": "^1.4",
     "phpunit/phpunit": "^9.5",
     "brainmaestro/composer-git-hooks": "^2.8",
-    "friendsofphp/php-cs-fixer": "^3.0"
+    "friendsofphp/php-cs-fixer": "^3.4"
   },
   "autoload": {
     "psr-4": {

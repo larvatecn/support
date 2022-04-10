@@ -22,11 +22,6 @@ class IDCard
     public const CHINA_ID_MAX_LENGTH = 18;
 
     /**
-     * 最低年限
-     */
-    public const MIN = 1930;
-
-    /**
      * 行政区划
      * @var array
      */
@@ -41,10 +36,10 @@ class IDCard
 
     /**
      * 获取身份证信息
-     * @param string $idCard
+     * @param string|int $idCard
      * @return array|false
      */
-    public static function getInfo(string $idCard)
+    public static function getInfo(string $idCard): bool|array
     {
         if (static::validate($idCard)) {
             $info = [
@@ -55,9 +50,9 @@ class IDCard
                 'city_code' => static::getCityCodeByIdCard($idCard),
                 'district_code' => static::getDistrictCodeByIdCard($idCard),
             ];
-            $info['province'] = IDCard::$locationCodes [$info['province_code']] ?? null;
-            $info['city'] = IDCard::$locationCodes [$info['city_code']] ?? null;
-            $info['district'] = IDCard::$locationCodes [$info['district_code']] ?? null;
+            $info['province'] = IDCard::$locationCodes [$info['province_code']] ?: null;
+            $info['city'] = IDCard::$locationCodes [$info['city_code']] ?: null;
+            $info['district'] = IDCard::$locationCodes [$info['district_code']] ?: null;
             return $info;
         } else {
             return false;
@@ -66,10 +61,10 @@ class IDCard
 
     /**
      * 验证身份证是否合法
-     * @param string $idCard
+     * @param string|int $idCard
      * @return bool
      */
-    public static function validate(string $idCard): bool
+    public static function validate(string|int $idCard): bool
     {
         if (strlen($idCard) == static::CHINA_ID_MAX_LENGTH) {
             // 前17位
@@ -93,11 +88,11 @@ class IDCard
 
     /**
      * 验证身份证是否合法
-     * @param string $idCard
+     * @param string|int $idCard
      * @return bool
      * @deprecated 1.3删除
      */
-    public static function validateCard(string $idCard): bool
+    public static function validateCard(string|int $idCard): bool
     {
         return static::validate($idCard);
     }
@@ -109,7 +104,7 @@ class IDCard
      * @param string $birthday 生日
      * @return string
      */
-    public static function generate($area, string $gender, string $birthday): string
+    public static function generate(int|string $area, string $gender, string $birthday): string
     {
         $birthday = str_replace('-', '', $birthday);
         $code17 = $area . $birthday . sprintf("%02d", rand(1, 99));
@@ -128,7 +123,7 @@ class IDCard
      * @return string
      * @deprecated 1.3删除
      */
-    public static function generateCard($area, string $gender, string $birthday): string
+    public static function generateCard(int|string $area, string $gender, string $birthday): string
     {
         return static::generate($area, $gender, $birthday);
     }
@@ -136,9 +131,9 @@ class IDCard
     /**
      * 根据身份编号获取年龄
      *
-     * @param string idCard 身份编号
+     * @param string|int idCard 身份编号
      */
-    public static function getAgeByIdCard($idCard): int
+    public static function getAgeByIdCard(int|string $idCard): int
     {
         $year = (int)substr($idCard, 6, 4);
         $iCurrYear = (int)date('Y', time());
@@ -148,10 +143,10 @@ class IDCard
     /**
      * 根据身份编号获取生日天
      *
-     * @param string $idCard 身份编号
+     * @param int|string $idCard 身份编号
      * @return string
      */
-    public static function getBirthdayByIdCard(string $idCard): string
+    public static function getBirthdayByIdCard(int|string $idCard): string
     {
         return substr($idCard, 6, 4) . '-' . substr($idCard, 10, 2) . '-' . substr($idCard, 12, 2);
     }
@@ -159,10 +154,10 @@ class IDCard
     /**
      * 根据身份编号获取性别
      *
-     * @param string $idCard 身份编号
+     * @param int|string $idCard 身份编号
      * @return string 性别(M-男，F-女，N-未知)
      */
-    public static function getGenderByIdCard(string $idCard): string
+    public static function getGenderByIdCard(int|string $idCard): string
     {
         $sCardNum = substr($idCard, 16, 1);
         if (( int )$sCardNum % 2 != 0) {
@@ -175,65 +170,65 @@ class IDCard
 
     /**
      * 获取省代码
-     * @param string $creditCode
+     * @param int|string $creditCode
      * @return string
      */
-    public static function getProvinceCodeByIdCard(string $creditCode): string
+    public static function getProvinceCodeByIdCard(int|string $creditCode): string
     {
         return substr($creditCode, 0, 2) . '0000';
     }
 
     /**
      * 获取身份证所在省
-     * @param string $idCard
-     * @return mixed
+     * @param int|string $idCard
+     * @return string|null
      */
-    public static function getProvinceByIdCard(string $idCard): string
+    public static function getProvinceByIdCard(int|string $idCard): ?string
     {
         $provinceCode = static::getProvinceCodeByIdCard($idCard);
-        return static::$locationCodes [$provinceCode];
+        return static::$locationCodes [$provinceCode] ?: null;
     }
 
     /**
      * 获取身份证所在市
-     * @param string $idCard
+     * @param int|string $idCard
      * @return mixed
      */
-    public static function getCityCodeByIdCard(string $idCard): string
+    public static function getCityCodeByIdCard(int|string $idCard): string
     {
         return substr($idCard, 0, 4) . '00';
     }
 
     /**
      * 获取身份证所在市
-     * @param string $idCard
-     * @return mixed
+     * @param int|string $idCard
+     * @return string|null
      */
-    public static function getCityByIdCard(string $idCard): string
+    public static function getCityByIdCard(int|string $idCard): ?string
     {
         $cityCode = static::getCityCodeByIdCard($idCard);
-        return static::$locationCodes [$cityCode];
+        return static::$locationCodes [$cityCode] ?: null;
     }
 
     /**
      * 获取身份证所在县
-     * @param string $idCard
+     * @param int|string $idCard
      * @return mixed
      */
-    public static function getDistrictCodeByIdCard(string $idCard): string
+    public static function getDistrictCodeByIdCard(int|string $idCard): string
     {
         return substr($idCard, 0, 6);
     }
 
     /**
      * 获取身份证所在县
-     * @param string $idCard
-     * @return mixed
+     * @param int|string $idCard
+     * @return string|null
      */
-    public static function getDistrictByIdCard(string $idCard): string
+    public static function getDistrictByIdCard(int|string $idCard): ?string
     {
         $areaCode = static::getDistrictCodeByIdCard($idCard);
-        return static::$locationCodes [$areaCode];
+        return static::$locationCodes [$areaCode] ?: null;
     }
 
     /**
@@ -260,43 +255,20 @@ class IDCard
      */
     private static function getCheckCode(int $iSum): string
     {
-        $sCode = "";
-        switch ($iSum % 11) {
-            case 10:
-                $sCode = "2";
-                break;
-            case 9:
-                $sCode = "3";
-                break;
-            case 8:
-                $sCode = "4";
-                break;
-            case 7:
-                $sCode = "5";
-                break;
-            case 6:
-                $sCode = "6";
-                break;
-            case 5:
-                $sCode = "7";
-                break;
-            case 4:
-                $sCode = "8";
-                break;
-            case 3:
-                $sCode = "9";
-                break;
-            case 2:
-                $sCode = "x";
-                break;
-            case 1:
-                $sCode = "0";
-                break;
-            case 0:
-                $sCode = "1";
-                break;
-        }
-        return $sCode;
+        return match ($iSum % 11) {
+            10 => "2",
+            9 => "3",
+            8 => "4",
+            7 => "5",
+            6 => "6",
+            5 => "7",
+            4 => "8",
+            3 => "9",
+            2 => "x",
+            1 => "0",
+            0 => "1",
+            default => "",
+        };
     }
 
     /**
@@ -329,7 +301,7 @@ class IDCard
      * @return int
      * @codeCoverageIgnore
      */
-    private static function getGenderCode(string $gender)
+    private static function getGenderCode(string $gender): int
     {
         if ($gender == 'M') {
             $GenderCodes = [1, 3, 5, 7, 9];
