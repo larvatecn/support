@@ -15,32 +15,33 @@ class IDCardTest extends TestCase
     public function testValidateCard()
     {
         $this->assertTrue(IDCard::validate('370481199502010714'));
+        $this->assertTrue(IDCard::validate('412725199107260369'));
         $this->assertFalse(IDCard::validate('370481199502010712'));
     }
 
     public function testGenerateCard()
     {
-        $idCard = IDCard::generateCard('370481', 'M', (int)date('Ymd', time()));
+        $idCard = IDCard::generate('370481', 'M', (int)date('Ymd', time()));
         $this->assertTrue(IDCard::validate($idCard));
     }
 
     public function testGetAgeByIdCard()
     {
-        $idCard = IDCard::generateCard('370481', 'M', (int)date('Ymd', time() - 31536000));
+        $idCard = IDCard::generate('370481', 'M', (int)date('Ymd', time() - 31536000));
         $this->assertSame(1, IDCard::getAgeByIdCard($idCard));
     }
 
     public function testGetBirthdayByIdCard()
     {
-        $idCard = IDCard::generateCard('370481', 'M', (int)date('Ymd', time()));
+        $idCard = IDCard::generate('370481', 'M', (int)date('Ymd', time()));
         $this->assertSame(date('Y-m-d', time()), IDCard::getBirthdayByIdCard($idCard));
     }
 
     public function testGetGenderByIdCard()
     {
-        $idCard = IDCard::generateCard('370481', 'M', (int)date('Ymd', time()));
+        $idCard = IDCard::generate('370481', 'M', (int)date('Ymd', time()));
         $this->assertSame('M', IDCard::getGenderByIdCard($idCard));
-        $idCard = IDCard::generateCard('370481', 'F', (int)date('Ymd', time()));
+        $idCard = IDCard::generate('370481', 'F', (int)date('Ymd', time()));
         $this->assertSame('F', IDCard::getGenderByIdCard($idCard));
     }
 
@@ -52,6 +53,7 @@ class IDCardTest extends TestCase
     public function testGetProvinceByIdCard()
     {
         $this->assertSame('山东省', IDCard::getProvinceByIdCard('370481199502010714'));
+        $this->assertSame('河南省', IDCard::getProvinceByIdCard('412725199107260369'));
     }
 
     public function testGetCityCodeByIdCard()
@@ -62,6 +64,7 @@ class IDCardTest extends TestCase
     public function testGetCityByIdCard()
     {
         $this->assertSame('枣庄市', IDCard::getCityByIdCard('370481199502010714'));
+        $this->assertSame('', IDCard::getCityByIdCard('412725199107260369'));
     }
 
     public function testGetDistrictCodeByIdCard()
