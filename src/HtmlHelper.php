@@ -83,7 +83,11 @@ class HtmlHelper
         if (is_array($variables)) {
             foreach ($variables as $key => $value) {
                 $key = '{' . trim($key, '{}') . '}';
-                $normalizedVariables[$key] = static::encode($value);
+                if (is_string($value)) {
+                    $normalizedVariables[$key] = static::encode($value);
+                } else {
+                    $normalizedVariables[$key] = $value;
+                }
             }
             $html = strtr($html, $normalizedVariables);
         }
