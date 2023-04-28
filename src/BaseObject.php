@@ -56,7 +56,7 @@ class BaseObject
      * Map the raw array to this instance.
      * @param array $config
      */
-    public function map(array $config = [])
+    public function map(array $config = []): void
     {
         foreach ($config as $name => $value) {
             $this->$name = $value;

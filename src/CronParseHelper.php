@@ -18,9 +18,9 @@ use Larva\Support\Exception\Exception;
  */
 class CronParseHelper
 {
-    protected static $tags = [];
+    protected static array $tags = [];
 
-    protected static $weekMap = [
+    protected static array $weekMap = [
         0 => 'Sunday',
         1 => 'Monday',
         2 => 'Tuesday',
@@ -48,7 +48,7 @@ class CronParseHelper
 
         foreach ($splitTags as $tag) {
             $r = '#^\*(\/\d+)?|\d+([\-\/]\d+(\/\d+)?)?(,\d+([\-\/]\d+(\/\d+)?)?)*$#';
-            if (preg_match($r, $tag) == false) {
+            if (!preg_match($r, $tag)) {
                 return false;
             }
         }
@@ -60,10 +60,10 @@ class CronParseHelper
      * 格式化crontab格式字符串
      * @param string $cronStr
      * @param int $maxSize 设置返回符合条件的时间数量, 默认为1
-     * @return array 返回符合格式的时间
+     * @return array|null 返回符合格式的时间
      * @throws Exception
      */
-    public static function formatToDate(string $cronStr, int $maxSize = 1)
+    public static function formatToDate(string $cronStr, int $maxSize = 1): ?array
     {
         if (!static::check($cronStr)) {
             throw new Exception("wrong format: $cronStr", 1);
@@ -89,7 +89,7 @@ class CronParseHelper
      * @param int|null $year 指定年
      * @return array|null 符合条件的日期
      */
-    private static function getDateList(array $crons, int $maxSize, int $year = null)
+    private static function getDateList(array $crons, int $maxSize, int $year = null): ?array
     {
         $dates = [];
 

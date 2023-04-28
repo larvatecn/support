@@ -26,9 +26,8 @@
     "ext-mbstring": "*",
     "ext-simplexml": "*",
     "ext-libxml": "*",
-    "ext-intl": "*",
     "ext-fileinfo": "*",
-    "nesbot/carbon": "^2.55",
+    "nesbot/carbon": "^2.66",
     "guzzlehttp/guzzle": "^6.5 || ^7.2",
     "ezyang/htmlpurifier": "^4.14"
   },
