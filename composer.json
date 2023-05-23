@@ -32,10 +32,10 @@
     "ezyang/htmlpurifier": "^4.14"
   },
   "require-dev": {
-    "mockery/mockery": "^1.4",
-    "phpunit/phpunit": "^9.5",
+    "mockery/mockery": "^1.5",
+    "phpunit/phpunit": "^9.6",
     "brainmaestro/composer-git-hooks": "^2.8",
-    "friendsofphp/php-cs-fixer": "^3.4"
+    "friendsofphp/php-cs-fixer": "^3.17"
   },
   "autoload": {
     "psr-4": {
