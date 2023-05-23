@@ -189,14 +189,14 @@ class HtmlHelper
     /**
      * 抽取 Html 所有的图片
      * @param string $content HTML 内容
-     * @return false|array
+     * @return array
      */
-    public static function getImages(string $content)
+    public static function getImages(string $content): array
     {
         if (preg_match_all('/<img.*[\s]src=[\"|\'](.*)[\"|\'].*>/iU', $content, $matches)) {
             return $matches[1];
         }
-        return false;
+        return [];
     }
 
     /**
@@ -239,25 +239,5 @@ class HtmlHelper
     public static function stripHtmlImg(string $content): string
     {
         return static::stripHtmlTags($content, ['img']);
-    }
-
-    /**
-     * 转换到 MIP
-     * @param string $content
-     * @return string
-     */
-    public static function convertToMIP(string $content): string
-    {
-        return preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<mip-img class=\"mip-element mip-img\"  src=\"$1\"></mip-img>", $content);
-    }
-
-    /**
-     * 转换到 AMP
-     * @param string $content
-     * @return string
-     */
-    public static function convertToAMP(string $content): string
-    {
-        return preg_replace('/<img[^>]*src=[\'"]?([^>\'"\s]*)[\'"]?[^>]*>/ie', "<amp-img class=\"amp-element amp-img\"  src=\"$1\"></amp-img>", $content);
     }
 }
