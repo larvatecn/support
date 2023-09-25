@@ -21,17 +21,17 @@ class ArrayAccessible implements ArrayAccess, IteratorAggregate, Arrayable
         $this->array = $array;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->array);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->array[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (null === $offset) {
             $this->array[] = $value;
@@ -40,17 +40,17 @@ class ArrayAccessible implements ArrayAccess, IteratorAggregate, Arrayable
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->array[$offset]);
     }
 
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->array);
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->array;
     }

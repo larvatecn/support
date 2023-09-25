@@ -16,9 +16,9 @@ class SSLCertificateTest extends TestCase
      */
     public function testBase()
     {
-        $cert = HttpClient::getSSLCert('www.larva.com.cn');
-        $this->assertEquals('www.larva.com.cn', $cert->getDomain());
-        $this->assertTrue($cert->isValid('www.larva.com.cn'));
-        $this->assertTrue($cert->isValid('larva.com.cn'));
+        $cert = HttpClient::getSSLCert('www.alipay.com');
+        $this->assertEquals('*.alipay.com', $cert->getDomain());
+        $this->assertTrue($cert->isValid('www.alipay.com'));
+        $this->assertTrue($cert->isValid('alipay.com'));
     }
 }
