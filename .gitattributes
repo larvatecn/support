@@ -1,0 +1,7 @@
+* text=auto eol=lf
+
+*.php diff=php
+
+/.github export-ignore
+/.php-cs-fixer.php export-ignore
+/tests export-ignore
