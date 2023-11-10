@@ -122,7 +122,7 @@ class HttpClient extends BaseObject
     /**
      * 仅使用IPV4
      */
-    public static function onlyIPv4()
+    public static function onlyIPv4(): void
     {
         self::$defaultOptions[RequestOptions::FORCE_IP_RESOLVE] = 'v4';
     }
@@ -130,7 +130,7 @@ class HttpClient extends BaseObject
     /**
      * 仅使用IPV6
      */
-    public static function onlyIPv6()
+    public static function onlyIPv6(): void
     {
         self::$defaultOptions[RequestOptions::FORCE_IP_RESOLVE] = 'v6';
     }
@@ -142,7 +142,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return array|false
      */
-    public static function getSSLCertChain(string $host, int $port = 443, int $timeout = 60)
+    public static function getSSLCertChain(string $host, int $port = 443, int $timeout = 60): bool|array
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
@@ -169,7 +169,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return SSLCertificate|false
      */
-    public static function getSSLCert(string $host, int $port = 443, int $timeout = 60)
+    public static function getSSLCert(string $host, int $port = 443, int $timeout = 60): bool|SSLCertificate
     {
         $context = stream_context_create();
         stream_context_set_option($context, 'ssl', 'verify_peer', false);//不验证证书合法
@@ -191,7 +191,7 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return false|string
      */
-    public static function getRemoteContent(string $url, int $timeout = 5)
+    public static function getRemoteContent(string $url, int $timeout = 5): bool|string
     {
         try {
             return static::make()
@@ -199,7 +199,7 @@ class HttpClient extends BaseObject
                 ->timeout($timeout)
                 ->withUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36 Edg/84.0.522.59')
                 ->get($url)->body();
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Exception|\Throwable $e) {
             return false;
         }
     }
@@ -266,7 +266,7 @@ class HttpClient extends BaseObject
      * @param string $url
      * @return string
      */
-    public static function getUrlHostname(string $url)
+    public static function getUrlHostname(string $url): bool|string
     {
         try {
             return (new Url($url))->getHostName();
@@ -281,10 +281,9 @@ class HttpClient extends BaseObject
      * @param int $timeout
      * @return array|false
      */
-    public static function getTDK(string $url, int $timeout = 5)
+    public static function getTDK(string $url, int $timeout = 5): bool|array
     {
         $info = [
-            'hostname' => '',
             'ip' => '',
             'https' => false,
             'title' => '',
@@ -292,17 +291,17 @@ class HttpClient extends BaseObject
             'description' => ''
         ];
         //解析IP
-        if (($info['hostname'] = static::getUrlHostname($url)) == false) {
+        if (!($info['hostname'] = static::getUrlHostname($url))) {
             return false;
         }
-        if (($info['ip'] = IPHelper::getHostIpV4($info['hostname'])) == false) {
+        if (!($info['ip'] = IPHelper::getHostIpV4($info['hostname']))) {
             return false;
         }
-        if (($body = static::getRemoteContent("https://" . $info['hostname'], $timeout)) != false) {
+        if (($body = static::getRemoteContent("https://" . $info['hostname'], $timeout))) {
             $info['https'] = true;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);
-        } elseif (($body = static::getRemoteContent("http://" . $info['hostname'], $timeout)) != false) {
+        } elseif (($body = static::getRemoteContent("http://" . $info['hostname'], $timeout))) {
             $info['https'] = false;
             $heads = HtmlHelper::getHeadTags($body);
             $info = array_merge($info, $heads);
@@ -310,6 +309,45 @@ class HttpClient extends BaseObject
             return false;
         }
 
+        return $info;
+    }
+
+    /**
+     * 获取连接信息
+     * @param string $url 目标Url
+     * @param int $connectTimeout 连接超时时间
+     * @param int $timeout 总超时时间
+     * @return array
+     */
+    public static function getInfo(string $url, int $connectTimeout = 3, int $timeout = 10): array
+    {
+        // 创建 cURL 句柄
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);//强制获取一个新的连接，而不是缓存中的连接。
+        curl_setopt($ch, CURLOPT_FORBID_REUSE, true);//在完成交互以后强制明确的断开连接，不能在连接池中重用。
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);//允许 cURL 函数执行的最长秒数。
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connectTimeout);//连接超时的秒数
+
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);//根据 Location: 重定向时，自动设置 header 中的Referer:信息。
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);//根据服务器返回 HTTP 头中的 "Location: " 重定向。
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);//最大重定向次数
+
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        //curl_setopt($ch,CURLINFO_HEADER_OUT,true);
+
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36');
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);//禁止 cURL 验证对等证书（peer's certificate）。
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);//验证 SSL 对等证书中的公用名称字段或主题备用名称（Subject Alternate Name，简称 SNA）字段是否与提供的主机名匹配。
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);//将curl_exec()获取的信息以字符串返回，而不是直接输出。
+        $info = [];
+        $result = curl_exec($ch);
+        if ($result) {
+            $info = curl_getinfo($ch);
+            $header = substr($result, 0, $info['header_size']);
+            $info['response_header'] = $header;
+        }
+        curl_close($ch);
         return $info;
     }
 }

@@ -150,7 +150,7 @@ class IPHelper
      */
     public static function getIpVersion(string $ip): int
     {
-        return strpos($ip, ':') === false ? self::IPV4 : self::IPV6;
+        return !str_contains($ip, ':') ? self::IPV4 : self::IPV6;
     }
 
     /**
@@ -201,7 +201,7 @@ class IPHelper
      * @param string $ip the original valid IPv6 address
      * @return string|false the expanded IPv6 address; or boolean false, if IP address parsing failed
      */
-    public static function expandIPv6(string $ip)
+    public static function expandIPv6(string $ip): bool|string
     {
         $addr = inet_pton($ip);
         if ($addr === false) {
@@ -239,7 +239,7 @@ class IPHelper
      * @param boolean $onlyIp 仅获取IP
      * @return array|bool
      */
-    public static function dnsRecord(string $host, int $type = DNS_A, bool $onlyIp = false)
+    public static function dnsRecord(string $host, int $type = DNS_A, bool $onlyIp = false): array|bool
     {
         if (filter_var($host, FILTER_VALIDATE_IP)) {
             return [$host];
@@ -259,7 +259,7 @@ class IPHelper
      * @param string $host
      * @return false|string
      */
-    public static function getHostIpV4(string $host)
+    public static function getHostIpV4(string $host): bool|string
     {
         $ips = IPHelper::dnsRecord($host, DNS_A, true);
         if ($ips) {
@@ -273,7 +273,7 @@ class IPHelper
      * @param string $host
      * @return false|string
      */
-    public static function getHostIpV6(string $host)
+    public static function getHostIpV6(string $host): bool|string
     {
         $ips = IPHelper::dnsRecord($host, DNS_AAAA, true);
         if ($ips) {

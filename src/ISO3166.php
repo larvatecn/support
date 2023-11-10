@@ -1084,7 +1084,7 @@ class ISO3166
     /**
      * 获取国际区号
      * @param string $code
-     * @return mixed|string
+     * @return string
      */
     public static function phoneCode(string $code): string
     {

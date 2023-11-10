@@ -85,7 +85,13 @@ class HttpClientTest extends TestCase
 
     public function testGetTDK()
     {
-        $response = HttpClient::getTDK('https://www.larvacent.com');
+        $response = HttpClient::getTDK('http://www.baidu.com');
+        $this->assertIsArray($response);
+    }
+
+    public function testGetInfo()
+    {
+        $response = HttpClient::getInfo('http://www.baidu.com');
         $this->assertIsArray($response);
     }
 }

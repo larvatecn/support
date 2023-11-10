@@ -84,19 +84,16 @@ class Json
 
     /**
      * Decodes the given JSON string into a PHP data structure.
-     * @param string $json the JSON string to be decoded
+     * @param string|null $json the JSON string to be decoded
      * @param bool $asArray whether to return objects in terms of associative arrays.
      * @return mixed the PHP data
-     * @throws InvalidArgumentException if there is any decoding error
      */
-    public static function decode(string $json, $asArray = true)
+    public static function decode(?string $json, bool $asArray = true)
     {
-        if (is_array($json)) {
-            throw new InvalidArgumentException('Invalid JSON data.');
-        } elseif ($json === null || $json === '') {
+        if ($json === null || $json === '') {
             return null;
         }
-        $decode = json_decode((string) $json, $asArray);
+        $decode = json_decode($json, $asArray);
         static::handleJsonError(json_last_error());
         return $decode;
     }

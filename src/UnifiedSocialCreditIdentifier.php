@@ -164,14 +164,10 @@ class UnifiedSocialCreditIdentifier
      */
     private static function getCheckCode(int $iSum): string
     {
-        switch ($iSum % 31) {
-            case 0:
-                $sCode = 0;
-                break;
-            default:
-                $sCode = 31 - $iSum % 31;
-                break;
-        }
+        $sCode = match ($iSum % 31) {
+            0 => 0,
+            default => 31 - $iSum % 31,
+        };
         return (string)$sCode;
     }
 

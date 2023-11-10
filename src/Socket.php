@@ -54,7 +54,7 @@ class Socket extends BaseObject
             $this->disconnect();
         }
 
-        if ($this->persistent == true) {
+        if ($this->persistent) {
             $this->connection = @pfsockopen($this->host, $this->port, $errNum, $errStr, $this->timeout);
         } else {
             $this->connection = fsockopen($this->host, $this->port, $errNum, $errStr, $this->timeout);
@@ -81,7 +81,7 @@ class Socket extends BaseObject
      * @param string $data
      * @return bool|int
      */
-    public function write(string $data)
+    public function write(string $data): bool|int
     {
         if (!$this->connected) {
             if (!$this->connect()) {
@@ -92,11 +92,11 @@ class Socket extends BaseObject
     }
 
     /**
-     * 从流读取广告
+     * 从流读取
      * @param int $length
      * @return bool|string
      */
-    public function read(int $length = 1024)
+    public function read(int $length = 1024): bool|string
     {
         if (!$this->connected) {
             if (!$this->connect()) {

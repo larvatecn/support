@@ -10,7 +10,7 @@
 
 ## 环境需求
 
-- PHP >= 8.1
+- PHP >= 8.0
 
 ## Installation
 
