@@ -235,12 +235,17 @@ class HttpClient extends BaseObject
      */
     public static function getHeaders(string $url, array $headers = [], int $timeout = 5): array
     {
-        return static::make()
+        $headers = static::make()
             ->withoutVerifying()
             ->withHeaders($headers)
             ->timeout($timeout)
             ->get($url)
             ->getHeaders();
+        $newHeaders = [];
+        foreach ($headers as $key => $header) {
+            $newHeaders[strtolower($key)] = $header;
+        }
+        return $newHeaders;
     }
 
     /**
