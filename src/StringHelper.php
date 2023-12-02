@@ -10,7 +10,8 @@ namespace Larva\Support;
 use Larva\Support\Exception\RuntimeException;
 
 /**
- * Class StringHelper
+ * 字符串助手
+ *
  * @author Tongle Xu <xutongle@gmail.com>
  */
 class StringHelper

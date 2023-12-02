@@ -64,9 +64,6 @@ class LBSHelper
      */
     public static function getCenterFromDegrees(array $points)
     {
-        if (!is_array($points)) {
-            return false;
-        }
         $numCoords = count($points);
         $X = 0.0;
         $Y = 0.0;

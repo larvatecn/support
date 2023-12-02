@@ -79,13 +79,13 @@ class SqlHelper
             }
 
             // 多行注释开始
-            if (substr($line, 0, 2) == '/*') {
+            if (str_starts_with($line, '/*')) {
                 $comment = true;
                 continue;
             }
 
             // 多行注释结束
-            if (substr($line, -2) == '*/') {
+            if (str_ends_with($line, '*/')) {
                 $comment = false;
                 continue;
             }
@@ -101,7 +101,7 @@ class SqlHelper
             }
 
             // sql语句
-            array_push($pure_sql, $line);
+            $pure_sql[] = $line;
         }
 
         // 只返回一条语句

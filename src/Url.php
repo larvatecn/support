@@ -53,7 +53,7 @@ class Url
      * 获取协议
      * @return mixed
      */
-    public function getScheme()
+    public function getScheme(): string
     {
         return $this->parsedUrl['scheme'];
     }

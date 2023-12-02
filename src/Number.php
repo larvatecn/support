@@ -39,7 +39,7 @@ class Number
      */
     public static function price(float $price, int $limit = null): float
     {
-        return static::float($price >= 0 ? $price : 0, $limit ?? 2);
+        return static::float(max($price, 0), $limit ?? 2);
     }
 
     /**
@@ -50,7 +50,7 @@ class Number
      */
     public static function priceFormat(float $price): string
     {
-        return sprintf('%.2f', $price >= 0 ? $price : 0);
+        return sprintf('%.2f', max($price, 0));
     }
 
     /**
