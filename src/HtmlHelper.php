@@ -145,6 +145,18 @@ class HtmlHelper
     }
 
     /**
+     * 获取页面出站链接
+     * @param string $url
+     * @return array
+     */
+    public static function getOutLink(string $url): array
+    {
+        $matches = parse_url($url);
+        $content = HttpClient::getRemoteContent($url);
+        return self::getHtmlOutLink($content, $matches['host']);
+    }
+
+    /**
      * 从内容获取外链
      * @param string $content
      * @param string $hostname
@@ -172,6 +184,29 @@ class HtmlHelper
             return ['count' => count($links) + $inLink, 'inlink' => $inLink, 'outlink' => count($links), 'dataList' => $links];
         }
         return ['count' => 0, 'inlink' => 0, 'outlink' => 0, 'dataList' => []];
+    }
+
+    /**
+     * 获取主机名
+     * @param string $content
+     * @return array
+     */
+    public static function getHostnames(string $content): array
+    {
+        if (preg_match_all('/<a(.*?)href="(.*?)"(.*?)>(.*?)<\/a>/i', $content, $document)) {
+            $hosts = [];
+            foreach ($document [2] as $link) {
+                $matches = parse_url($link);
+                if (!isset($matches ['host'])) { // 内联
+                    continue;
+                }
+                if (!in_array($matches ['host'], $hosts)) {
+                    $hosts[] = $matches ['host'];
+                }
+            }
+            return $hosts;
+        }
+        return [];
     }
 
     /**
