@@ -89,6 +89,18 @@ class HtmlHelper
         }
         return $html;
     }
+    
+    /**
+     * 获取页面出站链接
+     * @param string $url
+     * @return array
+     */
+    public static function getOutLink(string $url): array
+    {
+        $matches = parse_url($url);
+        $content = HttpClient::getRemoteContent($url);
+        return self::getHtmlOutLink($content, $matches['host']);
+    }
 
     /**
      * 检测 Html 编码
@@ -142,18 +154,6 @@ class HtmlHelper
             }
         }
         return $result;
-    }
-
-    /**
-     * 获取页面出站链接
-     * @param string $url
-     * @return array
-     */
-    public static function getOutLink(string $url): array
-    {
-        $matches = parse_url($url);
-        $content = HttpClient::getRemoteContent($url);
-        return self::getHtmlOutLink($content, $matches['host']);
     }
 
     /**
