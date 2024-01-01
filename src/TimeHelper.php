@@ -531,7 +531,9 @@ class TimeHelper
      */
     public static function getTimestamp(int $level = 0): int
     {
-        if ($level === 0) return time();
+        if ($level === 0) {
+            return time();
+        }
         list($msc, $sec) = explode(' ', microtime());
         if ($level === 1) {
             return intval(sprintf('%.0f', (floatval($msc) + floatval($sec)) * 1000));

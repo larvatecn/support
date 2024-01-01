@@ -89,7 +89,7 @@ class HtmlHelper
         }
         return $html;
     }
-    
+
     /**
      * 获取页面出站链接
      * @param string $url

@@ -105,7 +105,7 @@ class HttpClient extends BaseObject
      * @throws ConnectionException
      * @throws GuzzleException
      */
-    public function deleteJSON(string $url, $data = [])
+    public function deleteJSON(string $url, $data = []): array
     {
         $response = $this->asJson()->acceptJson()->delete($url, $data);
         return $response->json();

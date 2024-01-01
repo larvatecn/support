@@ -28,6 +28,47 @@ class IPHelper
     public const IPV4_ADDRESS_LENGTH = 32;
 
     /**
+     * 私网IP
+     *
+     * @var array|string[]
+     */
+    public static array $privateIps = [
+        '10.0.0.0/8' => '局域网',
+        '100.64.0.0/10' => '城域网NAT',
+        '127.0.0.0/8' => '局域网',
+        '169.254.0.0/16' => '本地环路',
+        '192.0.0.0/24' => '局域网',
+        '192.0.2.0/24' => '保留地址',
+        '192.168.0.0/16' => '局域网',
+        '198.18.0.0/15' => '保留地址',
+        '192.31.196.0/24' => '泛播地址',
+        '198.51.100.0/24' => '保留地址',
+        '192.52.193.0/24' => '保留地址',
+        '192.88.99.0/24' => '保留地址',
+        '192.175.48.0/24' => '任播地址',
+        '172.16.0.0/12' => '局域网',
+        '203.0.113.0/24' => '保留地址',
+        '224.0.0.0/4' => '组播地址',
+        '240.0.0.0/4' => '保留地址',
+        '255.255.255.255/32' => '广播地址',
+    ];
+
+    /**
+     * 是否是私有IP
+     * @param string $ip
+     * @return bool
+     */
+    public static function isPrivateForIpV4(string $ip): bool
+    {
+        foreach (self::$privateIps as $privateIp) {
+            if (self::inRange($ip, $privateIp)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 模糊掉IP后两段
      * @param string $ip
      * @return string
@@ -74,9 +115,9 @@ class IPHelper
     /**
      * 获取起始IP段的整形
      * @param string $ip
-     * @return float|int
+     * @return int
      */
-    public static function startIpv4Long(string $ip)
+    public static function startIpv4Long(string $ip): int
     {
         return static::ip2long(static::startIpv4($ip));
     }
@@ -84,9 +125,9 @@ class IPHelper
     /**
      * 获取结束IP段的整形
      * @param string $ip
-     * @return float|int
+     * @return int
      */
-    public static function endIpv4Long(string $ip)
+    public static function endIpv4Long(string $ip): int
     {
         return static::ip2long(static::endIpv4($ip));
     }
@@ -94,9 +135,9 @@ class IPHelper
     /**
      * ip2long
      * @param string $ip
-     * @return float|int
+     * @return int
      */
-    public static function ip2Long(string $ip)
+    public static function ip2Long(string $ip): int
     {
         return bindec(decbin(ip2long($ip)));
     }
@@ -109,37 +150,6 @@ class IPHelper
     public static function segmentForIpv4(string $ip): array
     {
         return [static::startIpv4Long($ip), static::endIpv4Long($ip)];
-    }
-
-    /**
-     * 是否是私有IP
-     * @param string $ip
-     * @return bool
-     */
-    public static function isPrivateForIpV4(string $ip): bool
-    {
-        $ipLong = static::startIpv4Long($ip);
-        if (($ipLong >= 167772160 && $ipLong <= 184549375)//10.0.0.0/8 //局域网
-            || ($ipLong >= 2130706432 && $ipLong <= 2147483647)//127.0.0.0/8 //局域网
-            || ($ipLong >= 2851995648 && $ipLong <= 2852061183)//169.254.0.0/16 本地环路
-            || ($ipLong >= 3221225472 && $ipLong <= 3221225727)//192.0.0.0/24  //局域网
-            || ($ipLong >= 3221225984 && $ipLong <= 3221226239)//192.0.2.0/24 保留地址
-            || ($ipLong >= 3232235520 && $ipLong <= 3232301055)//192.168.0.0/16 //局域网
-            || ($ipLong >= 3323068416 && $ipLong <= 3323199487)//198.18.0.0/15 保留地址
-            || ($ipLong >= 3223307264 && $ipLong <= 3223307519)//192.31.196.0/24 该 IP 段为 ANYCAST IP 段 该 IP 段为 IDC 机房使用，可能包括部分骨干网数据。
-            || ($ipLong >= 3325256704 && $ipLong <= 3325256959)//198.51.100.0/24 保留地址
-            || ($ipLong >= 3224682752 && $ipLong <= 3224683007)//192.52.193.0/24 //保留地址
-            || ($ipLong >= 3227017984 && $ipLong <= 3227018239)//192.88.99.0/24 //保留地址
-            || ($ipLong >= 3232706560 && $ipLong <= 3232706815)//192.175.48.0/24 任播地址
-            || ($ipLong >= 2886729728 && $ipLong <= 2887778303)//172.16.0.0-172.31.0.0 //局域网
-            || ($ipLong >= 1681915904 && $ipLong <= 1686110207)//100.64.0.0-100.127.0.0.0 城域网NAT
-            || ($ipLong >= 3405803776 && $ipLong <= 3405804031)//203.0.113.0/24 保留地址
-            || ($ipLong >= 3758096384 && $ipLong <= 4026531839)//224.0.0.0-239.255.255.255 组播地址
-            || ($ipLong >= 4026531840 && $ipLong <= 4294967295)//240.0.0.0-255.255.255.255 保留地址
-        ) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -255,7 +265,7 @@ class IPHelper
     }
 
     /**
-     * 获取主机IPV4地址
+     * 获取主机 IPv4 地址
      * @param string $host
      * @return false|string
      */

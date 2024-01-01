@@ -15,7 +15,6 @@ use Countable;
 use IteratorAggregate;
 use JsonSerializable;
 use Larva\Support\Contracts\Arrayable;
-use Serializable;
 
 /**
  * Class Collection.

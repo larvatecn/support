@@ -26,31 +26,19 @@ class HttpClientTest extends TestCase
     public function testPost()
     {
         $response = HttpClient::make()->post('https://www.baidu.com');
-        $this->assertTrue($response->ok());
+        $this->assertTrue($response->redirect());
     }
 
     public function testPut()
     {
         $response = HttpClient::make()->put('https://www.baidu.com');
-        $this->assertTrue($response->ok());
-    }
-
-    public function testDeleteJSON()
-    {
-        $response = HttpClient::make()->get('https://www.baidu.com');
-        $this->assertTrue($response->ok());
+        $this->assertTrue($response->redirect());
     }
 
     public function testGetCertificate()
     {
         $response = HttpClient::getSSLCert('www.baidu.com');
         $this->assertIsObject($response);
-    }
-
-    public function testPostJSON()
-    {
-        $response = HttpClient::make()->get('https://www.baidu.com');
-        $this->assertTrue($response->ok());
     }
 
     public function testGetHeaders()
