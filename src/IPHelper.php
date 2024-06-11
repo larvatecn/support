@@ -164,6 +164,19 @@ class IPHelper
     }
 
     /**
+     * 通过 CIDR 获取IP开始和结束
+     */
+    public static function getIPv4Range($cidr): array
+    {
+        [$ip, $mask] = explode('/', $cidr);
+        $range = ip2long($ip) & ((-1 << (32 - $mask)));
+        $start = long2ip($range);
+        $end = long2ip($range | ((1 << (32 - $mask)) - 1));
+
+        return [$start, $end];
+    }
+
+    /**
      * Checks whether IP address or subnet $subnet is contained by $subnet.
      *
      * For example, the following code checks whether subnet `192.168.1.0/24` is in subnet `192.168.0.0/22`:
