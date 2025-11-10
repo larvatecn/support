@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is NOT a freeware, use is subject to license terms
  */
@@ -20,10 +21,10 @@ class TimeHelper
 {
     /**
      * 判断是否为时间戳格式
-     * @param int|string $timestamp 要判断的字符串
+     * @param  int|string  $timestamp 要判断的字符串
      * @return bool 如果是时间戳返回True,否则返回False
      */
-    public static function isTimestamp($timestamp): bool
+    public static function isTimestamp(int|string $timestamp): bool
     {
         $start = strtotime('1970-01-01 00:00:00');
         $end = strtotime('2099-12-31 23:59:59');
@@ -38,19 +39,15 @@ class TimeHelper
     /**
      * 将任意时间类型的参数转为时间戳
      * 请注意 m/d/y 或 d-m-y 格式的日期，如果分隔符是斜线（/），则使用美洲的 m/d/y 格式。如果分隔符是横杠（-）或者点（.），则使用欧洲的 d-m-y 格式。为了避免潜在的错误，您应该尽可能使用 YYYY-MM-DD 格式或者使用 date_create_from_format() 函数。
-     * @param int|string $datetime 要转换为时间戳的字符串或数字,如果为空则返回当前时间戳
+     * @param  int|string|null  $datetime 要转换为时间戳的字符串或数字,如果为空则返回当前时间戳
      * @return int 时间戳
      */
-    public static function toTimestamp($datetime = null): int
+    public static function toTimestamp(int|string $datetime = null): int
     {
         if (empty($datetime)) {
             return time();
         }
-
-        $start = strtotime('1970-01-01 00:00:00');
-        $end = strtotime('2099-12-31 23:59:59');
-        //判断是否为时间戳
-        if (is_numeric($datetime) && $datetime <= $end && $datetime >= $start) {
+        if (self::isTimestamp($datetime)) {
             return intval($datetime);
         } else {
             $timestamp = strtotime($datetime);
@@ -114,11 +111,11 @@ class TimeHelper
 
     /**
      * 讲时间转换为友好显示格式
-     * @param int|string $time 时间日期的字符串或数字
+     * @param  int|string  $time 时间日期的字符串或数字
      * @param string     $lang 语言,默认为中文,如果要显示英文传入en即可
      * @return string 转换后的友好时间格式
      */
-    public static function toFriendly($time, string $lang = 'zh'): string
+    public static function toFriendly(int|string $time, string $lang = 'zh'): string
     {
         $time = self::toTimestamp($time);
 
@@ -160,10 +157,10 @@ class TimeHelper
 
     /**
      * 判断日期是否为今天
-     * @param string|int $datetime 时间日期
+     * @param  int|string  $datetime 时间日期
      * @return bool 如果是今天则返回True,否则返回False
      */
-    public static function isToday($datetime): bool
+    public static function isToday(int|string $datetime): bool
     {
         $timestamp = self::toTimestamp($datetime);
         if (date('Y-m-d', $timestamp) == date('Y-m-d')) {
@@ -175,10 +172,10 @@ class TimeHelper
 
     /**
      * 判断日期是否为本周
-     * @param string|int $datetime 时间日期
+     * @param  int|string  $datetime 时间日期
      * @return bool 如果是本周则返回True,否则返回False
      */
-    public static function isThisWeek($datetime): bool
+    public static function isThisWeek(int|string $datetime): bool
     {
         $week_start = strtotime(date('Y-m-d 00:00:00', strtotime('this week')));
         $week_end = strtotime(date('Y-m-d 23:59:59', strtotime('last day next week')));
@@ -192,10 +189,10 @@ class TimeHelper
 
     /**
      * 判断日期是否为本月
-     * @param string|int $datetime 时间日期
+     * @param  int|string  $datetime 时间日期
      * @return bool 如果是本月则返回True,否则返回False
      */
-    public static function isThisMonth($datetime): bool
+    public static function isThisMonth(int|string $datetime): bool
     {
         $timestamp = self::toTimestamp($datetime);
         if (date('Y-m', $timestamp) == date('Y-m')) {
@@ -207,10 +204,10 @@ class TimeHelper
 
     /**
      * 判断日期是否为今年
-     * @param string|int $datetime 时间日期
+     * @param  int|string  $datetime 时间日期
      * @return bool 如果是今年则返回True,否则返回False
      */
-    public static function isThisYear($datetime): bool
+    public static function isThisYear(int|string $datetime): bool
     {
         $timestamp = self::toTimestamp($datetime);
         if (date('Y', $timestamp) == date('Y')) {
@@ -222,41 +219,41 @@ class TimeHelper
 
     /**
      * 获得指定日期是星期几(默认为当前时间)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return int 星期几(1-7)
      */
-    public static function getWeekDay($datetime = null): int
+    public static function getWeekDay(int|string $datetime = null): int
     {
         return intval($datetime ? date('N', self::toTimestamp($datetime)) : date('N'));
     }
 
     /**
      * 判断指定日期是否为平常日(周一到周五)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return bool 是平常日返回true,否则返回false
      */
-    public static function isWeekday($datetime = null): bool
+    public static function isWeekday(int|string $datetime = null): bool
     {
         return in_array(self::getWeekDay($datetime), [1, 2, 3, 4, 5]);
     }
 
     /**
      * 判断指定日期是否为周末(周六和周日)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return bool 是周末返回true,否则返回false
      */
-    public static function isWeekend($datetime = null): bool
+    public static function isWeekend(int|string $datetime = null): bool
     {
         return in_array(self::getWeekDay($datetime), [6, 7]);
     }
 
     /**
      * 返回两个日期相差天数(如果只传入一个日期,则与当天时间比较)
-     * @param int|string $datetime     要计算的时间
-     * @param int|string $new_datetime 要比较的时间(默认为当前时间)
+     * @param  int|string  $datetime     要计算的时间
+     * @param  int|string|null  $new_datetime 要比较的时间(默认为当前时间)
      * @return int 相差天数
      */
-    public static function diffDays($datetime, $new_datetime = null): int
+    public static function diffDays(int|string $datetime, int|string $new_datetime = null): int
     {
         $datetime = date('Y-m-d', self::toTimestamp($datetime));
         if ($new_datetime) {
@@ -270,11 +267,11 @@ class TimeHelper
 
     /**
      * 返回两个日期相差星期数(如果只传入一个日期,则与当天时间比较)
-     * @param int|string $datetime     要计算的时间
-     * @param int|string $new_datetime 要比较的时间(默认为当前时间)
+     * @param  int|string  $datetime     要计算的时间
+     * @param  int|string|null  $new_datetime 要比较的时间(默认为当前时间)
      * @return int 相差星期数
      */
-    public static function diffWeeks($datetime, $new_datetime = null): int
+    public static function diffWeeks(int|string $datetime, int|string $new_datetime = null): int
     {
         $datetime = date('Y-m-d', self::toTimestamp($datetime));
         if ($new_datetime) {
@@ -288,11 +285,11 @@ class TimeHelper
 
     /**
      * 返回两个日期相差月数(如果只传入一个日期,则与当天时间比较)
-     * @param int|string $datetime     要计算的时间
-     * @param int|string $new_datetime 要比较的时间(默认为当前时间)
+     * @param  int|string  $datetime     要计算的时间
+     * @param  int|string|null  $new_datetime 要比较的时间(默认为当前时间)
      * @return int 相差月数
      */
-    public static function diffMonths($datetime, $new_datetime = null): int
+    public static function diffMonths(int|string $datetime, int|string $new_datetime = null): int
     {
         $datetime = date('Y-m-d', self::toTimestamp($datetime));
         if ($new_datetime) {
@@ -307,11 +304,11 @@ class TimeHelper
 
     /**
      * 返回两个日期相差年数(如果只传入一个日期,则与当前时间比较)
-     * @param int|string $datetime     要计算的时间
-     * @param int|string $new_datetime 要比较的时间(默认为当前时间)
+     * @param  int|string  $datetime     要计算的时间
+     * @param  int|string|null  $new_datetime 要比较的时间(默认为当前时间)
      * @return int 相差年数
      */
-    public static function diffYears($datetime, $new_datetime = null): int
+    public static function diffYears(int|string $datetime, int|string $new_datetime = null): int
     {
         $datetime = date('Y-m-d', self::toTimestamp($datetime));
         if ($new_datetime) {
@@ -326,11 +323,11 @@ class TimeHelper
     /**
      * 返回N分钟前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $minute   分钟数(默认为1分钟)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前分钟0秒的时间戳
      * @return int 时间戳
      */
-    public static function beforeMinute(int $minute = 1, $datetime = null, bool $round = false): int
+    public static function beforeMinute(int $minute = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -343,11 +340,11 @@ class TimeHelper
     /**
      * 返回N分钟后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $minute   分钟数(默认为1分钟)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前分钟0秒的时间戳
      * @return int 时间戳
      */
-    public static function afterMinute(int $minute = 1, $datetime = null, bool $round = false): int
+    public static function afterMinute(int $minute = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -360,11 +357,11 @@ class TimeHelper
     /**
      * 返回N小时前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $hour     小时数(默认为1小时)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前小时0分钟的时间戳
      * @return int 时间戳
      */
-    public static function beforeHour(int $hour = 1, $datetime = null, bool $round = false): int
+    public static function beforeHour(int $hour = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -377,11 +374,11 @@ class TimeHelper
     /**
      * 返回N小时后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $hour     小时数(默认为1小时)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前小时0分钟的时间戳
      * @return int 时间戳
      */
-    public static function afterHour(int $hour = 1, $datetime = null, bool $round = false): int
+    public static function afterHour(int $hour = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -394,11 +391,11 @@ class TimeHelper
     /**
      * 返回N天前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $day      天数(默认为1天)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期0点的时间戳
      * @return int 时间戳
      */
-    public static function beforeDay(int $day = 1, $datetime = null, bool $round = false): int
+    public static function beforeDay(int $day = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -410,12 +407,12 @@ class TimeHelper
 
     /**
      * 返回N天后的时间戳,传入第二个参数,则从该时间开始计算
-     * @param int        $day      天数(默认为1天)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期0点的时间戳
+     * @param  int  $day  天数(默认为1天)
+     * @param  int|string|null  $datetime  任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  bool  $round  是否取整(默认false),如果传入true,则返回当前日期0点的时间戳
      * @return int 时间戳
      */
-    public static function afterDay(int $day = 1, $datetime = null, bool $round = false): int
+    public static function afterDay(int $day = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -429,10 +426,10 @@ class TimeHelper
     /**
      * 返回N星期前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $week     星期数(默认为1星期)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return int 时间戳
      */
-    public static function beforeWeek(int $week = 1, $datetime = null): int
+    public static function beforeWeek(int $week = 1, int|string $datetime = null): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -444,10 +441,10 @@ class TimeHelper
     /**
      * 返回N星期后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $week     星期数(默认为1星期)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return int 时间戳
      */
-    public static function afterWeek(int $week = 1, $datetime = null): int
+    public static function afterWeek(int $week = 1, int|string $datetime = null): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -459,11 +456,11 @@ class TimeHelper
     /**
      * 返回N月前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $month    月数(默认为1个月)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期1号0点的时间戳
      * @return int 时间戳
      */
-    public static function beforeMonth(int $month = 1, $datetime = null, bool $round = false): int
+    public static function beforeMonth(int $month = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -476,11 +473,11 @@ class TimeHelper
     /**
      * 返回N月后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $month    月数(默认为1个月)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期1号0点的时间戳
      * @return int 时间戳
      */
-    public static function afterMonth(int $month = 1, $datetime = null, bool $round = false): int
+    public static function afterMonth(int $month = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -493,11 +490,11 @@ class TimeHelper
     /**
      * 返回N年前的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $year     年数(默认为1年)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期1月1号0点的时间戳
      * @return int 时间戳
      */
-    public static function beforeYear(int $year = 1, $datetime = null, bool $round = false): int
+    public static function beforeYear(int $year = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -510,11 +507,11 @@ class TimeHelper
     /**
      * 返回N年后的时间戳,传入第二个参数,则从该时间开始计算
      * @param int        $year     年数(默认为1年)
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @param bool       $round    是否取整(默认false),如果传入true,则返回当前日期1月1号0点的时间戳
      * @return int 时间戳
      */
-    public static function afterYear(int $year = 1, $datetime = null, bool $round = false): int
+    public static function afterYear(int $year = 1, int|string $datetime = null, bool $round = false): int
     {
         $date = new DateTime();
         if ($datetime !== null) {
@@ -573,41 +570,41 @@ class TimeHelper
 
     /**
      * 将任意格式的时间转换为指定格式
-     * @param string     $format   格式化字符串
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
-     * @return false|string 格式化后的时间字符串
+     * @param  string  $format  格式化字符串
+     * @param  int|string|null  $datetime  任意格式时间字符串或时间戳(默认为当前时间)
+     * @return string 格式化后的时间字符串
      */
-    public static function format(string $format = 'Y-m-d H:i:s', $datetime = null): string
+    public static function format(string $format = 'Y-m-d H:i:s', int|string $datetime = null): string
     {
         return date($format, self::toTimestamp($datetime));
     }
 
     /**
      * 判断该日期是否为闰年
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return bool 闰年返回true,否则返回false
      */
-    public static function isLeapYear($datetime = null): bool
+    public static function isLeapYear(int|string $datetime = null): bool
     {
         return date('L', self::toTimestamp($datetime)) == 1;
     }
 
     /**
      * 判断该日期的当年有多少天
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return int 该年的天数
      */
-    public static function daysInYear($datetime = null): int
+    public static function daysInYear(int|string $datetime = null): int
     {
         return self::isLeapYear($datetime) ? 366 : 365;
     }
 
     /**
      * 判断该日期的当月有多少天
-     * @param int|string $datetime 任意格式时间字符串或时间戳(默认为当前时间)
+     * @param  int|string|null  $datetime 任意格式时间字符串或时间戳(默认为当前时间)
      * @return int 该月的天数
      */
-    public static function daysInMonth($datetime = null): int
+    public static function daysInMonth(int|string $datetime = null): int
     {
         return intval(date('t', self::toTimestamp($datetime)));
     }
@@ -616,12 +613,12 @@ class TimeHelper
      * 不同时区的时间转换
      * @param string      $toTimezone   目标时区
      * @param string|null $fromTimezone 原时区(默认为当前PHP运行环境所设置的时区)
-     * @param int|string  $datetime     任意格式的时间字符串或时间戳(默认为当前时间)
+     * @param  int|string  $datetime     任意格式的时间字符串或时间戳(默认为当前时间)
      * @param string      $format       格式化字符串
      * @return string
      * @throws Exception
      */
-    public static function timezoneFormat(string $toTimezone, string $fromTimezone = null, $datetime = 'now', string $format = 'Y-m-d H:i:s'): string
+    public static function timezoneFormat(string $toTimezone, string $fromTimezone = null, int|string $datetime = 'now', string $format = 'Y-m-d H:i:s'): string
     {
         if (self::isTimestamp($datetime)) {
             $date = new DateTime();

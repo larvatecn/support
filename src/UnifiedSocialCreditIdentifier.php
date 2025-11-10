@@ -35,7 +35,7 @@ class UnifiedSocialCreditIdentifier
      * @param string $creditCode
      * @return array|false
      */
-    public static function getInfo(string $creditCode)
+    public static function getInfo(string $creditCode): bool|array
     {
         if (static::validate($creditCode)) {
             $info = [
@@ -174,11 +174,11 @@ class UnifiedSocialCreditIdentifier
     /**
      * 将每位和对应位的加权因子相乘之后，再得到和值
      *
-     * @param array $iArr
-     * @return int 编码。
+     * @param  array  $iArr
+     * @return float|int 编码。
      * @codeCoverageIgnore
      */
-    private static function getPowerSum(array $iArr)
+    private static function getPowerSum(array $iArr): float|int
     {
         $iSum = 0;
         $powerLen = count(static::$power);

@@ -253,11 +253,13 @@ class LBSHelper
     }
 
     /**
+     * 转换纬度
+     *
      * @param float $longitude
      * @param float $latitude
      * @return float|int
      */
-    private static function transFormLatitude(float $longitude, float $latitude)
+    private static function transFormLatitude(float $longitude, float $latitude): float|int
     {
         $ret = -100.0 + 2.0 * $longitude + 3.0 * $latitude + 0.2 * $latitude * $latitude + 0.1 * $longitude * $latitude + 0.2 * sqrt(abs($longitude));
         $ret += (20.0 * sin(6.0 * $longitude * M_PI) + 20.0 * sin(2.0 * $longitude * M_PI)) * 2.0 / 3.0;
@@ -267,11 +269,13 @@ class LBSHelper
     }
 
     /**
+     * 转换经度
+     *
      * @param float $longitude
      * @param float $latitude
      * @return float|int
      */
-    private static function transFormLongitude(float $longitude, float $latitude)
+    private static function transFormLongitude(float $longitude, float $latitude): float|int
     {
         $ret = 300.0 + $longitude + 2.0 * $latitude + 0.1 * $longitude * $longitude + 0.1 * $longitude * $latitude + 0.1 * sqrt(abs($longitude));
         $ret += (20.0 * sin(6.0 * $longitude * M_PI) + 20.0 * sin(2.0 * $longitude * M_PI)) * 2.0 / 3.0;
