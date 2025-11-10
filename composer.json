@@ -34,7 +34,6 @@
   "require-dev": {
     "mockery/mockery": "^1.5",
     "phpunit/phpunit": "^11.3",
-    "brainmaestro/composer-git-hooks": "^2.8",
     "friendsofphp/php-cs-fixer": "^3.17"
   },
   "autoload": {
@@ -47,30 +46,8 @@
       "Tests\\": "tests"
     }
   },
-  "extra": {
-    "hooks": {
-      "pre-commit": [
-        "composer check-style",
-        "composer test"
-      ],
-      "pre-push": [
-        "composer test"
-      ]
-    }
-  },
   "scripts": {
-    "post-update-cmd": [
-      "cghooks remove",
-      "cghooks add --ignore-lock",
-      "cghooks update"
-    ],
     "post-merge": "composer install",
-    "post-install-cmd": [
-      "cghooks remove",
-      "cghooks add --ignore-lock",
-      "cghooks update"
-    ],
-    "cghooks": "./vendor/bin/cghooks",
     "check-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --diff --dry-run --ansi",
     "fix-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --ansi",
     "test": "./vendor/bin/phpunit --colors"
